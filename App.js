@@ -6,8 +6,6 @@ import { Button } from 'react-native-elements';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StyleSheet, Text, View, Alert } from 'react-native';
-import * as firebase from 'firebase'
-import { auth } from './firebase'
 import LoginScreen from "./pages/LoginScreen";
 import RegisterScreen from './pages/RegisterScreen';
 import HomeScreen from "./pages/HomeScreen";

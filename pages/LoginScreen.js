@@ -4,7 +4,6 @@ import { useState, useEffect } from "react"
 import { View, Text, StyleSheet, KeyboardAvoidingView } from 'react-native'
 import { Button, Image, Input } from "react-native-elements"
 import { auth } from '../firebase'
-import * as firebase from 'firebase'
 
 const LoginScreen = ({ navigation }) => {
 

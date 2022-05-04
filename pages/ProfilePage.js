@@ -1,20 +1,34 @@
 import React from 'react'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { View, Text, StyleSheet, Alert } from 'react-native'
 import { Button, Image, Input, TouchableHighlight, Icon } from "react-native-elements"
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StackActions } from '@react-navigation/native';
-import * as firebase from 'firebase'
+import firebase from 'firebase/app';
 import { auth } from '../firebase'
+import { db } from '../firebase'
 import { ScrollView } from 'react-native-gesture-handler'
 import ProfileRecentPosts from '../components/ProfileRecentPosts'
 import { TouchableOpacity } from 'react-native'
+import { doc, onSnapshot } from "firebase/firestore";
 
 const ProfilePage = ({ navigation }) => {
 
-    const user = firebase.auth().currentUser;
+    const [followerCount, setFollowerCount] = useState(0)
+    const [followingCount, setFollowingCount] = useState(0)
+
+    const user = auth.currentUser;
+
+    // get total follower count
+    const getTotalFollowerCount = onSnapshot(doc(db, "useruid", `${user.uid}`), (doc) => {
+      setFollowerCount(doc.data().followers.length)
+    })
+    // get total following count
+    const getTotalFollowingCount = onSnapshot(doc(db, "useruid", `${user.uid}`), (doc) => {
+      setFollowingCount(doc.data().following.length)
+    })
 
     const showLogoutConfirm = () => {
     return Alert.alert(
@@ -36,8 +50,8 @@ const ProfilePage = ({ navigation }) => {
     };
 
     const logout = async () => {
-    await auth.signOut()
-    console.log(auth)
+      await auth.signOut()
+      console.log(auth)
     }
 
     useEffect(() => {
@@ -74,9 +88,9 @@ const ProfilePage = ({ navigation }) => {
                 />
                 <Text style={{fontWeight: "900", letterSpacing: 1, color: "white"}}>{user.displayName}</Text>
                 <View style={{flexDirection: "row"}}>
-                  <Text style={{color: "white", margin: 5}}>Followers</Text>
-                  <Text style={{color: "white", margin: 5}}>Following</Text>
-                  <Text style={{color: "white", margin: 5}}>Posts</Text>
+                  <Text style={styles.followersInfo}>Followers{"\n"}{followerCount}</Text>
+                  <Text style={styles.followersInfo}>Following{"\n"}{followingCount}</Text>
+                  <Text style={styles.followersInfo}>Posts{"\n"}</Text>
                 </View>
             </View>
             
@@ -133,6 +147,12 @@ const styles = StyleSheet.create({
         overflow: "hidden",
     },
     profileBody: {
+    },
+    followersInfo: {
+      color: "white",
+      margin: 5, 
+      textAlign:"center"
     }
+
 
 })

@@ -3,7 +3,6 @@ import { Text, View, StyleSheet, ScrollView, Image, KeyboardAvoidingView } from 
 import { BackgroundImage } from 'react-native-elements/dist/config'
 import { Button } from 'react-native-elements'
 import { useState, useEffect } from 'react'
-import * as firebase from 'firebase'
 import { auth } from '../firebase'
 import { Input } from 'react-native-elements/dist/input/Input'
 import * as ImagePicker from 'expo-image-picker';
@@ -11,6 +10,7 @@ import * as ImagePicker from 'expo-image-picker';
 function UploadPhoto() {
 
     const [image, setImage] = useState(null);
+
     useEffect(() => {
         (async () => {
           if (Platform.OS !== 'web') {
@@ -22,6 +22,7 @@ function UploadPhoto() {
         })();
       }, []);
 
+    // image picker from library
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -31,6 +32,7 @@ function UploadPhoto() {
     });
     console.log(result);
 
+    // if image is selected, set image uri to state
     if (!result.cancelled) {
       setImage(result.uri);
     }
@@ -42,6 +44,7 @@ function UploadPhoto() {
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 <Button title="Pick an image from camera roll" onPress={pickImage} />
                 {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+                <Button title="Upload" />
             </View>
         </KeyboardAvoidingView>
     )

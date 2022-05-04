@@ -5,7 +5,6 @@ import { Button, Input } from 'react-native-elements/'
 import {useState, useLayoutEffect, useEffect} from "react"
 import { auth } from "../firebase";
 import { db } from '../firebase'
-import * as firebase from 'firebase'
 import { set } from 'react-native-reanimated'
 
 
@@ -33,7 +32,7 @@ const RegisterScreen = ({ navigation }) => {
         })
 
         .then(async () => {
-            let loggedinUser = await firebase.auth().currentUser
+            let loggedinUser = await auth.currentUser
             db.collection('usernames').doc(`${username}`)
             .set({
             name: `${name}`,
@@ -46,7 +45,7 @@ const RegisterScreen = ({ navigation }) => {
             })
         } )
         .then(async () => {
-            let loggedinUser = await firebase.auth().currentUser
+            let loggedinUser = await auth.currentUser
             db.collection('useruid').doc(`${loggedinUser.uid}`)
             .set({
             name: `${name}`,

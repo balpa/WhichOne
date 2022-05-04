@@ -5,8 +5,8 @@ import { Button, Input, Icon } from 'react-native-elements/'
 import { useState, useLayoutEffect } from "react"
 import { auth } from "../firebase";
 import { db } from "../firebase"
-import * as firebase from 'firebase'
 import { Alert } from 'react-native'
+import firebase from 'firebase/compat/app'
 
 const SearchPage = ({ navigation }) => {
 
@@ -15,25 +15,44 @@ const SearchPage = ({ navigation }) => {
     const [isFollowing, setIsFollowing] = useState(false)
     const [exists, setExists] = useState(false)
     const [searchedUsersUID, setSearchedUsersUID] = useState("")
+    const [followSituation, setFollowSituation] = useState(false)
 
-    const loggedinUser = firebase.auth().currentUser
+    const loggedinUser = auth.currentUser
 
 
+    // FOLLOW-UNFOLLOW WORKS BUT NEED TO ADD STATE CHECK BY QUERYING THE USER'S UID
 
     // follow button func
-    const follow = () => {    
+    function follow () {   
+        const addToFollowingForFollowingUser = db.collection('useruid')
+            .doc(`${loggedinUser.uid}`)
+            .update({
+                following: firebase.firestore.FieldValue.arrayUnion(searchedUsersUID)
+            })
+        const addToFollowersForSearchedUser = db.collection('useruid')
+            .doc(`${searchedUsersUID}`)
+            .update({
+                followers: firebase.firestore.FieldValue.arrayUnion(loggedinUser.uid)
+            })
 
-        const collectionRef = db.collection('useruid').doc(`${loggedinUser.uid}`)
-
-        collectionRef.update({
-            followers: FieldValue.arrayUnion(searchedUsersUID)
-        })
+        setFollowSituation(true)
 
     }
+    // unfollow button func
+    function unfollow () {
+        const removeFromFollowingForFollowingUser = db.collection('useruid')
+            .doc(`${loggedinUser.uid}`)
+            .update({
+                following: firebase.firestore.FieldValue.arrayRemove(searchedUsersUID)
+        })
+        const removeFromFollowersForSearchedUser = db.collection('useruid')
+            .doc(`${searchedUsersUID}`)
+            .update({
+                followers: firebase.firestore.FieldValue.arrayRemove(loggedinUser.uid)
+            })
+        setFollowSituation(false)
+    }
 
-    // !!!!!!!!! HATA VAR 
-
-    console.log("searchedUserSUID: ",searchedUsersUID)
 
     // searched user's component
     const UserSearchProfile = () => {
@@ -47,7 +66,7 @@ const SearchPage = ({ navigation }) => {
                     style={{ width: 35, height: 35, borderRadius: 35/2}}
                     />
                     <Text style={{fontSize: 15}}> {searchUsername}</Text>
-                    <Button onPress={follow} buttonStyle={{ marginLeft: 20, width: 50, height: 30, borderRadius: 10}} titleStyle={{fontSize: 10}} title="Follow"/>
+                    <Button onPress={followSituation === true ? unfollow : follow} buttonStyle={{ marginLeft: 20, width: 50, height: 30, borderRadius: 10}} titleStyle={{fontSize: 10}} title={followSituation === true ? "Unfollow" : "Follow"}/>
                 </View>
             </View>
         )}

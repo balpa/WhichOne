@@ -6,7 +6,6 @@ import { SafeAreaView, ScrollView } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import * as firebase from 'firebase'
 import { auth } from '../firebase'
 import HomePage from "./HomePage"
 import ProfilePage from './ProfilePage'

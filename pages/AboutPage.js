@@ -6,7 +6,6 @@ import { Button, Image, Input } from "react-native-elements"
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StackActions } from '@react-navigation/native';
-import * as firebase from 'firebase'
 import { auth } from '../firebase'
 import { ScrollView } from 'react-native-gesture-handler'
 import ProfileRecentPosts from '../components/ProfileRecentPosts'

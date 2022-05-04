@@ -1,18 +1,27 @@
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
 import { Text, View, StyleSheet, ScrollView, Image } from 'react-native'
 import { BackgroundImage } from 'react-native-elements/dist/config'
+import 'firebase/compat/storage'
+import ImagePicker from 'react-native-image-picker';
+import UploadPhoto from './UploadPhoto';
 
-export class ProfileRecentPosts extends Component {
-    render() {
-        return (
-            <View style={styles.component}>
-                <Text>Choose file</Text>
-            </View>
-        )
-    }
+function CreatePost () {
+
+    const [image, setImage] = useState(null);
+    const [uploading, setUploading] = useState(false);
+    const [transferred, setTransferred] = useState(0);
+
+    
+    return (
+        <View style={styles.component}>
+            <Text>Choose file</Text>
+            <UploadPhoto />
+        </View>
+    )
+    
 }
 
-export default ProfileRecentPosts
+export default CreatePost
 
 const styles = StyleSheet.create({
     component: {
@@ -20,7 +29,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         width: 350,
         height: 400,
-        backgroundColor: "rgba(250,250,250,0.9)",
+        backgroundColor: "rgba(250,250,250,1)",
         marginTop: 5,
         marginBottom: 5,
         borderRadius:20,

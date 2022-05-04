@@ -3,7 +3,6 @@ import { Text, View, StyleSheet, ScrollView, Image, KeyboardAvoidingView } from 
 import { BackgroundImage } from 'react-native-elements/dist/config'
 import { Button } from 'react-native-elements'
 import { useState } from 'react'
-import * as firebase from 'firebase'
 import { auth } from '../firebase'
 import { Input } from 'react-native-elements/dist/input/Input'
 
@@ -11,7 +10,7 @@ function ChangeName() {
 
     const [changedName, setChangedName] = useState("") 
 
-    const name = firebase.auth().currentUser;
+    const name = auth.currentUser;
 
 
     return (

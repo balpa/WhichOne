@@ -9,7 +9,6 @@ import CreatePost from '../components/CreatePost'
 import ProfileRecentPosts from '../components/ProfileRecentPosts'
 import { auth } from "../firebase";
 import { db } from '../firebase'
-import * as firebase from 'firebase'
 import username from "./RegisterScreen"
 
 const HomePage = ({navigation}) => {
