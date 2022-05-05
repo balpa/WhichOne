@@ -14,7 +14,6 @@ function CreatePost () {
     
     return (
         <View style={styles.component}>
-            <Text>Choose file</Text>
             <UploadPhoto />
         </View>
     )
@@ -27,13 +26,9 @@ const styles = StyleSheet.create({
     component: {
         justifyContent: "center",
         alignItems: "center",
-        width: 350,
-        height: 400,
-        backgroundColor: "rgba(250,250,250,1)",
-        marginTop: 5,
-        marginBottom: 5,
-        borderRadius:20,
-        padding: 5,
+        width: "100%",
+        height: "100%",
+        backgroundColor: "rgba(15,15,15,1)",
         zIndex: 10
 
     }

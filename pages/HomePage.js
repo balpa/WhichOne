@@ -59,7 +59,7 @@ const HomePage = ({navigation}) => {
                 {isShown === true ? <CreatePost /> : null}
             </Animated.View>
             <TouchableOpacity style={styles.createButton}>
-                <Button onPress={createPostFunc} icon={{name: "add-to-photos"}} buttonStyle={{borderRadius:40,backgroundColor: "crimson"}} />
+                <Button onPress={()=> navigation.navigate("Create")} icon={{name: "add-to-photos"}} buttonStyle={{borderRadius:40,backgroundColor: "crimson"}} />
             </TouchableOpacity>
           
         </View>
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     },
     container: {
     flex: 1,
-    backgroundColor: "#243447",
+    backgroundColor: "rgba(15,15,15,1)",
     alignItems: "center"
 },
 })

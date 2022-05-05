@@ -2,7 +2,7 @@ import React from 'react'
 import { useEffect } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { View, Text, StyleSheet, Alert, KeyboardAvoidingView } from 'react-native'
-import { Button, Image, Input } from "react-native-elements"
+import { Button, Image, Input, Icon } from "react-native-elements"
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StackActions } from '@react-navigation/native';
@@ -16,11 +16,30 @@ const SettingsPage = ({ navigation }) => {
         <>
         <KeyboardAvoidingView style={styles.container}>
             <View style={styles.elevation}>
-            <Button onPress={ ()=> navigation.navigate("Account")} titleStyle={{color: "white", fontSize: 25}} buttonStyle={styles.logoutButton} title="Account"/>
-            <Button titleStyle={{color: "white", fontSize: 25}} buttonStyle={styles.logoutButton} title="Notifications"/>
-            <Button titleStyle={{color: "white", fontSize: 25}} buttonStyle={styles.logoutButton} title="Theme"/>
-            <Button titleStyle={{color: "white", fontSize: 25}} buttonStyle={styles.logoutButton} title="Help"/>
-            <Button onPress={() => navigation.navigate("About")} titleStyle={{color: "white", fontSize: 25}} buttonStyle={styles.logoutButton} title="About"/>
+                <View style={styles.buttonIconWrapper}>
+                    <Icon name="person" color="white" />
+                    <Button onPress={ ()=> navigation.navigate("Account") } titleStyle={{color: "white", fontSize: 25}} buttonStyle={styles.settingsButton} title="Account" />
+                </View>
+                <View style={styles.buttonIconWrapper}>
+                    <Icon name='notifications' color="white" />
+                    <Button titleStyle={{color: "white", fontSize: 25}} buttonStyle={styles.settingsButton} title="Notifications"/>
+                </View>
+                <View style={styles.buttonIconWrapper}>
+                    <Icon name='palette' color="white" />
+                    <Button titleStyle={{color: "white", fontSize: 25}} buttonStyle={styles.settingsButton} title="Theme"/>
+                </View>
+                <View style={styles.buttonIconWrapper}>
+                    <Icon name='lock' color="white" />
+                    <Button titleStyle={{color: "white", fontSize: 25}} buttonStyle={styles.settingsButton} title="Security"/>
+                </View>
+                <View style={styles.buttonIconWrapper}>
+                    <Icon name='help' color="white" />
+                    <Button titleStyle={{color: "white", fontSize: 25}} buttonStyle={styles.settingsButton} title="Help"/>
+                </View>
+                <View style={styles.buttonIconWrapper}>
+                    <Icon name='info' color="white" />
+                    <Button onPress={ () => navigation.navigate("About") } titleStyle={{color: "white", fontSize: 25}} buttonStyle={styles.settingsButton} title="About"/>
+                </View>
 
             </View>
         </KeyboardAvoidingView>
@@ -34,33 +53,47 @@ export default SettingsPage
 
 const styles = StyleSheet.create({
     logoutButton: {
-        width: 170,
+        width: "50%",
+        borderWidth: 0,
+        backgroundColor: "green",
+        justifyContent:"flex-start",
+    },
+    settingsButton: {
         borderWidth: 0,
         backgroundColor: "transparent",
+        justifyContent:"flex-start",
     },
+    buttonIconWrapper: {
+        flexDirection: "row",
+        width: "50%",
+        display: "flex",
+        justifyContent: "flex-start",
+        alignItems: "center",
+
+    },
+
     top: {
         alignItems: "flex-end"
     },
     container: {
         flex: 1,
         alignItems:"center",
-        justifyContent: "center",
-        backgroundColor: "#243447",
+        backgroundColor: "rgba(15,15,15,1)", // #243447 old color
         borderWidth: 1,
         borderBottomLeftRadius: 25,
         borderBottomRightRadius: 25 
     },
     elevation:{
-        width: 300,
-        height: 500,
-        justifyContent: "center", alignItems: "center", 
-        backgroundColor: "rgba(255,255,255,0.1)",
-        shadowColor: '#000',
-        shadowOffset: { width: 1, height: 3 },
-        shadowOpacity: 0.9,
-        shadowRadius: 2,
+        width: "100%",
+        height: "50%",
+        justifyContent: "space-evenly", 
+        backgroundColor: "rgba(15,15,15,1)",
+        // shadowColor: '#000',
+        // shadowOffset: { width: 1, height: 3 },
+        // shadowOpacity: 0.9,
+        // shadowRadius: 2,
         elevation: 5,
-        borderRadius: 40,
+
     },
     profileBody: {
     }

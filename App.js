@@ -16,6 +16,7 @@ import SettingsPage from './pages/SettingsPage';
 import AboutPage from './pages/AboutPage';
 import SearchPage from './pages/SearchPage';
 import AccountSettings from './pages/AccountSettings';
+import Create from './pages/Create';
 import { Icon } from 'react-native-elements';
 
 
@@ -44,6 +45,7 @@ export default function App() {
       <Stack.Screen name="About" component={AboutPage} />
       <Stack.Screen name="Search" options={{headerBackTitle: "Home"}} component={SearchPage} />
       <Stack.Screen name="Account" options={{headerBackTitle: "Settings"}} component={AccountSettings} />
+      <Stack.Screen name="Create" options={{headerBackTitle: "Home"}} component={Create} />
      </Stack.Navigator>
     </NavigationContainer>
   );

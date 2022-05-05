@@ -96,7 +96,7 @@ const ProfilePage = ({ navigation }) => {
             
         </View>
         <View style={{height: 2, backgroundColor: "white"}}></View>
-        <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center', backgroundColor: "#243447",  }} style={styles.profileBody}>
+        <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center', backgroundColor: "rgba(15,15,15,1)"  }} style={styles.profileBody}>
                 <ProfileRecentPosts />
                 <ProfileRecentPosts />
                 <ProfileRecentPosts />
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
   },
     container: {
         height: 150,
-        backgroundColor: "#243447",
+        backgroundColor: "rgba(15,15,15,1)",
         overflow: "hidden",
     },
     profileBody: {

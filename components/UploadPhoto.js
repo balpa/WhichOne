@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Text, View, StyleSheet, ScrollView, Image, KeyboardAvoidingView } from 'react-native'
 import { BackgroundImage } from 'react-native-elements/dist/config'
-import { Button } from 'react-native-elements'
+import { Button, Icon } from 'react-native-elements'
 import { useState, useEffect } from 'react'
 import { auth } from '../firebase'
 import { Input } from 'react-native-elements/dist/input/Input'
@@ -40,13 +40,19 @@ function UploadPhoto() {
 
 
     return (
-        <KeyboardAvoidingView style={styles.component}>
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                <Button title="Pick an image from camera roll" onPress={pickImage} />
-                {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
-                <Button title="Upload" />
+        <View style={styles.component}>
+          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'space-evenly'}}>
+            <View style={styles.buttonIconWrapper}>
+                <Icon name="collections" color="white" />
+                <Button title="Add Photos" onPress={pickImage} titleStyle={{color: "white", fontSize: 25}} buttonStyle={styles.createPostButtons} />
             </View>
-        </KeyboardAvoidingView>
+                {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+            <View style={styles.buttonIconWrapper}>
+                <Icon name="send" color="white" />
+                <Button title="Upload" titleStyle={{color: "white", fontSize: 25}} buttonStyle={styles.createPostButtons} />
+            </View> 
+          </View>
+        </View>
     )
 }
 
@@ -57,14 +63,22 @@ const styles = StyleSheet.create({
         position: "absolute",
         justifyContent: "center",
         alignItems: "center",
-        width: 350,
-        height: 400,
-        backgroundColor: "rgba(250,250,250,0.9)",
-        marginTop: 5,
-        marginBottom: 5,
-        borderRadius:20,
-        padding: 5,
+        width: "100%",
+        height: "100%",
+        backgroundColor: "rgba(15,15,15,1)",
         zIndex: 10
+    },
+    buttonIconWrapper: {
+      flexDirection: "row",
+      width: "50%",
+      display: "flex",
+      justifyContent: "flex-start",
+      alignItems: "center",
 
-    }
+  },
+  createPostButtons: {
+    borderWidth: 0,
+    backgroundColor: "transparent",
+    justifyContent:"flex-start",
+},
 })
