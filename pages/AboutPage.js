@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems:"center",
         justifyContent: "center",
-        backgroundColor: "#243447",
+        backgroundColor: "rgba(15,15,15,1)",
         borderWidth: 1,
         borderBottomLeftRadius: 25,
         borderBottomRightRadius: 25 

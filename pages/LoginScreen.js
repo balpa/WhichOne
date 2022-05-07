@@ -29,9 +29,9 @@ const LoginScreen = ({ navigation }) => {
     }
 
     return (
-        <KeyboardAvoidingView behavior="padding" style={styles.container}>
+        <View behavior="padding" style={styles.container}>
             <View style={styles.elevation}>
-            <StatusBar style="light"></StatusBar>
+            <StatusBar style="light" ></StatusBar>
             <Image 
             source={require("../assets/w1logocrimson.png")}
             style={{ width: 200, height: 150, marginBottom: 25}}
@@ -45,7 +45,7 @@ const LoginScreen = ({ navigation }) => {
             <Button onPress={() => navigation.navigate("Register")} title="Register" buttonStyle={styles.registerButton} type="outline"/>
             <View style={{height:100}}></View>
             </View>
-        </KeyboardAvoidingView>
+        </View>
     )
 }
 
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems:"center",
         justifyContent: "center",
-        backgroundColor: "#243447"
+        backgroundColor: "rgba(15,15,15,1)"
     },
     inputContainer: {
         width:300,

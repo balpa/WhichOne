@@ -23,9 +23,11 @@ import { Icon } from 'react-native-elements';
 const Stack = createStackNavigator();
 
 const globalScreenOptions = {
-  headerStyle: { backgroundColor: "crimson"},
+  headerStyle: { backgroundColor: "crimson", height: 90, },
   headerTitleStyle: { color: "white"},
   headerTintColor: "white",
+  gestureEnabled: true,
+  headerMode: "float",
 }
 
 

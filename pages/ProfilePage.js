@@ -88,9 +88,9 @@ const ProfilePage = ({ navigation }) => {
                 />
                 <Text style={{fontWeight: "900", letterSpacing: 1, color: "white"}}>{user.displayName}</Text>
                 <View style={{flexDirection: "row"}}>
-                  <Text style={styles.followersInfo}>Followers{"\n"}{followerCount}</Text>
-                  <Text style={styles.followersInfo}>Following{"\n"}{followingCount}</Text>
-                  <Text style={styles.followersInfo}>Posts{"\n"}</Text>
+                  <Text style={styles.followersInfo}>{followerCount}{"\n"}Followers</Text>
+                  <Text style={styles.followersInfo}>{followingCount}{"\n"}Following</Text>
+                  <Text style={styles.followersInfo}>0{"\n"}Posts</Text>
                 </View>
             </View>
             

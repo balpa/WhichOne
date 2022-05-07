@@ -85,7 +85,7 @@ const RegisterScreen = ({ navigation }) => {
 
 
     return (
-        <KeyboardAvoidingView behavior="padding" style={styles.container}>
+        <View behavior="padding" style={styles.container}>
             <StatusBar style="light"/>
             <View style={styles.elevation}>
                 <View style={{height: 20}}></View>
@@ -101,7 +101,7 @@ const RegisterScreen = ({ navigation }) => {
             <Button  title="Register" onPress={register} buttonStyle={styles.loginButton}/>
             <View style={{height: 100}}/>
             </View>
-        </KeyboardAvoidingView>
+        </View>
     )
 }
 
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems:"center",
         justifyContent: "center",
-        backgroundColor: "#243447"
+        backgroundColor: "rgba(15,15,15,1)"
     },
     inputContainer: {
         width:300,
