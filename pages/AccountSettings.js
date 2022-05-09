@@ -14,20 +14,16 @@ import ChangeName from '../components/ChangeName'
 import "firebase/firestore";
 import { db } from '../firebase'
 import { auth } from '../firebase'
-import UploadPhoto from '../components/UploadPhoto'
+import UploadAvatar from '../components/UploadPhoto'
 
 const AccountSettings = ({ navigation }) => {
 
     const [isShown, setIsShown] = useState(false)
-    const [uploadAvatar, setUploadAvatar] = useState(false)
     const [changedName, setChangedName] = useState("") 
     const user = auth.currentUser;
 
     const changeName = () => {
         setIsShown(true)
-    }
-    const openUploadAvatar = () => {
-        setUploadAvatar(true)
     }
     const SubmitButton = () => {
 
@@ -66,9 +62,8 @@ const AccountSettings = ({ navigation }) => {
     const CancelButton = () => {
 
         const cancel = () => {
-            Alert.alert("Cancelled!")
             setIsShown(false)
-            setUploadAvatar(false)
+
         }
         return <Button onPress={cancel} 
         buttonStyle={{
@@ -83,17 +78,7 @@ const AccountSettings = ({ navigation }) => {
 
     
     }
-    const UploadButton = () => {
-        return <Button buttonStyle={{
-            zIndex: 20,
-            width: 90,
-            height: 50,
-            backgroundColor: "rgba(220,20,60,0.9)",
-            borderRadius: 20,
-        
-        }} 
-        title="Upload"/>
-    }
+
 
     let fadeAnim = new Animated.Value(0)
         Animated.timing(
@@ -119,24 +104,15 @@ const AccountSettings = ({ navigation }) => {
         )
     }
 
-    const UploadAvatar = () => {
-        return (
-            <Animated.View style={[styles.component, animStyle]}>
-    
-            </Animated.View>
-        )
-    }
-
-
 
     return (
         <>
         <View style={styles.container}>
             <View style={styles.elevation}>
                 <Button onPress={changeName} titleStyle={{color: "white", fontSize: 20}} buttonStyle={styles.accountButton} title="Change Name"/>
-                <Button onPress={openUploadAvatar} titleStyle={{color: "white", fontSize: 20}} buttonStyle={styles.accountButton} title="Profile Picture"/>
+                <Button onPress={()=> navigation.navigate("Upload Avatar")} titleStyle={{color: "white", fontSize: 20}} buttonStyle={styles.accountButton} title="Upload Avatar"/>
                 {isShown ? <ChangeName /> : null}
-                {uploadAvatar ? <UploadPhoto /> : null}
+
                 
             </View>
             <View style={{
@@ -163,30 +139,7 @@ const AccountSettings = ({ navigation }) => {
         }}>
                 {isShown ?  <CancelButton /> : null}
             </View>
-            <View style={{
-                position: "absolute",
-                bottom: 100, 
-                left: 80,
-                shadowColor: '#000',
-                shadowOffset: { width: 1, height: 3 },
-                shadowOpacity: 0.8,
-                shadowRadius: 1,
-                elevation: 5,
-        }}>
-                {uploadAvatar ?  <UploadButton /> : null}
-            </View>
-            <View style={{
-                position: "absolute",
-                bottom: 100, 
-                left: 200,
-                shadowColor: '#000',
-                shadowOffset: { width: 1, height: 3 },
-                shadowOpacity: 0.8,
-                shadowRadius: 1,
-                elevation: 5,
-        }}>
-                {uploadAvatar ?  <CancelButton /> : null}
-            </View>
+           
             
         </View>
     
