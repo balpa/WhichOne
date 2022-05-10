@@ -24,11 +24,12 @@ import { Icon } from 'react-native-elements';
 const Stack = createStackNavigator();
 
 const globalScreenOptions = {
-  headerStyle: { backgroundColor: "crimson", height: 90, },
+  headerStyle: { backgroundColor: "crimson", height: 75, },
   headerTitleStyle: { color: "white"},
   headerTintColor: "white",
   gestureEnabled: true,
-  headerMode: "float",
+  headerShown: true,
+
 }
 
 
@@ -36,8 +37,9 @@ export default function App() {
 
 
   return (
+
     <NavigationContainer>
-     <Stack.Navigator screenOptions={globalScreenOptions}>
+     <Stack.Navigator screenOptions={globalScreenOptions} headerMode="screen" >
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Register" component={RegisterScreen} />
       <Stack.Screen name="Home" component={HomeScreen} />
@@ -52,6 +54,7 @@ export default function App() {
       <Stack.Screen name="Create" options={{headerBackTitle: "Home"}} component={Create} />
      </Stack.Navigator>
     </NavigationContainer>
+
   );
 }
 

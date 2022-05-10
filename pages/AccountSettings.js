@@ -7,7 +7,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StackActions } from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler'
-import ProfileRecentPosts from '../components/ProfileRecentPosts'
 import { TouchableOpacity } from 'react-native'
 import { useState } from 'react'
 import ChangeName from '../components/ChangeName'

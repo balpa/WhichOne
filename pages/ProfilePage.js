@@ -10,7 +10,7 @@ import firebase from 'firebase/app';
 import { auth } from '../firebase'
 import { db } from '../firebase'
 import { ScrollView } from 'react-native-gesture-handler'
-import ProfileRecentPosts from '../components/ProfileRecentPosts'
+import PostComponent from '../components/PostComponent'
 import { TouchableOpacity } from 'react-native'
 import { doc, onSnapshot } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
@@ -107,13 +107,13 @@ const ProfilePage = ({ navigation }) => {
         </View>
         <View style={{height: 2, backgroundColor: "white"}}></View>
         <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center', backgroundColor: "rgba(15,15,15,1)"  }} style={styles.profileBody}>
-                <ProfileRecentPosts />
-                <ProfileRecentPosts />
-                <ProfileRecentPosts />
-                <ProfileRecentPosts />
-                <ProfileRecentPosts />
-                <ProfileRecentPosts />
-                <ProfileRecentPosts />
+                <PostComponent />
+                <PostComponent />
+                <PostComponent />
+                <PostComponent />
+                <PostComponent />
+                <PostComponent />
+                <PostComponent />
         </ScrollView>
         </>
 

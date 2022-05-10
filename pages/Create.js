@@ -7,7 +7,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { StackActions } from '@react-navigation/native';
 import { auth } from '../firebase'
 import { ScrollView } from 'react-native-gesture-handler'
-import ProfileRecentPosts from '../components/ProfileRecentPosts'
 import CreatePost from '../components/CreatePost';
 
 const Create = ({ navigation }) => {

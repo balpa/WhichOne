@@ -6,10 +6,11 @@ import { Button, Icon } from "react-native-elements"
 import ProfilePage from './ProfilePage'
 import StatsPage from './StatsPage'
 import CreatePost from '../components/CreatePost'
-import ProfileRecentPosts from '../components/ProfileRecentPosts'
+import PostComponent from '../components/PostComponent'
 import { auth } from "../firebase";
 import { db } from '../firebase'
 import username from "./RegisterScreen"
+
 
 const HomePage = ({navigation}) => {
     const [isShown, setIsShown] = useState(false)
@@ -45,15 +46,15 @@ const HomePage = ({navigation}) => {
                 }/>
             </View>
             <ScrollView>
-                <ProfileRecentPosts />
-                <ProfileRecentPosts />
-                <ProfileRecentPosts />
-                <ProfileRecentPosts />
-                <ProfileRecentPosts />
-                <ProfileRecentPosts />
-                <ProfileRecentPosts />
-                <ProfileRecentPosts />
-                <ProfileRecentPosts />
+                <PostComponent />
+                <PostComponent />
+                <PostComponent />
+                <PostComponent />
+                <PostComponent />
+                <PostComponent />
+                <PostComponent />
+                <PostComponent />
+                <PostComponent />
             </ScrollView>
             <Animated.View style={{position: "absolute", flex: 1, top: 150, opacity: fadeAnim}}>
                 {isShown === true ? <CreatePost /> : null}
