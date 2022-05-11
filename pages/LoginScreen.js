@@ -29,7 +29,7 @@ const LoginScreen = ({ navigation }) => {
     }
 
     return (
-        <View behavior="padding" style={styles.container}>
+        <View style={styles.container}>
             <View style={styles.elevation}>
             <StatusBar style="light" ></StatusBar>
             <Image 

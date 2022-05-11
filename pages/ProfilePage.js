@@ -98,15 +98,19 @@ const ProfilePage = ({ navigation }) => {
                 />
                 <Text style={{fontWeight: "900", letterSpacing: 1, color: "white"}}>{user.displayName}</Text>
                 <View style={{flexDirection: "row"}}>
-                  <Text style={styles.followersInfo}>{followerCount}{"\n"}Followers</Text>
-                  <Text style={styles.followersInfo}>{followingCount}{"\n"}Following</Text>
+                  <TouchableOpacity onPress={() => navigation.navigate("Followers-Following")}> 
+                    <Text style={styles.followersInfo}>{followerCount}{"\n"}Followers</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => navigation.navigate("Followers-Following")}>
+                    <Text style={styles.followersInfo}>{followingCount}{"\n"}Following</Text>
+                  </TouchableOpacity>
                   <Text style={styles.followersInfo}>0{"\n"}Posts</Text>
                 </View>
             </View>
             
         </View>
         <View style={{height: 2, backgroundColor: "white"}}></View>
-        <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center', backgroundColor: "rgba(15,15,15,1)"  }} style={styles.profileBody}>
+        <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center', backgroundColor: "rgba(15,15,15,1)"  }}>
                 <PostComponent />
                 <PostComponent />
                 <PostComponent />
@@ -155,8 +159,6 @@ const styles = StyleSheet.create({
         height: 150,
         backgroundColor: "rgba(15,15,15,1)",
         overflow: "hidden",
-    },
-    profileBody: {
     },
     followersInfo: {
       color: "white",

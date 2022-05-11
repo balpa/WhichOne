@@ -28,7 +28,7 @@ function UploadPhoto() {
         })();
       }, []);
 
-    // image picker from library
+    // image picker from library NEED TO ADD MULTIPLE SELECTION (need another library)
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
