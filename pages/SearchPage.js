@@ -121,8 +121,7 @@ const SearchPage = ({ navigation }) => {
         return (
             <View style={styles.component}>
                 <View style={styles.imageNameField}>
-                    <Image source={{uri: image}} style={{width: 70, height: 70, borderRadius: 70/2}}
-                    />
+                    <Image source={{uri: image}} style={{width: 70, height: 70, borderRadius: 70/2}}/>
                     <Text style={{fontSize: 25, color:"white"}}> {searchUsername}</Text>
                 </View>
                 <View style={styles.userSearchProfile}>

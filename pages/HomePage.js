@@ -3,13 +3,8 @@ import { StatusBar } from 'expo-status-bar'
 import { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Animated } from 'react-native'
 import { Button, Icon } from "react-native-elements"
-import ProfilePage from './ProfilePage'
-import StatsPage from './StatsPage'
 import CreatePost from '../components/CreatePost'
 import PostComponent from '../components/PostComponent'
-import { auth } from "../firebase";
-import { db } from '../firebase'
-import username from "./RegisterScreen"
 
 
 const HomePage = ({navigation}) => {

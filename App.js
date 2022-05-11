@@ -21,11 +21,12 @@ import UploadAvatar from './pages/UploadAvatar';
 import { Icon } from 'react-native-elements';
 
 
+
 const Stack = createStackNavigator();
 
 const globalScreenOptions = {
-  headerStyle: { backgroundColor: "crimson", height: 75, },
-  headerTitleStyle: { color: "white"},
+  headerStyle: { backgroundColor: 'rgba(15,15,15,1)', height: 75 },
+  headerTitleStyle: { color: "white" },
   headerTintColor: "white",
   gestureEnabled: true,
   headerShown: true,
@@ -54,6 +55,7 @@ export default function App() {
       <Stack.Screen name="Create" options={{headerBackTitle: "Home"}} component={Create} />
      </Stack.Navigator>
     </NavigationContainer>
+
 
   );
 }
