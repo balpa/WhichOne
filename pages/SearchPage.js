@@ -89,28 +89,16 @@ const SearchPage = ({ navigation }) => {
 
     // search for if the user searched for themselves
     useEffect(() => {
-        if (loggedinUser.uid === searchedUsersUID)
-        {
-            setIsSearchedMyself(true)
-        }
-        else
-        {
-            setIsSearchedMyself(false)
-        }
+        if (loggedinUser.uid === searchedUsersUID) setIsSearchedMyself(true)
+        else setIsSearchedMyself(false)
     }, [searchedUsersUID])
 
     // check if the user is following the searched user
     useEffect(() => {
         if (searchedUsersUID !== ""){
             const isFollowingSearchedUser = onSnapshot(doc(db, "useruid", `${searchedUsersUID}`), (doc) => {
-                if (searchedUsersUID === loggedinUser.uid)
-                {
-                    setFollowSituation(true)
-                }
-                else
-                {
-                    setFollowSituation(doc.data().followers.includes(loggedinUser.uid))
-                }
+                if (searchedUsersUID === loggedinUser.uid) setFollowSituation(true)
+                else setFollowSituation(doc.data().followers.includes(loggedinUser.uid))
             })
             }
     }, [searchedUsersUID])
