@@ -83,19 +83,19 @@ export default function SmallProfile({ userID }) {
             justifyContent: "space-between",
             alignItems: "center",
             width: window.width-5,
-            height: 100,
-            backgroundColor: 'rgba(255,255,255,0.1)',
+            height: 50,
+            backgroundColor: 'rgba(255,255,255,0)',
             paddingLeft: 20,
             paddingRight: 20,
             }}>
             <View style={styles.nameAndImage} >
-                <Image style={{width: 70, height: 70, borderRadius: 70/2, marginRight:10}} source={{uri: image}}/>
-                <Text style={{fontSize: 25, color:"white"}}>{userIDData.name}</Text>
+                <Image style={{width: 30, height: 30, borderRadius: 30/2, marginRight:10}} source={{uri: image}}/>
+                <Text style={{fontSize: 15, color:"white"}}>{userIDData.name}</Text>
             </View>
             <View >
                 <View style={{flexDirection: "row"}}>
                     {!followSituation && <Button onPress={follow} buttonStyle={styles.followButton} titleStyle={{fontSize: 10}} title={"Follow"}/>}
-                    {followSituation && <Button onPress={unfollow} buttonStyle={styles.followButton} titleStyle={{fontSize: 10}} title={"Unfollow"}/>}
+                    {followSituation && <Button onPress={unfollow} buttonStyle={styles.followButton} titleStyle={{fontSize: 10}} title={"Following"}/>}
                 </View>
             </View>
         </View>
