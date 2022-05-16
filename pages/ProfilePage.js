@@ -12,7 +12,7 @@ import { db } from '../firebase'
 import { ScrollView } from 'react-native-gesture-handler'
 import PostComponent from '../components/PostComponent'
 import { TouchableOpacity } from 'react-native'
-import { doc, onSnapshot } from "firebase/firestore";
+import { doc, onSnapshot, getDoc } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 
 
@@ -21,6 +21,7 @@ const ProfilePage = ({ navigation }) => {
     const [followerCount, setFollowerCount] = useState(0)
     const [followingCount, setFollowingCount] = useState(0)
     const [image,setImage] = useState(null)
+    const [postIDs, setPostIDs] = useState([])
 
     const user = auth.currentUser;
     const storage = getStorage();
@@ -77,6 +78,14 @@ const ProfilePage = ({ navigation }) => {
     });
     }, [])
 
+    // get post ids from firebase and store in array
+    useEffect(async() => {
+      const toPostIDs = await getDoc(doc(db,"posts",`${user.uid}`))
+      setPostIDs(toPostIDs.data().postID)
+    }, [])
+
+    console.log(postIDs)
+
     return (
         <>
         <View style={styles.container}>
@@ -111,13 +120,9 @@ const ProfilePage = ({ navigation }) => {
         </View>
         <View style={{height: 2, backgroundColor: "white"}}></View>
         <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center', backgroundColor: "rgba(15,15,15,1)"  }}>
-                <PostComponent />
-                <PostComponent />
-                <PostComponent />
-                <PostComponent />
-                <PostComponent />
-                <PostComponent />
-                <PostComponent />
+          {postIDs.length > 0 && postIDs.map((postID, index)=>{
+            return <PostComponent key={index} postID={postID} />
+          })}
         </ScrollView>
         </>
 

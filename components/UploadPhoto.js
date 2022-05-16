@@ -11,17 +11,17 @@ import * as ImagePicker from 'expo-image-picker';
 import { ImageBrowser } from 'expo-image-picker-multiple'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { doc, setDoc, collection, updateDoc } from "firebase/firestore"; 
+import { doc, setDoc, collection, updateDoc, collectionGroup, arrayUnion, arrayRemove } from "firebase/firestore"; 
 
 function UploadPhoto() {
 
     const user = auth.currentUser
 
     const [image, setImage] = useState([])
-    const [postUniqueID, setPostUniqueID] = useState(null) // unique id for each post. created using date ms
+    const [postUniqueID, setPostUniqueID] = useState(new Date().getTime()) // unique id for each post. created using date ms
 
     const storage = getStorage()
-    const postRef = ref(storage, `Users/${user.uid}/posts/${postUniqueID}/`) // storage'da postun yerini belirleme
+    // const postRef = ref(storage, `Users/${user.uid}/posts/${postUniqueID}/`) // storage'da postun yerini belirleme
 
     const window = useWindowDimensions()    // hook to get the window dimensions
 
@@ -66,41 +66,37 @@ function UploadPhoto() {
     //upload image blob to firebase storage
     async function upload(){        // NEED TO MAKE IT WORK PROPERLY
 
-      if (image){
-
       let uniqID = new Date().getTime() // unique id for each post. created using date ms
       setPostUniqueID(uniqID)
 
-      await setDoc(doc(db,"posts",`${user.uid}`,`${postUniqueID}`),{
-        postID: postUniqueID,
-        commentCount: 0,
-        likeCount: 0,
-        userID: user.uid,
-        userName: user.displayName,
-        isPhoto1Liked: false,
-        isPhoto2Liked: false,
-        isPhoto3Liked: false,
-        isPhoto4Liked: false,
-        isPhoto5Liked: false,
+      if (image){
+
+      updateDoc(doc(db, "posts", `${user.uid}`),{
+        postID: arrayUnion(postUniqueID)
       })
-
-
-    // Images[imageTarget]?.map((Img) =>
-    //   uploadBytes (imageRef, Img, "data_url").then(async () => {
-    //     const downloadURL = await getDownloadURL(imageRef);
-    //     await updateDoc(doc(db, "posts", docRef.id), {
-    //       image: downloadURL,
-
-    
+      
+      
       image.map(async(img, index) => {    
+
+        const photoRef = ref(storage, `Users/${user.uid}/posts/${postUniqueID}/photo${index+1}`) // storage'da fotoğrafın yerini belirleme (post unique id içinde)
+
+        await setDoc(doc(db,"posts",`${user.uid}`,`${postUniqueID}`, `photo${index+1}`),{
+          postID: postUniqueID,
+          isLiked: false,
+          userID: user.uid,
+          userName: user.displayName,
+        })
+
         const imgInside = await fetch(img)
         const imgInsideBlob = await imgInside.blob()
 
-        uploadBytes(postRef, imgInsideBlob, "data_url")
+        uploadBytes(photoRef, imgInsideBlob)
+
+        // updates photo's url in the post's document
         .then(async () => {
-          const downloadURL = await getDownloadURL(postRef);
+          const downloadURL = await getDownloadURL(photoRef);
           await updateDoc(doc(db, "posts",`${user.uid}`,`${postUniqueID}`,`photo${index+1}`), {
-            image: downloadURL,
+            imageURL: downloadURL,
           })
         })
       })         

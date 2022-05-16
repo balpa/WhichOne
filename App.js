@@ -20,6 +20,8 @@ import Create from './pages/Create';
 import UploadAvatar from './pages/UploadAvatar';
 import { Icon } from 'react-native-elements';
 import FollowersFollowingPage from './pages/FollowersFollowingPage';
+import { TransitionSpecs } from '@react-navigation/stack';
+
 
 
 LogBox.ignoreLogs(['Setting a timer for a long period of time']) // to clear the yellow warning on android devices
@@ -36,6 +38,18 @@ const globalScreenOptions = {
 
 }
 
+const config = {
+  animation: 'spring',
+  config: {
+    stiffness: 300,
+    damping: 500,
+    mass: 3,
+    overshootClamping: true,
+    restDisplacementThreshold: 0.01,
+    restSpeedThreshold: 0.01,
+  },
+};
+
 
 export default function App() {
 
@@ -43,19 +57,19 @@ export default function App() {
 
     <NavigationContainer>
      <Stack.Navigator screenOptions={globalScreenOptions} headerMode="screen" >
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="Register" component={RegisterScreen} />
-      <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="Profile" options={{headerBackTitle: "Home"}} component={ProfilePage} />
-      <Stack.Screen name="Followers-Following" options={{headerBackTitle: "Profile"}} component={FollowersFollowingPage}/>
-      <Stack.Screen name="HomePage" component={HomePage} options={{title: "WhichOne"}} />
-      <Stack.Screen name="Stats" component={StatsPage} />
-      <Stack.Screen name="Settings" component={SettingsPage} />
-      <Stack.Screen name="About" component={AboutPage} />
-      <Stack.Screen name="Search" options={{headerBackTitle: "Home"}} component={SearchPage} />
-      <Stack.Screen name="Account" options={{headerBackTitle: "Settings"}} component={AccountSettings} />
-      <Stack.Screen name='Upload Avatar' options={{headerBackTitle: "Account"}} component={UploadAvatar} />
-      <Stack.Screen name="Create" options={{headerBackTitle: "Home"}} component={Create} />
+      <Stack.Screen name="Login" options={{transitionSpec: {open: config, close: config}}} component={LoginScreen} />
+      <Stack.Screen name="Register" options={{transitionSpec: {open: config, close: config}}} component={RegisterScreen} />
+      <Stack.Screen name="Home" options={{transitionSpec: {open: config, close: config}}} component={HomeScreen} />
+      <Stack.Screen name="Profile" options={{headerBackTitle: "Home", transitionSpec: { open: config, close: config }}} component={ProfilePage} />
+      <Stack.Screen name="Followers-Following" options={{headerBackTitle: "Profile", transitionSpec: {open: config, close: config}}} component={FollowersFollowingPage}/>
+      <Stack.Screen name="HomePage" options={{title: "WhichOne", transitionSpec: {open: config, close: config}}} component={HomePage} />
+      <Stack.Screen name="Stats" options={{transitionSpec: {open: config, close: config}}} component={StatsPage} />
+      <Stack.Screen name="Settings" options={{transitionSpec: {open: config, close: config}}} component={SettingsPage} />
+      <Stack.Screen name="About" options={{transitionSpec: {open: config, close: config}}} component={AboutPage} />
+      <Stack.Screen name="Search" options={{headerBackTitle: "Home", transitionSpec: {open: config, close: config}}} component={SearchPage} />
+      <Stack.Screen name="Account" options={{headerBackTitle: "Settings", transitionSpec: {open: config, close: config}}} component={AccountSettings} />
+      <Stack.Screen name='Upload Avatar' options={{headerBackTitle: "Account", transitionSpec: {open: config, close: config}}} component={UploadAvatar} />
+      <Stack.Screen name="Create" options={{headerBackTitle: "Home", transitionSpec: {open: config, close: config}}} component={Create} />
      </Stack.Navigator>
     </NavigationContainer>
 

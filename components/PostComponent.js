@@ -4,11 +4,20 @@ import { Text, View, StyleSheet, ScrollView, Image, Animated, useWindowDimension
 import { Icon } from 'react-native-elements'
 import { BackgroundImage } from 'react-native-elements/dist/config'
 import { useSharedValue } from 'react-native-reanimated'
+import { doc, onSnapshot, getDoc } from "firebase/firestore";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { auth } from '../firebase'
 
-function PostComponent(){
+
+function PostComponent({ postID }){
 
     const [isPressed, setIsPressed] = useState(false)
     const [likeColor, setLikeColor] = useState("white")
+    const [images, setImages] = useState([])
+
+    const user = auth.currentUser
+
+    const storage = getStorage();
 
     const window = useWindowDimensions()    // hook to get the window dimensions
 
@@ -35,9 +44,23 @@ function PostComponent(){
           }
         ).start();
 
+    // getting images from storage. need to add non existing image exceptions and image width problems
+    useEffect(() => {
+        if (postID){
+        for (let i = 1; i < 6; i++) {
+            getDownloadURL(ref(storage, `Users/${user.uid}/posts/${postID}/photo${i}`))
+            .then((url) => {
+                setImages(old => [...old, url])
+            })
+            .catch((error) => console.log(error))
+        }}
+    }, [])
+
+    
+
 
         return (
-            <View style={{    // width & height set to window w/h vars. so used styles like that
+            <View style={{    // width & height set to window w/h vars. used styles w that
                 justifyContent: "center",
                 alignItems: "center",
                 width: window.width,
@@ -48,10 +71,9 @@ function PostComponent(){
                 padding: 5
             }}>
                 <ScrollView horizontal={true} minimumZoomScale={1} maximumZoomScale={2} pagingEnabled={true} pinchGestureEnabled={true}>
-                    <Image source={require("../assets/1.jpg")} style={{width: window.width, height: height4posts}}></Image>
-                    <Image source={require("../assets/2.jpg")} style={{width: window.width, height: height4posts}}></Image>
-                    <Image source={require("../assets/3.jpg")} style={{width: window.width, height: height4posts}}></Image>
-                    <Image source={require("../assets/1.jpg")} style={{width: window.width, height: height4posts}}></Image>
+                    {images.length > 0 && images.map((url,index) => {
+                        return <Image key={index} source={{uri : url}} style={{width: window.width, height: height4posts}}></Image>
+                    })}
                 </ScrollView>
                 <View style={{flexDirection: "row"}}>
                     <Text style={{margin: 5, color:"white"}}>Likes</Text>
