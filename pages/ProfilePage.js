@@ -84,8 +84,6 @@ const ProfilePage = ({ navigation }) => {
       setPostIDs(toPostIDs.data().postID)
     }, [])
 
-    console.log(postIDs)
-
     return (
         <>
         <View style={styles.container}>
@@ -113,7 +111,7 @@ const ProfilePage = ({ navigation }) => {
                   <TouchableOpacity onPress={() => navigation.navigate("Followers-Following")}>
                     <Text style={styles.followersInfo}>{followingCount}{"\n"}Following</Text>
                   </TouchableOpacity>
-                  <Text style={styles.followersInfo}>0{"\n"}Posts</Text>
+                  <Text style={styles.followersInfo}>{postIDs.length}{"\n"}Posts</Text>
                 </View>
             </View>
             

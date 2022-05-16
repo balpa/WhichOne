@@ -41,7 +41,7 @@ const globalScreenOptions = {
 const config = {
   animation: 'spring',
   config: {
-    stiffness: 300,
+    stiffness: 900,
     damping: 500,
     mass: 3,
     overshootClamping: true,

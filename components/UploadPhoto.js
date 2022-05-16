@@ -10,7 +10,7 @@ import { Input } from 'react-native-elements/dist/input/Input'
 import * as ImagePicker from 'expo-image-picker';
 import { ImageBrowser } from 'expo-image-picker-multiple'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { getStorage, ref, uploadBytes, getDownloadURL, updateMetadata } from "firebase/storage";
 import { doc, setDoc, collection, updateDoc, collectionGroup, arrayUnion, arrayRemove } from "firebase/firestore"; 
 
 function UploadPhoto() {
@@ -73,6 +73,9 @@ function UploadPhoto() {
 
       updateDoc(doc(db, "posts", `${user.uid}`),{
         postID: arrayUnion(postUniqueID)
+      })
+      setDoc(doc(db, "posts", `${user.uid}`, `${postUniqueID}`, "postData" ),{
+        photoCount: image.length
       })
       
       
