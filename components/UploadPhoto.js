@@ -11,7 +11,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { ImageBrowser } from 'expo-image-picker-multiple'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { getStorage, ref, uploadBytes, getDownloadURL, updateMetadata } from "firebase/storage";
-import { doc, setDoc, collection, updateDoc, collectionGroup, arrayUnion, arrayRemove } from "firebase/firestore"; 
+import { doc, setDoc, collection, updateDoc, collectionGroup, arrayUnion, arrayRemove, getDoc } from "firebase/firestore"; 
 
 function UploadPhoto() {
 
@@ -75,15 +75,15 @@ function UploadPhoto() {
         postID: arrayUnion(postUniqueID)
       })
       setDoc(doc(db, "posts", `${user.uid}`, `${postUniqueID}`, "postData" ),{
-        photoCount: image.length
+        photoCount: image.length,
+        // photoURLs: []
       })
-      
-      
+     
       image.map(async(img, index) => {    
 
         const photoRef = ref(storage, `Users/${user.uid}/posts/${postUniqueID}/photo${index+1}`) // storage'da fotoğrafın yerini belirleme (post unique id içinde)
 
-        await setDoc(doc(db,"posts",`${user.uid}`,`${postUniqueID}`, `photo${index+1}`),{
+        await setDoc(doc(db,"posts",`${user.uid}`,`${postUniqueID}`, `photo${index+1}`),{   // set details for each photo
           postID: postUniqueID,
           isLiked: false,
           userID: user.uid,
@@ -91,21 +91,32 @@ function UploadPhoto() {
         })
 
         const imgInside = await fetch(img)
-        const imgInsideBlob = await imgInside.blob()
+        const imgInsideBlob = await imgInside.blob()  // convert image to blob
 
         uploadBytes(photoRef, imgInsideBlob)
 
-        // updates photo's url in the post's document
+        // updates photo's url in the post's document tree in db
         .then(async () => {
-          const downloadURL = await getDownloadURL(photoRef);
-          await updateDoc(doc(db, "posts",`${user.uid}`,`${postUniqueID}`,`photo${index+1}`), {
+          const downloadURL = await getDownloadURL(photoRef)
+
+          await updateDoc(doc(db, "posts",`${user.uid}`,`${postUniqueID}`,`photo${index+1}`), { // add image url to photos field in db
             imageURL: downloadURL,
           })
-        })
-      })         
 
-      }
-    }
+          await getDoc(doc(db,"posts",`${user.uid}`,`${postUniqueID}`, `postData`))   // get postData and check if imageURLs exist. if not, create and add etc
+          .then((document) => {
+            if (document.data().imageURLs === undefined){
+              setDoc(doc(db,'posts',`${user.uid}`,`${postUniqueID}`, `postData`),{
+                imageURLs: [downloadURL],
+              })
+            }
+            else {
+              updateDoc(doc(db,'posts',`${user.uid}`,`${postUniqueID}`, `postData`),{
+                imageURLs: arrayUnion(downloadURL),
+              })
+            }})})
+        })
+      }}
 
 
     return (

@@ -27,29 +27,37 @@ function PostComponent({ postID }){
 
 
     // ANIMATION
-    let fadeAnim = new Animated.Value(0)
-        Animated.timing(
-          fadeAnim,
-          {
-            toValue: 1,
-            duration: 500,
-            useNativeDriver: true
-          }
-        ).start();
+    // let fadeAnim = new Animated.Value(0)
+    //     Animated.timing(
+    //       fadeAnim,
+    //       {
+    //         toValue: 1,
+    //         duration: 500,
+    //         useNativeDriver: true
+    //       }
+    //     ).start()
 
-
+    
     // getting images from storage. need to add non existing image exceptions and improve this w/o for loop etc
     // photos arrangement changes on every render. need to fix this
-    useEffect(() => {
+    useEffect(async() => {
 
-        for (let i = 1; i <= 6; i++) {
-            getDownloadURL(ref(storage, `Users/${user.uid}/posts/${postID}/photo${i}`))
-            .then((url) => {
-                setImages(old => [...old, url])
-            })
-            // .catch((error) => console.log(error))
-        }
-        
+            await getDoc(doc(db,"posts",`${user.uid}`,`${postID}`,'photo1'))
+                .then(doc => {
+                    if (doc.exists) console.log(doc.data())
+                    else console.log('no doc')
+                })
+            
+
+            // getDownloadURL(ref(storage, `Users/${user.uid}/posts/${postID}/photo${i}`))
+            // .then((url) => {
+            //     setImages(old => [...old, url])
+            // })
+            // .catch((error) => {
+            //     console.log(error)
+            // })
+
+
     }, [])
 
     // ****************
