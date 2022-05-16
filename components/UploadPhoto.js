@@ -105,16 +105,19 @@ function UploadPhoto() {
 
           await getDoc(doc(db,"posts",`${user.uid}`,`${postUniqueID}`, `postData`))   // get postData and check if imageURLs exist. if not, create and add etc
           .then((document) => {
+
             if (document.data().imageURLs === undefined){
               setDoc(doc(db,'posts',`${user.uid}`,`${postUniqueID}`, `postData`),{
                 imageURLs: [downloadURL],
               })
-            }
+            }                     // SOMETIMES IT DOESN'T ADD ALL URLS TO THE ARRAY. NEED TO FIX
             else {
               updateDoc(doc(db,'posts',`${user.uid}`,`${postUniqueID}`, `postData`),{
                 imageURLs: arrayUnion(downloadURL),
               })
-            }})})
+            }
+          })
+        })
         })
       }}
 

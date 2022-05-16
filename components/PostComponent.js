@@ -42,22 +42,11 @@ function PostComponent({ postID }){
     // photos arrangement changes on every render. need to fix this
     useEffect(async() => {
 
-            await getDoc(doc(db,"posts",`${user.uid}`,`${postID}`,'photo1'))
-                .then(doc => {
-                    if (doc.exists) console.log(doc.data())
-                    else console.log('no doc')
-                })
-            
-
-            // getDownloadURL(ref(storage, `Users/${user.uid}/posts/${postID}/photo${i}`))
-            // .then((url) => {
-            //     setImages(old => [...old, url])
-            // })
-            // .catch((error) => {
-            //     console.log(error)
-            // })
-
-
+        await getDoc(doc(db,"posts",`${user.uid}`,`${postID}`,'postData'))
+            .then(doc => {
+                if (doc.exists) setImages(doc.data().imageURLs)
+                else console.log('no doc')
+            })
     }, [])
 
     // ****************
