@@ -12,13 +12,15 @@ import { ImageBrowser } from 'expo-image-picker-multiple'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { getStorage, ref, uploadBytes, getDownloadURL, updateMetadata } from "firebase/storage";
 import { doc, setDoc, collection, updateDoc, collectionGroup, arrayUnion, arrayRemove, getDoc } from "firebase/firestore"; 
+import { NavigationContainer } from '@react-navigation/native'
 
-function UploadPhoto() {
+function UploadPhoto({ navigation }) {
 
     const user = auth.currentUser
 
     const [image, setImage] = useState([])
     const [postUniqueID, setPostUniqueID] = useState(new Date().getTime()) // unique id for each post. created using date ms
+    const [isLoaded, setIsLoaded] = useState(false)
 
     const storage = getStorage()
     // const postRef = ref(storage, `Users/${user.uid}/posts/${postUniqueID}/`) // storage'da postun yerini belirleme
@@ -45,7 +47,13 @@ function UploadPhoto() {
             }
           }
         })();
-      }, []);
+      }, [])
+    
+    useEffect(() => {
+      if (isLoaded){
+          navigation.navigate('HomePage')
+      }
+    } , [isLoaded])
 
     // image picker from library NEED TO ADD MULTIPLE SELECTION (need another library)
     const pickImage = async () => {
@@ -121,8 +129,9 @@ function UploadPhoto() {
           })
         })
         })
-      }}
 
+        setIsLoaded(true)
+      }}
 
     return (
         <View style={styles.component}>

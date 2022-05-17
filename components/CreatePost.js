@@ -5,7 +5,7 @@ import 'firebase/compat/storage'
 import ImagePicker from 'react-native-image-picker';
 import UploadPhoto from './UploadPhoto';
 
-function CreatePost () {
+function CreatePost ({ navigation }) {
 
     const [image, setImage] = useState(null);
     const [uploading, setUploading] = useState(false);
@@ -14,7 +14,7 @@ function CreatePost () {
     
     return (
         <View style={styles.component}>
-            <UploadPhoto />
+            <UploadPhoto navigation={navigation} />
         </View>
     )
     

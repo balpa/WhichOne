@@ -14,7 +14,7 @@ const Create = ({ navigation }) => {
     return (
         <>
         <View style={styles.container}>
-            <CreatePost /> 
+            <CreatePost navigation={navigation}/> 
         </View>
         </>
 
