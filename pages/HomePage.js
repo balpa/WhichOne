@@ -5,23 +5,52 @@ import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Animated }
 import { Button, Icon } from "react-native-elements"
 import CreatePost from '../components/CreatePost'
 import PostComponent from '../components/PostComponent'
+import { doc, onSnapshot, getDoc } from "firebase/firestore";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { auth } from '../firebase'
+import { db } from '../firebase'
 
 
 const HomePage = ({navigation}) => {
+
+    const [dummy,setDummy] = useState(false)
     const [isShown, setIsShown] = useState(false)
-    const createPostFunc = () => {
-        setIsShown(!isShown)
+    const [followingList, setFollowingList] = useState([])    
+    const [postComponentList, setPostComponentList] = useState({})
+
+    const createPostFunc = () => { setIsShown(!isShown) }
+
+
+    const user = auth.currentUser
+
+
+    function reloadPage(){
+       setDummy(!dummy)
     }
 
-    let fadeAnim = new Animated.Value(0)
-        Animated.timing(
-          fadeAnim,
-          {
-            toValue: 1,
-            duration: 500,
-            useNativeDriver: true
-          }
-        ).start();
+    useEffect(() => {           // get list of people that logged in user follows for home page post display
+        const getFollowingList = onSnapshot(doc(db, "useruid", `${user.uid}`), (doc) => {
+            setFollowingList(doc.data().following)
+          })
+    }, [])
+
+    // NEED TO FIX THIS
+    useEffect(() => {
+        if (followingList.length > 0) { 
+
+            followingList.map(async(id,index) =>{
+
+            const followingPersonsPostID = await getDoc(doc(db,"posts",`${id}`))
+
+            // console.log(`iteration: ${index}`, `userid: ${id}`,followingPersonsPostID.data().postID)
+
+            setPostComponentList({...postComponentList, [id]: followingPersonsPostID.data().postID})
+
+        })}
+    } , [])
+
+   
+    console.log(postComponentList)
 
     return (
         <View style={styles.container}>
@@ -31,9 +60,11 @@ const HomePage = ({navigation}) => {
                     <Icon name="search" color="white" />
                 }/>
             </View>
-            <Image source={require("../assets/w1logowhite.png")}
-            style={{width: 50, height: 50, position: "absolute"}}
-            />
+            <TouchableOpacity style={{width: 50, height: 50, position: "absolute"}} onPress={()=> reloadPage()}>
+                <Image source={require("../assets/w1logowhite.png")}
+                style={{width: 50, height: 50, position: "absolute"}}
+                />
+            </TouchableOpacity>
             <View style={{height: 50}}></View>
             <View style={styles.topProfile}>
                 <Button onPress={ () => navigation.navigate("Profile") } titleStyle={{color: "white", fontSize: 15}} buttonStyle={styles.profileButton} title={
@@ -41,19 +72,11 @@ const HomePage = ({navigation}) => {
                 }/>
             </View>
             <ScrollView>
-                <PostComponent />
-                <PostComponent />
-                <PostComponent />
-                <PostComponent />
-                <PostComponent />
-                <PostComponent />
-                <PostComponent />
-                <PostComponent />
-                <PostComponent />
+                {}
             </ScrollView>
-            <Animated.View style={{position: "absolute", flex: 1, top: 150, opacity: fadeAnim}}>
+            <View style={{position: "absolute", flex: 1, top: 150}}>
                 {isShown === true ? <CreatePost /> : null}
-            </Animated.View>
+            </View>
             <TouchableOpacity style={styles.createButton}>
                 <Button onPress={()=> navigation.navigate("Create")} icon={{name: "add-to-photos"}} buttonStyle={{borderRadius:40,backgroundColor: "crimson"}} />
             </TouchableOpacity>
