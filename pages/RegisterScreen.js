@@ -6,6 +6,7 @@ import {useState, useLayoutEffect, useEffect} from "react"
 import { auth } from "../firebase";
 import { db } from '../firebase'
 import { set } from 'react-native-reanimated'
+import { setDoc, doc } from 'firebase/firestore'
 
 
 const RegisterScreen = ({ navigation }) => {
@@ -57,6 +58,13 @@ const RegisterScreen = ({ navigation }) => {
             postCount: 0,
             })
         } )
+        .then(async ()=>{           // set postID to posts/useruid/postID for fetching posts
+            let user = await auth.currentUser
+            setDoc(doc(db,"posts",`${user.uid}`),{
+                postID: []
+            })
+        })
+
         
         .then(Alert.alert(
             "Successfully registered!",

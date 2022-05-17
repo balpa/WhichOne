@@ -78,10 +78,12 @@ const ProfilePage = ({ navigation }) => {
     });
     }, [])
 
-    // get post ids from firebase and store in array
+    // get post ids from firebase and store in array NEED POST IDS IN ARRAY LOCATED IN posts/useruid/postID
     useEffect(async() => {
       const toPostIDs = await getDoc(doc(db,"posts",`${user.uid}`))
+      if (toPostIDs != undefined){
       setPostIDs(toPostIDs.data().postID)
+      }
     }, [])
 
     return (
@@ -118,9 +120,11 @@ const ProfilePage = ({ navigation }) => {
         </View>
         <View style={{height: 2, backgroundColor: "white"}}></View>
         <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center', backgroundColor: "rgba(15,15,15,1)"  }}>
-          {postIDs.length > 0 && postIDs.map((postID, index)=>{
-            return <PostComponent key={index} postID={postID} />
-          })}
+          {postIDs.length > 0 ? postIDs.map((postID, index)=>{
+            return <PostComponent key={index} postID={postID} />}) 
+          :
+          <Text style={{color:'white',fontSize:20, marginTop:25}}>No Posts</Text>
+          }
         </ScrollView>
         </>
 

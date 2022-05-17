@@ -63,6 +63,8 @@ function UploadPhoto() {
         else if (image.length >= 5 ) alert("You can only upload up to 5 images")
     }
 
+    
+
     //upload image blob to firebase storage
     async function upload(){        // NEED TO MAKE IT WORK PROPERLY
 
@@ -72,7 +74,7 @@ function UploadPhoto() {
       if (image){
 
       updateDoc(doc(db, "posts", `${user.uid}`),{
-        postID: arrayUnion(postUniqueID)
+          postID: arrayUnion(postUniqueID)
       })
       setDoc(doc(db, "posts", `${user.uid}`, `${postUniqueID}`, "postData" ),{
         photoCount: image.length,
