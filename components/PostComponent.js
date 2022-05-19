@@ -10,14 +10,14 @@ import { auth } from '../firebase'
 import { db } from '../firebase'
 
 
-function PostComponent({ postID }){
+function PostComponent({ postID, userID, name }){
 
     const [isPressed, setIsPressed] = useState(false)
     const [images, setImages] = useState([])
     const [imageCount, setImageCount] = useState(null)
 
-    const user = auth.currentUser
-
+    const userIdToPass = userID != undefined ? userID : auth.currentUser.uid 
+    const nameToPass = name != undefined ? name : auth.currentUser.displayName
     const storage = getStorage();
 
     const window = useWindowDimensions()    // hook to get the window dimensions
@@ -42,7 +42,7 @@ function PostComponent({ postID }){
     // photos arrangement changes on every render. need to fix this
     useEffect(async() => {
 
-        await getDoc(doc(db,"posts",`${user.uid}`,`${postID}`,'postData'))
+        await getDoc(doc(db,"posts",`${userIdToPass}`,`${postID}`,'postData'))
             .then(doc => {
                 if (doc.exists) setImages(doc.data().imageURLs)
                 else console.log('no doc')
@@ -65,7 +65,7 @@ function PostComponent({ postID }){
                 padding: 5
             }}>
                 <View style={{width: '100%', justifyContent:'space-between', display:'flex', flexDirection:'row'}}>
-                    <Text style={{margin: 5, color:"white"}}>Berke Altıparmak</Text>
+                    <Text style={{margin: 5, color:"white"}}>{nameToPass}</Text>
                     <Text style={{margin: 5, color:'white'}}>...</Text>
                 </View>
                 <ScrollView contentContainerStyle={{alignItems:'center'}} horizontal={true} minimumZoomScale={1} maximumZoomScale={2} pagingEnabled={true} pinchGestureEnabled={true}>

@@ -24,7 +24,7 @@ const HomePage = ({navigation}) => {
     const user = auth.currentUser
 
 
-    function reloadPage(){
+    function reloadPage(){      //page reload dummy func
        setDummy(!dummy)
     }
 
@@ -34,7 +34,7 @@ const HomePage = ({navigation}) => {
           })
     }, [])
 
-    // NEED TO FIX THIS
+    // TODO: NEED TO FIX THIS. HOME PAGE POSTS NOT WORKING
     useEffect(() => {
         if (followingList.length > 0) { 
 
@@ -42,7 +42,7 @@ const HomePage = ({navigation}) => {
 
             const followingPersonsPostID = await getDoc(doc(db,"posts",`${id}`))
 
-            // console.log(`iteration: ${index}`, `userid: ${id}`,followingPersonsPostID.data().postID)
+            console.log(`iteration: ${index}`, `userid: ${id}`,followingPersonsPostID.data().postID)
 
             setPostComponentList({...postComponentList, [id]: followingPersonsPostID.data().postID})
 
@@ -50,7 +50,8 @@ const HomePage = ({navigation}) => {
     } , [])
 
    
-    console.log(postComponentList)
+    // console.log("post list from ids: ", postComponentList)
+    // console.log("following list: ", followingList)
 
     return (
         <View style={styles.container}>
@@ -72,7 +73,9 @@ const HomePage = ({navigation}) => {
                 }/>
             </View>
             <ScrollView>
-                {}
+                {postComponentList.length>0 ? postComponentList.map((postID,index)=>{
+                    return <PostComponent postID={postID} key={index}/>
+                }) : null}
             </ScrollView>
             <View style={{position: "absolute", flex: 1, top: 150}}>
                 {isShown === true ? <CreatePost /> : null}

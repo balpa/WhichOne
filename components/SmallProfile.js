@@ -6,9 +6,14 @@ import { db } from "../firebase"
 import firebase from 'firebase/compat/app'
 import { doc, onSnapshot, getDoc } from "firebase/firestore"
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { NavigationContainer } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 
 export default function SmallProfile({ userID }) {
+
+    const navigation = useNavigation()
 
     const loggedinUser = auth.currentUser
 
@@ -19,6 +24,8 @@ export default function SmallProfile({ userID }) {
     const [image, setImage] = useState(null) // store the user's avatar
 
     const storage = getStorage();
+
+    console.log(navigation)
 
     getDownloadURL(ref(storage, `Users/${userID}/avatars/avatar_image`))    // get the user's avatar
       .then((url) => setImage(url))
@@ -89,8 +96,10 @@ export default function SmallProfile({ userID }) {
             paddingRight: 20,
             }}>
             <View style={styles.nameAndImage} >
-                <Image style={{width: 30, height: 30, borderRadius: 30/2, marginRight:10}} source={{uri: image}}/>
-                <Text style={{fontSize: 15, color:"white"}}>{userIDData.name}</Text>
+                    <Image style={{width: 30, height: 30, borderRadius: 30/2, marginRight:10}} source={{uri: image}}/>
+                    <TouchableOpacity onPress={()=>{navigation.navigate("UserProfile",{ name: `${userIDData.name}`, userID: `${userID}`})}}>
+                        <Text style={{fontSize: 15, color:"white"}}>{userIDData.name}</Text>
+                    </TouchableOpacity>
             </View>
             <View >
                 <View style={{flexDirection: "row"}}>
