@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar'
-import React, { useEffect } from 'react'
-import { StyleSheet, View, Text, KeyboardAvoidingView, Image } from 'react-native'
+import React, { useEffect, useRef } from 'react'
+import { StyleSheet, View, Text, KeyboardAvoidingView, Image, Animated } from 'react-native'
 import { Button, Input, Icon } from 'react-native-elements/'
 import { useState, useLayoutEffect } from "react"
 import { auth } from "../firebase";
@@ -9,6 +9,7 @@ import { Alert } from 'react-native'
 import firebase from 'firebase/compat/app'
 import { doc, onSnapshot } from "firebase/firestore"
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import UserSearchProfile from '../components/UserSearchProfile'
 
 const SearchPage = ({ navigation }) => {
 
@@ -105,31 +106,43 @@ const SearchPage = ({ navigation }) => {
 
 
     // searched user's component
-    const UserSearchProfile = () => {
-        return (
-            <View style={styles.component}>
-                <View style={styles.imageNameField}>
-                    <Image source={{uri: image}} style={{width: 70, height: 70, borderRadius: 70/2}}/>
-                    <Text style={{fontSize: 25, color:"white"}}> {searchUsername}</Text>
-                </View>
-                <View style={styles.userSearchProfile}>
-                    <View style={{flexDirection: "row"}}>
-                        <Text style={styles.followersInfo}>{followerCount}{"\n"}Followers</Text>
-                        <Text style={styles.followersInfo}>{followingCount}{"\n"}Following</Text>
-                        <Text style={styles.followersInfo}>0{"\n"}Posts</Text>
-                    </View>
+    // const UserSearchProfile = React.memo(() => {
 
-                    {!followSituation && <Button onPress={follow} buttonStyle={styles.followButton} titleStyle={{fontSize: 10}} title={"Follow"}/>}
-                    {followSituation && <Button onPress={unfollow} buttonStyle={styles.followButton} titleStyle={{fontSize: 10}} title={"Following"}/>}
-                </View>
-            </View>
-        )}
+    //     const springAnim = useRef(new Animated.Value(1000)).current
+
+    //     useEffect(() => {
+    //         Animated.spring(springAnim, {
+    //             toValue: 0,
+    //             duration: 1000,
+    //             useNativeDriver: true,
+    //           }).start()
+    //     }, [])
+
+    //     return (
+    //         <Animated.View style={[styles.component, {transform: [{translateY: springAnim}]}]}>
+    //             <View style={styles.imageNameField}>
+    //                 <Image source={{uri: image}} style={{width: 70, height: 70, borderRadius: 70/2}}/>
+    //                 <Text style={{fontSize: 25, color:"white"}}> {searchUsername}</Text>
+    //             </View>
+    //             <View style={styles.userSearchProfile}>
+    //                 <View style={{flexDirection: "row"}}>
+    //                     <Text style={styles.followersInfo}>{followerCount}{"\n"}Followers</Text>
+    //                     <Text style={styles.followersInfo}>{followingCount}{"\n"}Following</Text>
+    //                     <Text style={styles.followersInfo}>0{"\n"}Posts</Text>
+    //                 </View>
+
+    //                 {!followSituation && <Button onPress={follow} buttonStyle={styles.followButton} titleStyle={{fontSize: 10}} title={"Follow"}/>}
+    //                 {followSituation && <Button onPress={unfollow} buttonStyle={styles.followButton} titleStyle={{fontSize: 10}} title={"Following"}/>}
+    //             </View>
+    //         </Animated.View>
+    //     )})
 
 
     // searching for a user
     const [searchVal, setSearchVal] = useState("")
 
     const search = () => {
+
         if (searchVal.length > 3 && searchVal.length < 15) {
             db.collection('usernames')
             .doc(`${searchVal.toLowerCase()}`)
@@ -150,18 +163,24 @@ const SearchPage = ({ navigation }) => {
     }}
 
 
-
     return (
         <View behavior="padding" style={styles.container}>
         <StatusBar style="light"/>
             <View style={styles.elevation}>
                 <View style={styles.searchBar}>
-                    <Input autoCapitalize="none" style={{color: "white", width: 250}}  selectionColor="white"  placeholder="Search by username" value={searchVal} onChangeText={(text) => setSearchVal(text)}/>
+                    <Input autoCapitalize="none" style={{color: "white", width: 250}}  selectionColor="white"  placeholder="Search by username" onChangeText={(text) => setSearchVal(text)} />
                     <Button buttonStyle={{backgroundColor: "transparent", borderRadius: 15, width: "auto", height: "auto"}} titleStyle={{fontSize: 15}} 
                             onPress={search} title={<Icon size={30} name="search" color="white" />}/>
                 </View>
 
-                {searchUsername.length > 1 ? <UserSearchProfile /> : null}
+                {exists && <UserSearchProfile 
+                searchedUsersUID={searchedUsersUID} 
+                loggedinUser={loggedinUser}
+                image={image}
+                searchUsername={searchUsername}
+                followerCount={followerCount}
+                followingCount={followingCount} 
+                followSituation={followSituation}/> }
 
             </View>
         </View>

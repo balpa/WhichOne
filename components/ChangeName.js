@@ -1,24 +1,59 @@
-import React, { Component } from 'react'
-import { Text, View, StyleSheet, ScrollView, Image, KeyboardAvoidingView } from 'react-native'
+import React, { Component, useRef, useEffect } from 'react'
+import { Text, View, StyleSheet, ScrollView, Image, KeyboardAvoidingView, Alert, Animated } from 'react-native'
 import { BackgroundImage } from 'react-native-elements/dist/config'
 import { Button } from 'react-native-elements'
 import { useState } from 'react'
 import { auth } from '../firebase'
 import { Input } from 'react-native-elements/dist/input/Input'
 
-function ChangeName() {
+function ChangeName({ setIsShown }) {
 
     const [changedName, setChangedName] = useState("") 
 
-    const name = auth.currentUser;
+    const user = auth.currentUser
+
+    const springAnim = useRef(new Animated.Value(1000)).current
+
+    useEffect(() => {
+        Animated.spring(springAnim, {
+            toValue: 0,
+            duration: 1000,
+            useNativeDriver: true,
+          }).start()
+    }, [])
+    
+    const submitFunction = () => {
+
+        if (changedName.length > 3 && changedName.length < 25){
+            user.updateProfile({
+                displayName: `${changedName}`,
+              }).then(() => {
+                Alert.alert("Name Changed!")
+              }).catch((error) => {
+                Alert.alert(error.message)
+              }); 
+            } 
+            else if (changedName.length > 25) {
+                Alert.alert("Name must be between 3 and 25 characters!")
+            }
+            else {
+                Alert.alert("Name must be at least 3 characters long!")
+            }
+            setIsShown(false)
+    }
+
 
 
     return (
-        <KeyboardAvoidingView style={styles.component}>
-            <Text style={{marginBottom: 50}}>Your name: {name.displayName}</Text>
+        <Animated.View style={[styles.component, {transform: [{translateY: springAnim}]}]}>
+            <Text style={{marginBottom: 20, textAlign:'center', fontSize:20}}>Your name:{'\n'} {user.displayName}</Text>
             <Input placeholder="Change your name" value={changedName} onChangeText={(text) => setChangedName(text)} />
+            <View style={{flexDirection:'row', bottom: 10, }}>
+              <Button title='Submit' onPress={submitFunction}  buttonStyle={{width: 90,height: 50,backgroundColor: "crimson",borderRadius: 20,}} />
+              <Button title='Cancel' onPress={()=> setIsShown(false)} buttonStyle={{width: 90,height: 50,backgroundColor: "crimson",borderRadius: 20,}} />
 
-        </KeyboardAvoidingView>
+            </View>             
+        </Animated.View>
     )
 }
 
@@ -27,11 +62,11 @@ export default ChangeName
 const styles = StyleSheet.create({
     component: {
         position: "absolute",
-        justifyContent: "center",
+        justifyContent: "space-evenly",
         alignItems: "center",
         width: 350,
-        height: 400,
-        backgroundColor: "rgba(250,250,250,0.9)",
+        height: 250,
+        backgroundColor: "rgba(250,250,250,1)",
         marginTop: 5,
         marginBottom: 5,
         borderRadius:20,

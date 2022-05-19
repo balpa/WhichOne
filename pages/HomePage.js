@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Animated } from 'react-native'
@@ -19,7 +19,6 @@ const HomePage = ({navigation}) => {
     const [postComponentList, setPostComponentList] = useState({})
 
     const createPostFunc = () => { setIsShown(!isShown) }
-
 
     const user = auth.currentUser
 

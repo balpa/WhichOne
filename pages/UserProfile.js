@@ -75,12 +75,8 @@ const UserProfile = ({ route, navigation }) => {
                 />
                 <Text style={{fontWeight: "900", letterSpacing: 1, color: "white"}}>{name}</Text>
                 <View style={{flexDirection: "row"}}>
-                  <TouchableOpacity onPress={() => navigation.navigate("Followers-Following")}> 
                     <Text style={styles.followersInfo}>{followerCount}{"\n"}Followers</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={() => navigation.navigate("Followers-Following")}>
                     <Text style={styles.followersInfo}>{followingCount}{"\n"}Following</Text>
-                  </TouchableOpacity>
                   <Text style={styles.followersInfo}>{postIDs.length}{"\n"}Posts</Text>
                 </View>
             </View>

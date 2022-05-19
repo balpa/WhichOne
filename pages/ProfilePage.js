@@ -1,5 +1,5 @@
 import React from 'react'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { View, Text, StyleSheet, Alert } from 'react-native'
 import { Button, Image, Input, TouchableHighlight, Icon } from "react-native-elements"
@@ -14,7 +14,7 @@ import PostComponent from '../components/PostComponent'
 import { TouchableOpacity } from 'react-native'
 import { doc, onSnapshot, getDoc } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
-
+import AvatarModal from '../components/AvatarModal'
 
 const ProfilePage = ({ navigation }) => {
 
@@ -22,6 +22,7 @@ const ProfilePage = ({ navigation }) => {
     const [followingCount, setFollowingCount] = useState(0)
     const [image,setImage] = useState(null)
     const [postIDs, setPostIDs] = useState([])
+    const [isShown, setIsShown] = useState(false)
 
     const user = auth.currentUser;
     const storage = getStorage();
@@ -86,6 +87,9 @@ const ProfilePage = ({ navigation }) => {
       }
     }, [])
 
+
+    
+
     return (
         <>
         <View style={styles.container}>
@@ -101,10 +105,13 @@ const ProfilePage = ({ navigation }) => {
                 }/>
             </View>
             <View style={{justifyContent: "center", alignItems: "center", marginTop: 10}}>
+              {isShown && <AvatarModal changeModalStatus={setIsShown} />}
+              <TouchableOpacity onPress={()=> setIsShown(!isShown)}>
                 <Image 
                 source={{uri: image}}
                 style={{ width: 60, height: 60, borderRadius: 60/2, marginBottom: 15}}
                 />
+              </TouchableOpacity>
                 <Text style={{fontWeight: "900", letterSpacing: 1, color: "white"}}>{user.displayName}</Text>
                 <View style={{flexDirection: "row"}}>
                   <TouchableOpacity onPress={() => navigation.navigate("Followers-Following")}> 
