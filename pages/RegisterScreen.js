@@ -59,9 +59,10 @@ const RegisterScreen = ({ navigation }) => {
             })
         } )
         .then(async ()=>{           // set postID to posts/useruid/postID for fetching posts
-            let user = await auth.currentUser
-            setDoc(doc(db,"posts",`${user.uid}`),{
-                postID: []
+            let loggedinUser = await auth.currentUser
+            db.collection('posts').doc(`${loggedinUser.uid}`)
+            .set({
+                postID: [],
             })
         })
 

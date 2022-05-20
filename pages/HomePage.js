@@ -52,18 +52,16 @@ const HomePage = ({navigation}) => {
     useEffect(async () => {
 
         if (allPostsFromFollowing.length > 0) {
+            allPostsFromFollowing.map( async(postID,index) => {
+                const getPostData = await getDoc(doc(db,'postInfo',`${postID}`))
+                if (getPostData.exists){
+                    setComponents(old=> [...old, <PostComponent postID={postID} userID={getPostData.data().userID} name={getPostData.data().name} />])
+                }
 
-            allPostsFromFollowing.map(async(item,index) =>{
-                const q = query(collection(db, 'postInfo'), where(`${allPostsFromFollowing[index]}`, '==', true))
-
-                const querySnapshot = await getDocs(q);
-                    querySnapshot.forEach((doc) => {   
-                    console.log(doc.id, " => ", doc.data());
-                })
             })
-
+        }
         
-    }
+    
     } , [])
 
     console.log(allPostsFromFollowing)

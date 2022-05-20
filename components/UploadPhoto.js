@@ -98,6 +98,7 @@ function UploadPhoto({ navigation }) {
             likes: [],
             comments: [],
             photoURLs: [],
+            name: user.displayName,
           })      
       })
       
