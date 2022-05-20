@@ -1,8 +1,8 @@
 import { StatusBar } from 'expo-status-bar'
 import React from 'react'
-import { StyleSheet, View, Text, KeyboardAvoidingView, Alert } from 'react-native'
+import { StyleSheet, View, Text, KeyboardAvoidingView, Alert, Animated } from 'react-native'
 import { Button, Input } from 'react-native-elements/'
-import {useState, useLayoutEffect, useEffect} from "react"
+import {useState, useLayoutEffect, useEffect, useRef} from "react"
 import { auth } from "../firebase";
 import { db } from '../firebase'
 import { set } from 'react-native-reanimated'
@@ -17,6 +17,16 @@ const RegisterScreen = ({ navigation }) => {
     const [username, setUsername] = useState("")
     const [confirmpassword, setConfirmPassword] = useState("")
     const [isRight, setIsRight] = useState(null)
+
+    const scaleAnim = useRef(new Animated.Value(0)).current
+
+    useEffect(() => {
+        Animated.spring(scaleAnim, {
+            toValue: 1,
+            duration: 2000,
+            useNativeDriver: true,
+          }).start()
+    }, [])
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -96,7 +106,7 @@ const RegisterScreen = ({ navigation }) => {
     return (
         <View behavior="padding" style={styles.container}>
             <StatusBar style="light"/>
-            <View style={styles.elevation}>
+            <Animated.View style={[styles.elevation, {transform: [{scale: scaleAnim}]}]}>
                 <View style={{height: 20}}></View>
             <Text h1 style={{marginBottom: 50, fontSize: 25, color: "white"}}>Create an account</Text>
             <View style={styles.inputContainer}>
@@ -109,7 +119,7 @@ const RegisterScreen = ({ navigation }) => {
             </View>
             <Button  title="Register" onPress={register} buttonStyle={styles.loginButton}/>
             <View style={{height: 100}}/>
-            </View>
+            </Animated.View>
         </View>
     )
 }

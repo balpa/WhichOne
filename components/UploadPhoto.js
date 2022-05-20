@@ -1,5 +1,5 @@
 import React, { Component, useMemo } from 'react'
-import { Text, View, StyleSheet, ScrollView, Image, KeyboardAvoidingView, useWindowDimensions } from 'react-native'
+import { Text, View, StyleSheet, ScrollView, Image, KeyboardAvoidingView, useWindowDimensions, Animated, Easing } from 'react-native'
 import { BackgroundImage } from 'react-native-elements/dist/config'
 import { Button, Icon } from 'react-native-elements'
 import { useState, useEffect } from 'react'
@@ -21,6 +21,7 @@ function UploadPhoto({ navigation }) {
     const [image, setImage] = useState([])
     const [postUniqueID, setPostUniqueID] = useState(new Date().getTime()) // unique id for each post. created using date ms
     const [isLoaded, setIsLoaded] = useState(false)
+    const [showFrame, setShowFrame] = useState(true)
 
     const storage = getStorage()
     // const postRef = ref(storage, `Users/${user.uid}/posts/${postUniqueID}/`) // storage'da postun yerini belirleme
@@ -30,12 +31,34 @@ function UploadPhoto({ navigation }) {
     let height4posts = (window.width*3)/4    // height of the post calculated by the width of the screen
     let height4postcontainer = ((window.width*3)/4)+50   // height of the post container calculated by the width of the screen plus the gap needed for likes comments etc. section
 
+    const heightAnim = new Animated.Value(5)
+
+    // TODO: pb is in the next comment line
+    useEffect(() => {       // creates bouncing animation for the empty frame but needs a fix for the upper border not showing during animation
+        Animated.spring(heightAnim, {
+            toValue: 1,
+            duration: 2000,
+            easing: Easing.elastic(1),
+            useNativeDriver: true,
+        }).start()
+    }, [])
+
+
     // for selecting multiple images. library not so good. need to find a better way
     const ImageBrowserComponent = () => {
       return (
         <ImageBrowser onChange={(num, onSubmit)  => {}} callback={(callback) => {}}/>
       )
     }
+
+    useEffect(() => {
+      if (image.length > 0){
+        setShowFrame(false)
+      }
+      
+    }, [image])
+
+    console.log(showFrame)
 
     // camera permissions
     useEffect(() => {
@@ -101,7 +124,6 @@ function UploadPhoto({ navigation }) {
             name: user.displayName,
           })      
       })
-      
     
      
       image.map(async(img, index) => {    
@@ -169,7 +191,9 @@ function UploadPhoto({ navigation }) {
                   </View>
                 </>
                 )
-                })}
+                })
+                }
+              {showFrame == true ?  <Animated.View style={[styles.imageContainerEmpty, {width: window.width-2, height:height4postcontainer ,transform: [{scaleY: heightAnim}]}]}></Animated.View> :  null}
             </ScrollView> 
 
             <View style={styles.uploadIconWrapper}>
@@ -234,7 +258,14 @@ const styles = StyleSheet.create({
       imageContainer: {
         flexDirection: "column",
         alignItems: "center",
-
+      },
+      imageContainerEmpty: {
+        flexDirection: "column",
+        alignItems: "center",
+        borderStyle:'solid', 
+        borderWidth:1, 
+        borderColor:'white',
+        zIndex: 10
       }
 
 })

@@ -1,14 +1,24 @@
 import { StatusBar } from 'expo-status-bar'
 import React from 'react'
-import { useState, useEffect } from "react"
-import { View, Text, StyleSheet, KeyboardAvoidingView } from 'react-native'
+import { useState, useEffect, useRef } from "react"
+import { View, Text, StyleSheet, KeyboardAvoidingView, Animated } from 'react-native'
 import { Button, Image, Input } from "react-native-elements"
 import { auth } from '../firebase'
 
 const LoginScreen = ({ navigation }) => {
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+
+    const scaleAnim = useRef(new Animated.Value(0)).current
+
+    useEffect(() => {
+        Animated.spring(scaleAnim, {
+            toValue: 1,
+            duration: 5000,
+            useNativeDriver: true,
+          }).start()
+    }, [])
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((authUser) => {
@@ -30,7 +40,7 @@ const LoginScreen = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.elevation}>
+            <Animated.View style={[styles.elevation, {transform: [{scale: scaleAnim}]}]}>
             <StatusBar style="light" ></StatusBar>
             <Image 
             source={require("../assets/w1logocrimson.png")}
@@ -44,7 +54,7 @@ const LoginScreen = ({ navigation }) => {
             <Button onPress={signIn} title="Login" buttonStyle={styles.loginButton}/>
             <Button onPress={() => navigation.navigate("Register")} title="Register" buttonStyle={styles.registerButton} type="outline"/>
             <View style={{height:100}}></View>
-            </View>
+            </Animated.View>
         </View>
     )
 }

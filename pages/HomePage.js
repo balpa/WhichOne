@@ -64,6 +64,8 @@ const HomePage = ({navigation}) => {
     
     } , [])
 
+    // TODO: need re-rendering to show posts and after re-rendering again, it shows the same posts again. FIX
+
     console.log(allPostsFromFollowing)
 
     return (
