@@ -88,6 +88,20 @@ function UploadPhoto({ navigation }) {
         photoCount: image.length,
         // photoURLs: []
       })
+
+      await getDoc(doc(db, "postInfo", `${postUniqueID}`))    // set post info on postInfo collection
+      .then((document)=> {
+          setDoc(doc(db, "postInfo", `${postUniqueID}`),{
+            photoCount: image.length,
+            userID: user.uid,
+            date: new Date().toLocaleString(),
+            likes: [],
+            comments: [],
+            photoURLs: [],
+          })      
+      })
+      
+    
      
       image.map(async(img, index) => {    
 
@@ -111,6 +125,10 @@ function UploadPhoto({ navigation }) {
 
           await updateDoc(doc(db, "posts",`${user.uid}`,`${postUniqueID}`,`photo${index+1}`), { // add image url to photos field in db
             imageURL: downloadURL,
+          })
+
+          await updateDoc(doc(db, 'postInfo', `${postUniqueID}`),{      // add image urls to postInfo-postid
+            photoURLs: arrayUnion(downloadURL)
           })
 
           await getDoc(doc(db,"posts",`${user.uid}`,`${postUniqueID}`, `postData`))   // get postData and check if imageURLs exist. if not, create and add etc

@@ -5,7 +5,7 @@ import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Animated }
 import { Button, Icon } from "react-native-elements"
 import CreatePost from '../components/CreatePost'
 import PostComponent from '../components/PostComponent'
-import { doc, onSnapshot, getDoc } from "firebase/firestore";
+import { doc, onSnapshot,get, getDoc, getDocs, query, where, collection, querySnapshot } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { auth } from '../firebase'
 import { db } from '../firebase'
@@ -19,6 +19,7 @@ const HomePage = ({navigation}) => {
     const [followingList, setFollowingList] = useState([])    
     const [postComponentList, setPostComponentList] = useState({})
     const [components, setComponents] = useState([])
+    const [allPostsFromFollowing, setAllPostsFromFollowing] = useState([])
 
     const createPostFunc = () => { setIsShown(!isShown) }
 
@@ -36,38 +37,36 @@ const HomePage = ({navigation}) => {
     }, [])
 
     // TODO: NEED TO FIX THIS. HOME PAGE POSTS NOT WORKING
-    useEffect(() => {
-
+    useEffect(() => {           // take following list and get all post id's from each user and store in array to fetch them all 
         if (followingList.length > 0) { 
-
             followingList.map(async(id,index) =>{
-
             const followingPersonsPostID = await getDoc(doc(db,"posts",`${id}`))
-            // console.log(followingPersonsPostID.data())
-
-            // console.log(`iteration: ${index}`, `userid: ${id}`,followingPersonsPostID.data().postID)
-
             if (followingPersonsPostID.exists){
-            setPostComponentList({...postComponentList, [id]: followingPersonsPostID.data().postID})
+                followingPersonsPostID.data().postID.map(async(item,index) => {
+                    if (allPostsFromFollowing.includes(item) == false) setAllPostsFromFollowing(old => [...old, item])
+                })
             }
         })}
     } , [])
 
-    useEffect(() => {
-        postComponentList ? Object.entries(postComponentList).map(([userID, postIDArray])=>{
-            // console.log("userID: ", userID)
-            // console.log("postID: ", postIDArray[0])
+    useEffect(async () => {
 
-            setComponents(old => [...old, <PostComponent postID={postIDArray} userID={userID}/>])
-        }) : null
-    } , [postComponentList])
+        if (allPostsFromFollowing.length > 0) {
 
+            allPostsFromFollowing.map(async(item,index) =>{
+                const q = query(collection(db, 'postInfo'), where(`${allPostsFromFollowing[index]}`, '==', true))
 
+                const querySnapshot = await getDocs(q);
+                    querySnapshot.forEach((doc) => {   
+                    console.log(doc.id, " => ", doc.data());
+                })
+            })
 
+        
+    }
+    } , [])
 
-   
-    // console.log(postComponentList)
-    // console.log("following list: ", followingList)
+    console.log(allPostsFromFollowing)
 
     return (
         <View style={styles.container}>
