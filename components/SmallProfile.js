@@ -103,8 +103,8 @@ export default function SmallProfile({ userID }) {
             </View>
             <View >
                 <View style={{flexDirection: "row"}}>
-                    {!followSituation && <Button onPress={follow} buttonStyle={styles.followButton} titleStyle={{fontSize: 10}} title={"Follow"}/>}
-                    {followSituation && <Button onPress={unfollow} buttonStyle={styles.followButton} titleStyle={{fontSize: 10}} title={"Following"}/>}
+                    {!followSituation && <Button onPress={follow} buttonStyle={styles.followButton} titleStyle={{fontSize: 10, color:'crimson'}} title={"Follow"}/>}
+                    {followSituation && <Button onPress={unfollow} buttonStyle={styles.unfollowButton} titleStyle={{fontSize: 10}} title={"Following"}/>}
                 </View>
             </View>
         </View>
@@ -118,6 +118,10 @@ export default function SmallProfile({ userID }) {
         alignItems: 'center',
     },
     followButton: {
+        width: 100,
+        backgroundColor: "white",
+    },
+    unfollowButton: {
         width: 100,
         backgroundColor: "crimson",
     }

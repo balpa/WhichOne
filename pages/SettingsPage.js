@@ -1,8 +1,8 @@
 import React from 'react'
 import { useEffect } from 'react'
 import { StatusBar } from 'expo-status-bar'
-import { View, Text, StyleSheet, Alert, KeyboardAvoidingView } from 'react-native'
-import { Button, Image, Input, Icon } from "react-native-elements"
+import { View, Text, StyleSheet, Alert, KeyboardAvoidingView, Image } from 'react-native'
+import { Button, Input, Icon } from "react-native-elements"
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StackActions } from '@react-navigation/native';
@@ -39,7 +39,9 @@ const SettingsPage = ({ navigation }) => {
                     <Icon name='info' color="white" />
                     <Button onPress={ () => navigation.navigate("About") } titleStyle={{color: "white", fontSize: 25}} buttonStyle={styles.settingsButton} title="About"/>
                 </View>
-
+            </View>
+            <View style={styles.logoBottomContainer}>
+                <Image source={require("../assets/w1logowhite.png")} style={styles.logoBottom}/>
             </View>
         </KeyboardAvoidingView>
     
@@ -78,9 +80,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems:"center",
         backgroundColor: "rgba(15,15,15,1)", // #243447 old color
-        borderWidth: 1,
-        borderBottomLeftRadius: 25,
-        borderBottomRightRadius: 25 
+        borderWidth: 1, 
     },
     elevation:{
         width: "100%",
@@ -95,6 +95,20 @@ const styles = StyleSheet.create({
 
     },
     profileBody: {
+    },
+    logoBottom:{
+        position: 'absolute',
+        width: 50,
+        height: 50,
+        bottom: 0,
+        zIndex: 10
+    },
+    logoBottomContainer:{
+        position: 'absolute',
+        bottom: 10,
+        width: "100%",
+        justifyContent: 'center',
+        alignItems: 'center',
     }
 
 })

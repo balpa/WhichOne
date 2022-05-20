@@ -32,6 +32,24 @@ function UploadPhoto({ navigation }) {
     let height4postcontainer = ((window.width*3)/4)+50   // height of the post container calculated by the width of the screen plus the gap needed for likes comments etc. section
 
     const heightAnim = new Animated.Value(5)
+    const YAnimTop = new Animated.Value(-500)
+    const YAnimBottom = new Animated.Value(500)
+
+    useEffect(() => {
+      Animated.timing(YAnimTop, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: true,
+      }).start()
+    }, [])
+
+    useEffect(() => {
+      Animated.timing(YAnimBottom, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: true,
+      }).start() 
+    } , [])
 
     // TODO: pb is in the next comment line
     useEffect(() => {       // creates bouncing animation for the empty frame but needs a fix for the upper border not showing during animation
@@ -177,10 +195,10 @@ function UploadPhoto({ navigation }) {
     return (
         <View style={styles.component}>
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'space-evenly'}}>
-            <View style={styles.addButtonIconWrapper}>
+            <Animated.View style={[styles.addButtonIconWrapper, {transform: [{translateY: YAnimTop}]}]}>
                 <Icon name="collections" color="white" />
                 <Button title="Add Photos" onPress={pickImage} titleStyle={{color: "white", fontSize: 25}} buttonStyle={styles.createPostButtons} />
-            </View>
+            </Animated.View>
             <ScrollView style={styles.scrollViewStyling} horizontal={true} minimumZoomScale={1} maximumZoomScale={2} pagingEnabled={true} pinchGestureEnabled={true}>
               {image.map((img, index) => {
                 return (
@@ -196,11 +214,11 @@ function UploadPhoto({ navigation }) {
               {showFrame == true ?  <Animated.View style={[styles.imageContainerEmpty, {width: window.width-2, height:height4postcontainer ,transform: [{scaleY: heightAnim}]}]}></Animated.View> :  null}
             </ScrollView> 
 
-            <View style={styles.uploadIconWrapper}>
+            <Animated.View style={[styles.uploadIconWrapper, {transform: [{translateY: YAnimBottom}]}]}>
                 <Icon name="send" color="white" />
                 <Button title="Upload" onPress={()=> upload()} titleStyle={{color: "white", fontSize: 25}} buttonStyle={styles.createPostButtons} />
                 
-            </View> 
+            </Animated.View> 
           </View>
         </View>
     )
