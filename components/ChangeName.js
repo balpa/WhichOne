@@ -14,7 +14,7 @@ function ChangeName({ setIsShown }) {
 
     const springAnim = useRef(new Animated.Value(1000)).current
 
-    useEffect(() => {
+    useEffect(() => {           // animation
         Animated.spring(springAnim, {
             toValue: 0,
             duration: 1000,
@@ -42,6 +42,15 @@ function ChangeName({ setIsShown }) {
             setIsShown(false)
     }
 
+    function closeModal(){      // closing the modal with the animation reversed
+        Animated.spring(springAnim, {
+            toValue: 1000,
+            duration: 1000,
+            useNativeDriver: true,
+          }).start() 
+        setTimeout(() => {setIsShown(false)}, 1000)
+    }
+
 
 
     return (
@@ -50,7 +59,7 @@ function ChangeName({ setIsShown }) {
             <Input placeholder="Change your name" value={changedName} onChangeText={(text) => setChangedName(text)} />
             <View style={{flexDirection:'row', bottom: 10, }}>
               <Button title='Submit' onPress={submitFunction}  buttonStyle={{width: 90,height: 50,backgroundColor: "crimson",borderRadius: 20,}} />
-              <Button title='Cancel' onPress={()=> setIsShown(false)} buttonStyle={{width: 90,height: 50,backgroundColor: "crimson",borderRadius: 20,}} />
+              <Button title='Cancel' onPress={()=> closeModal()} buttonStyle={{width: 90,height: 50,backgroundColor: "crimson",borderRadius: 20,}} />
 
             </View>             
         </Animated.View>

@@ -9,6 +9,7 @@ import { doc, onSnapshot, getDoc } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { auth } from '../firebase'
 import { db } from '../firebase'
+import { set } from 'react-native-reanimated'
 
 
 const HomePage = ({navigation}) => {
@@ -17,6 +18,7 @@ const HomePage = ({navigation}) => {
     const [isShown, setIsShown] = useState(false)
     const [followingList, setFollowingList] = useState([])    
     const [postComponentList, setPostComponentList] = useState({})
+    const [components, setComponents] = useState([])
 
     const createPostFunc = () => { setIsShown(!isShown) }
 
@@ -35,21 +37,36 @@ const HomePage = ({navigation}) => {
 
     // TODO: NEED TO FIX THIS. HOME PAGE POSTS NOT WORKING
     useEffect(() => {
+
         if (followingList.length > 0) { 
 
             followingList.map(async(id,index) =>{
 
             const followingPersonsPostID = await getDoc(doc(db,"posts",`${id}`))
+            // console.log(followingPersonsPostID.data())
 
-            console.log(`iteration: ${index}`, `userid: ${id}`,followingPersonsPostID.data().postID)
+            // console.log(`iteration: ${index}`, `userid: ${id}`,followingPersonsPostID.data().postID)
 
+            if (followingPersonsPostID.exists){
             setPostComponentList({...postComponentList, [id]: followingPersonsPostID.data().postID})
-
+            }
         })}
     } , [])
 
+    useEffect(() => {
+        postComponentList ? Object.entries(postComponentList).map(([userID, postIDArray])=>{
+            // console.log("userID: ", userID)
+            // console.log("postID: ", postIDArray[0])
+
+            setComponents(old => [...old, <PostComponent postID={postIDArray} userID={userID}/>])
+        }) : null
+    } , [postComponentList])
+
+
+
+
    
-    // console.log("post list from ids: ", postComponentList)
+    // console.log(postComponentList)
     // console.log("following list: ", followingList)
 
     return (
@@ -72,9 +89,7 @@ const HomePage = ({navigation}) => {
                 }/>
             </View>
             <ScrollView>
-                {postComponentList.length>0 ? postComponentList.map((postID,index)=>{
-                    return <PostComponent postID={postID} key={index}/>
-                }) : null}
+                {components}
             </ScrollView>
             <View style={{position: "absolute", flex: 1, top: 150}}>
                 {isShown === true ? <CreatePost /> : null}

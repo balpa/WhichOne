@@ -26,6 +26,9 @@ function PostComponent({ postID, userID, name }){
     let height4postcontainer = ((window.width*3)/4)+50   // height of the post container calculated by the width of the screen plus the gap needed for likes comments etc. section
 
 
+    // console.log("postid",postID)
+    // console.log("userid", userID)
+
     // ANIMATION
     // let fadeAnim = new Animated.Value(0)
     //     Animated.timing(
