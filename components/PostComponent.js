@@ -10,19 +10,22 @@ import { auth } from '../firebase'
 import { db } from '../firebase'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import PostComponentDotSettings from './PostComponentDotSettings'
+import { useNavigation } from '@react-navigation/native';
 
 
 function PostComponent({ postID, userID, name }){
 
     const [isPressed, setIsPressed] = useState(false)
-    const [images, setImages] = useState([])
     const [imageCount, setImageCount] = useState(null)
+    const [images, setImages] = useState([])
     const [avatar,setAvatar] = useState(null)
     const [showDotSettings, setShowDotSettings] = useState(false)
 
     const userIdToPass = userID != undefined ? userID : auth.currentUser.uid 
     const nameToPass = name != undefined ? name : auth.currentUser.displayName
     const storage = getStorage();
+
+    const navigation = useNavigation()
 
     const window = useWindowDimensions()    // hook to get the window dimensions
 
@@ -37,9 +40,6 @@ function PostComponent({ postID, userID, name }){
         console.log(error)
     });
 
-
-    // console.log("postid",postID)
-    // console.log("userid", userID)
 
     
     // getting images from storage. need to add non existing image exceptions and improve this w/o for loop etc
@@ -65,18 +65,20 @@ function PostComponent({ postID, userID, name }){
                 marginTop: 5,
                 marginBottom: 5,
                 padding: 5,
-                borderStyle:'solid',
-                borderWidth: 0.25,
-                borderBottomColor: 'white',
-                borderTopColor: 'white',
+                // borderStyle:'solid',
+                // borderWidth: 0.25,
+                // borderBottomColor: 'white',
+                // borderTopColor: 'white',
             }}>
                 <View style={{width: '100%', justifyContent:'space-between',alignItems:'center', display:'flex', flexDirection:'row'}}>
                     <View style={{width: '50%', flexDirection:'row', marginBottom:10, alignItems:'center'}}>
-                        <Image source={{uri: avatar}} style={{width: 35, height: 35, borderRadius: 35/2, marginRight:10}}/>
-                        <Text style={{color:"white", textAlign:'center'}}>{nameToPass}</Text>
+                        <TouchableOpacity onPress={()=>{navigation.navigate("UserProfile",{ name: `${nameToPass}`, userID: `${userIdToPass}`})}}>
+                          <Image source={{uri: avatar}} style={{width: 35, height: 35, borderRadius: 35/2, marginRight:10}}/>
+                        </TouchableOpacity>
+                      <Text style={{color:"white", textAlign:'center'}}>{nameToPass}</Text>
                     </View>
                     <TouchableOpacity onPress={()=> {setShowDotSettings(true)}} style={{marginBottom:10}}>
-                        <Icon name='more-vert' color='white' />
+                        {userIdToPass == auth.currentUser.uid ?  <Icon name='more-vert' color='white' /> : null}
                     </TouchableOpacity>
                 </View>
                 <ScrollView contentContainerStyle={{alignItems:'center'}} horizontal={true} minimumZoomScale={1} maximumZoomScale={2} pagingEnabled={true} pinchGestureEnabled={true}>

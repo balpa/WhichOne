@@ -3,12 +3,15 @@ import { Text, View, StyleSheet, ScrollView, Image, KeyboardAvoidingView, Alert,
 import { BackgroundImage } from 'react-native-elements/dist/config'
 import { Button } from 'react-native-elements'
 import { useState } from 'react'
-import { auth } from '../firebase'
+import { auth } from '../../firebase'
+import { db } from '../../firebase'
 import { Input } from 'react-native-elements/dist/input/Input'
+import { doc, getDoc, updateDoc} from 'firebase/firestore'
 
-function ChangeName({ setIsShown }) {
+function EditBio({ setIsEditBioShown }) {
 
-    const [changedName, setChangedName] = useState("") 
+    const [bioText, setBioText] = useState("") 
+    const [currentBio, setCurrentBio] = useState('')
 
     const user = auth.currentUser
 
@@ -21,25 +24,27 @@ function ChangeName({ setIsShown }) {
             useNativeDriver: true,
           }).start()
     }, [])
-    
-    const submitFunction = () => {
 
-        if (changedName.length > 3 && changedName.length < 25){
-            user.updateProfile({
-                displayName: `${changedName}`,
-              }).then(() => {
-                Alert.alert("Name Changed!")
-              }).catch((error) => {
-                Alert.alert(error.message)
-              }); 
-            } 
-            else if (changedName.length > 25) {
-                Alert.alert("Name must be between 3 and 25 characters!")
-            }
-            else {
-                Alert.alert("Name must be at least 3 characters long!")
-            }
-            setIsShown(false)
+    useEffect(async()=>{
+        const bio = await getDoc(doc(db,'useruid',`${user.uid}`))
+        .then((document)=>{
+            setCurrentBio(document.data().bio)
+        })
+    },[])
+
+    console.log(currentBio)
+    
+    const submitFunction = async() => {     // submit bio to db and close modal
+
+        if (bioText.length < 150) {
+            await updateDoc(doc(db,'useruid',`${user.uid}`), {bio: bioText}).then(()=>{Alert.alert("Bio updated")})
+        }
+        else if (bioText.length > 150) 
+        {
+            Alert.alert("Bio must be less than 150 characters")
+        }
+        
+        closeModal()
     }
 
     function closeModal(){      // closing the modal with the animation reversed
@@ -48,15 +53,15 @@ function ChangeName({ setIsShown }) {
             duration: 1000,
             useNativeDriver: true,
           }).start() 
-        setTimeout(() => {setIsShown(false)}, 1000)
+        setTimeout(() => {setIsEditBioShown(false)}, 1000)
     }
 
 
 
     return (
         <Animated.View style={[styles.component, {transform: [{translateY: springAnim}]}]}>
-            <Text style={{marginBottom: 20, textAlign:'center', fontSize:20}}>Your name:{'\n'} {user.displayName}</Text>
-            <Input placeholder="Change your name" value={changedName} onChangeText={(text) => setChangedName(text)} />
+            <Text style={{marginBottom: 20, textAlign:'center', fontSize:20}}>Current bio:{'\n'} {currentBio}</Text>
+            <Input placeholder="Add bio" value={bioText} onChangeText={(text) => setBioText(text)} />
             <View style={{flexDirection:'row', bottom: 10, }}>
               <Button title='Submit' onPress={submitFunction}  buttonStyle={{width: 90,height: 50,backgroundColor: "crimson",borderRadius: 20,}} />
               <Button title='Cancel' onPress={()=> closeModal()} buttonStyle={{width: 90,height: 50,backgroundColor: "crimson",borderRadius: 20,}} />
@@ -66,7 +71,7 @@ function ChangeName({ setIsShown }) {
     )
 }
 
-export default ChangeName
+export default EditBio
 
 const styles = StyleSheet.create({
     component: {

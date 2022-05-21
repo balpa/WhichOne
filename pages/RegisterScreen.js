@@ -53,6 +53,7 @@ const RegisterScreen = ({ navigation }) => {
             followers: [],
             UID: `${loggedinUser.uid}`,
             postCount: 0,
+            bio: ""
             })
         } )
         .then(async () => {
@@ -66,6 +67,7 @@ const RegisterScreen = ({ navigation }) => {
             followers: [],
             UID: `${loggedinUser.uid}`,
             postCount: 0,
+            bio: ""
             })
         } )
         .then(async ()=>{           // set postID to posts/useruid/postID for fetching posts

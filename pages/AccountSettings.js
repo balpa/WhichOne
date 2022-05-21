@@ -9,7 +9,8 @@ import { StackActions } from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler'
 import { TouchableOpacity } from 'react-native'
 import { useState } from 'react'
-import ChangeName from '../components/ChangeName'
+import ChangeName from '../components/AccountSettingsComponents/ChangeName'
+import EditBio from '../components/AccountSettingsComponents/EditBio'
 import "firebase/firestore";
 import { db } from '../firebase'
 import { auth } from '../firebase'
@@ -17,7 +18,8 @@ import UploadAvatar from '../components/UploadPhoto'
 
 const AccountSettings = ({ navigation }) => {
 
-    const [isShown, setIsShown] = useState(false)
+    const [isChangeNameShown, setIsChangeNameShown] = useState(false)
+    const [isEditBioShown, setIsEditBioShown] = useState(false)
     const [changedName, setChangedName] = useState("") 
     const user = auth.currentUser;
   
@@ -41,9 +43,11 @@ const AccountSettings = ({ navigation }) => {
         <>
         <View style={styles.container}>
             <View style={styles.elevation}>
-                <Button onPress={()=> setIsShown(true)} titleStyle={{color: "white", fontSize: 20}} buttonStyle={styles.accountButton} title="Change Name"/>
+                <Button onPress={()=> setIsChangeNameShown(true)} titleStyle={{color: "white", fontSize: 20}} buttonStyle={styles.accountButton} title="Change Name"/>
+                <Button onPress={()=> setIsEditBioShown(true)} titleStyle={{color: "white", fontSize: 20}} buttonStyle={styles.accountButton} title="Edit Bio"/>
                 <Button onPress={()=> navigation.navigate("Upload Avatar")} titleStyle={{color: "white", fontSize: 20}} buttonStyle={styles.accountButton} title="Upload Avatar"/>
-                {isShown ? <ChangeName setIsShown={setIsShown} /> : null}
+                {isChangeNameShown ? <ChangeName setIsChangeNameShown={setIsChangeNameShown} /> : null}
+                {isEditBioShown ? <EditBio setIsEditBioShown={setIsEditBioShown} /> : null}
             </View>
         </View>
     
