@@ -8,6 +8,8 @@ import { doc, onSnapshot, getDoc } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { auth } from '../firebase'
 import { db } from '../firebase'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import PostComponentDotSettings from './PostComponentDotSettings'
 
 
 function PostComponent({ postID, userID, name }){
@@ -15,6 +17,8 @@ function PostComponent({ postID, userID, name }){
     const [isPressed, setIsPressed] = useState(false)
     const [images, setImages] = useState([])
     const [imageCount, setImageCount] = useState(null)
+    const [avatar,setAvatar] = useState(null)
+    const [showDotSettings, setShowDotSettings] = useState(false)
 
     const userIdToPass = userID != undefined ? userID : auth.currentUser.uid 
     const nameToPass = name != undefined ? name : auth.currentUser.displayName
@@ -25,24 +29,20 @@ function PostComponent({ postID, userID, name }){
     let height4posts = (window.width*3)/4    // height of the post calculated by the width of the screen
     let height4postcontainer = ((window.width*3)/4)+50   // height of the post container calculated by the width of the screen plus the gap needed for likes comments etc. section
 
+    getDownloadURL(ref(storage, `Users/${userIdToPass}/avatars/avatar_image`))
+      .then((url) => {
+        setAvatar(url) 
+    })
+      .catch((error) => {
+        console.log(error)
+    });
+
 
     // console.log("postid",postID)
     // console.log("userid", userID)
 
-    // ANIMATION
-    // let fadeAnim = new Animated.Value(0)
-    //     Animated.timing(
-    //       fadeAnim,
-    //       {
-    //         toValue: 1,
-    //         duration: 500,
-    //         useNativeDriver: true
-    //       }
-    //     ).start()
-
     
     // getting images from storage. need to add non existing image exceptions and improve this w/o for loop etc
-    // photos arrangement changes on every render. need to fix this
     useEffect(async() => {
 
         await getDoc(doc(db,"posts",`${userIdToPass}`,`${postID}`,'postData'))
@@ -62,14 +62,22 @@ function PostComponent({ postID, userID, name }){
                 alignItems: "center",
                 width: window.width,
                 height: height4postcontainer+50,
-                backgroundColor: "rgba(255,255,255,0.1)",
                 marginTop: 5,
                 marginBottom: 5,
-                padding: 5
+                padding: 5,
+                borderStyle:'solid',
+                borderWidth: 0.25,
+                borderBottomColor: 'white',
+                borderTopColor: 'white',
             }}>
-                <View style={{width: '100%', justifyContent:'space-between', display:'flex', flexDirection:'row'}}>
-                    <Text style={{margin: 5, color:"white"}}>{nameToPass}</Text>
-                    <Text style={{margin: 5, color:'white'}}>...</Text>
+                <View style={{width: '100%', justifyContent:'space-between',alignItems:'center', display:'flex', flexDirection:'row'}}>
+                    <View style={{width: '50%', flexDirection:'row', marginBottom:10, alignItems:'center'}}>
+                        <Image source={{uri: avatar}} style={{width: 35, height: 35, borderRadius: 35/2, marginRight:10}}/>
+                        <Text style={{color:"white", textAlign:'center'}}>{nameToPass}</Text>
+                    </View>
+                    <TouchableOpacity onPress={()=> {setShowDotSettings(true)}} style={{marginBottom:10}}>
+                        <Icon name='more-vert' color='white' />
+                    </TouchableOpacity>
                 </View>
                 <ScrollView contentContainerStyle={{alignItems:'center'}} horizontal={true} minimumZoomScale={1} maximumZoomScale={2} pagingEnabled={true} pinchGestureEnabled={true}>
                     {images.length > 0 && images.map((url,index) => {
@@ -87,6 +95,7 @@ function PostComponent({ postID, userID, name }){
                     <Text style={{margin: 5, color:"white"}}>Likes</Text>
                     <Text style={{margin: 5, color:"white"}}>Comments</Text>
                 </View>
+                {showDotSettings && <PostComponentDotSettings setShowDotSettings={setShowDotSettings} />}
             </View>
         )
 }

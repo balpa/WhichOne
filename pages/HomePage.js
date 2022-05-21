@@ -25,6 +25,7 @@ const HomePage = ({navigation}) => {
 
     const user = auth.currentUser
 
+    console.log("render and following list:  ", followingList)
 
     function reloadPage(){      //page reload dummy func
        setDummy(!dummy)
@@ -36,7 +37,7 @@ const HomePage = ({navigation}) => {
           })
     }, [])
 
-    // TODO: NEED TO FIX THIS. HOME PAGE POSTS NOT WORKING
+
     useEffect(() => {           // take following list and get all post id's from each user and store in array to fetch them all 
         if (followingList.length > 0) { 
             followingList.map(async(id,index) =>{
@@ -64,10 +65,13 @@ const HomePage = ({navigation}) => {
     
     } , [])
 
-    // TODO: need re-rendering to show posts and after re-rendering again, it shows the same posts again. FIX
+    // TODO: needs re-rendering to show posts and after re-rendering again, it shows the same posts again. FIX
 
     console.log(allPostsFromFollowing)
 
+
+    // TODO: use FlatList instead of ScrollView
+    
     return (
         <View style={styles.container}>
             <StatusBar style="light"></StatusBar>
