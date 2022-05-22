@@ -36,12 +36,12 @@ function EditBio({ setIsEditBioShown }) {
     
     const submitFunction = async() => {     // submit bio to db and close modal
 
-        if (bioText.length < 150) {
+        if (bioText.length < 100) {
             await updateDoc(doc(db,'useruid',`${user.uid}`), {bio: bioText}).then(()=>{Alert.alert("Bio updated")})
         }
-        else if (bioText.length > 150) 
+        else if (bioText.length > 100) 
         {
-            Alert.alert("Bio must be less than 150 characters")
+            Alert.alert("Bio must be less than 100 characters")
         }
         
         closeModal()

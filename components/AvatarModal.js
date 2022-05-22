@@ -7,11 +7,13 @@ export default function AvatarModal({ changeModalStatus }) {
 
     const navigation = useNavigation()
 
-    const springAnim = useRef(new Animated.Value(-200)).current
+    const springAnim = useRef(new Animated.Value(-400)).current
 
+
+    // TODO: STYLING NOT CENTERED AutOMATICALLY
     useEffect(() => {
         Animated.spring(springAnim, {
-            toValue: 0,
+            toValue: -45,
             duration: 1000,
             useNativeDriver: true,
           }).start()

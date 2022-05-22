@@ -23,9 +23,17 @@ const ProfilePage = ({ navigation }) => {
     const [image,setImage] = useState(null)
     const [postIDs, setPostIDs] = useState([])
     const [isShown, setIsShown] = useState(false)
+    const [currentBio, setCurrentBio] = useState("")
 
     const user = auth.currentUser;
     const storage = getStorage();
+
+    useEffect(async()=>{
+      const bio = await getDoc(doc(db,'useruid',`${user.uid}`))
+      .then((document)=>{
+          setCurrentBio(document.data().bio)
+      })
+  },[])
 
     getDownloadURL(ref(storage, `Users/${user.uid}/avatars/avatar_image`))
       .then((url) => {
@@ -94,40 +102,41 @@ const ProfilePage = ({ navigation }) => {
         <>
         <View style={styles.container}>
             <StatusBar style="light"></StatusBar>
-            <View style={styles.topSettings}>
-                <Button onPress={() => navigation.navigate("Settings")} titleStyle={{color: "white", fontSize: 15}} buttonStyle={styles.settingsButton} title={
-                  <Icon name="settings" color="white" />
-                }/>
+            <View style={styles.header}>
+              <Button onPress={() => navigation.navigate("Settings")} titleStyle={{color: "white", fontSize: 15}} buttonStyle={styles.settingsButton}
+                 title={<Icon name="settings" color="white" />}/>
+              <View>
+                <Text style={{fontWeight: "900", letterSpacing: 1, color: "white"}}>{user.displayName}</Text> 
+              </View>
+              <Button onPress={showLogoutConfirm} titleStyle={{color: "white", fontSize: 15}} buttonStyle={styles.logoutButton} 
+                 title={<Icon name="logout" color="white" />}/> 
             </View>
-            <View style={styles.topLogout}>
-                <Button onPress={showLogoutConfirm} titleStyle={{color: "white", fontSize: 15}} buttonStyle={styles.logoutButton} title={
-                  <Icon name="logout" color="white" />
-                }/>
-            </View>
-            <View style={{justifyContent: "center", alignItems: "center", marginTop: 10}}>
-              {isShown && <AvatarModal changeModalStatus={setIsShown} />}
-              <TouchableOpacity onPress={()=> setIsShown(!isShown)}>
-                <Image 
-                source={{uri: image}}
-                style={{ width: 60, height: 60, borderRadius: 60/2, marginBottom: 15}}
-                />
-              </TouchableOpacity>
-                <Text style={{fontWeight: "900", letterSpacing: 1, color: "white"}}>{user.displayName}</Text>
-                <View style={{flexDirection: "row"}}>
+            <View style={styles.profileTop}>
+              <View style={{flexDirection:'column'}}>
+                {isShown && <AvatarModal changeModalStatus={setIsShown} />}
+                <TouchableOpacity onPress={()=> setIsShown(!isShown)}>
+                  <Image 
+                  source={{uri: image}}
+                  style={{ width: 60, height: 60, borderRadius: 60/2, marginBottom: 15}}
+                  />
+                </TouchableOpacity>
+              </View>
+              <Text style={{color:'white',fontSize:15}}>{currentBio}</Text>
+                <View style={{flexDirection: "row", marginTop:10}}>
                   <TouchableOpacity onPress={() => navigation.navigate("Followers-Following")}> 
-                    <Text style={styles.followersInfo}>{followerCount}{"\n"}Followers</Text>
+                    <Text style={styles.followersInfo}>{followerCount}{" "}Followers</Text>
                   </TouchableOpacity>
                   <TouchableOpacity onPress={() => navigation.navigate("Followers-Following")}>
-                    <Text style={styles.followersInfo}>{followingCount}{"\n"}Following</Text>
+                    <Text style={styles.followersInfo}>{followingCount}{" "}Following</Text>
                   </TouchableOpacity>
-                  <Text style={styles.followersInfo}>{postIDs.length}{"\n"}Posts</Text>
+                  <Text style={styles.followersInfo}>{postIDs.length}{" "}Posts</Text>
                 </View>
             </View>
             
         </View>
         <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center', backgroundColor: "rgba(15,15,15,1)"  }}>
           {postIDs.length > 0 ? postIDs.map((postID, index)=>{
-            return <PostComponent key={index} postID={postID} />}) 
+            return <PostComponent key={`${index}`} postID={postID} />}) 
           :
           <Text style={{color:'white',fontSize:20, marginTop:25}}>No Posts</Text>
           }
@@ -142,20 +151,18 @@ export default ProfilePage
 const styles = StyleSheet.create({
     logoutButton: {
         marginTop: 5,
-        width: 45,
         borderWidth: 0,
         backgroundColor: "transparent",
     },
     settingsButton: {
       marginTop: 5,
-      width: 120,
+      width: 45,
       borderWidth: 0,
       backgroundColor: "transparent",
   },
     topLogout: {
         position: "absolute",
         alignItems: "flex-end",
-        width: 100,
         right: 0,
         zIndex: 10,
 
@@ -169,14 +176,28 @@ const styles = StyleSheet.create({
 
   },
     container: {
-        height: 150,
+        minHeight: 180,
+        height: 200,
         backgroundColor: "rgba(15,15,15,1)",
         overflow: "hidden",
     },
     followersInfo: {
       color: "white",
       margin: 5, 
-      textAlign:"center"
+      textAlign:"center",
+    },
+    profileTop: {
+      justifyContent: "flex-start", 
+      alignItems: "center", 
+      flexDirection: "column",
+      height: 160,
+      width:'100%',
+    },
+    header: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      width: "100%",
+      alignItems:'center'
     }
 
 

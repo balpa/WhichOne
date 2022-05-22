@@ -203,8 +203,8 @@ function UploadPhoto({ navigation }) {
               {image.map((img, index) => {
                 return (
                 <>
-                  <View style={styles.imageContainer}>
-                    <Image key={index} source={{uri: img}} style={{width: window.width-2, height: height4posts}} />
+                  <View key={`${index}`} style={styles.imageContainer}>
+                    <Image key={`${index}`} source={{uri: img}} style={{width: window.width-2, height: height4posts}} />
                     <Text style={{color:"white"}}>{`${index+1}/${image.length}`}</Text>
                   </View>
                 </>
