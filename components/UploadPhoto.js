@@ -21,7 +21,6 @@ function UploadPhoto({ navigation }) {
     const [image, setImage] = useState([])
     const [postUniqueID, setPostUniqueID] = useState(new Date().getTime()) // unique id for each post. created using date ms
     const [isLoaded, setIsLoaded] = useState(false)
-    const [showFrame, setShowFrame] = useState(true)
 
     const storage = getStorage()
     // const postRef = ref(storage, `Users/${user.uid}/posts/${postUniqueID}/`) // storage'da postun yerini belirleme
@@ -31,52 +30,35 @@ function UploadPhoto({ navigation }) {
     let height4posts = (window.width*3)/4    // height of the post calculated by the width of the screen
     let height4postcontainer = ((window.width*3)/4)+50   // height of the post container calculated by the width of the screen plus the gap needed for likes comments etc. section
 
-    const heightAnim = new Animated.Value(5)
-    const YAnimTop = new Animated.Value(-500)
-    const YAnimBottom = new Animated.Value(500)
 
-    useEffect(() => {
-      Animated.timing(YAnimTop, {
-        toValue: 0,
-        duration: 500,
-        useNativeDriver: true,
-      }).start()
-    }, [])
+    // TODO: Animation removes buttons after picking an image. need to fix animations
 
-    useEffect(() => {
-      Animated.timing(YAnimBottom, {
-        toValue: 0,
-        duration: 500,
-        useNativeDriver: true,
-      }).start() 
-    } , [])
+    // const YAnimTop = new Animated.Value(-500)
+    // const YAnimBottom = new Animated.Value(500)
 
-    // TODO: pb is in the next comment line
-    useEffect(() => {       // creates bouncing animation for the empty frame but needs a fix for the upper border not showing during animation
-        Animated.spring(heightAnim, {
-            toValue: 1,
-            duration: 2000,
-            easing: Easing.elastic(1),
-            useNativeDriver: true,
-        }).start()
-    }, [])
+    // useEffect(() => {
+    //   Animated.timing(YAnimTop, {
+    //     toValue: 0,
+    //     duration: 500,
+    //     useNativeDriver: true,
+    //   }).start()
+    // }, [])
 
+    // useEffect(() => {
+    //   Animated.timing(YAnimBottom, {
+    //     toValue: 0,
+    //     duration: 500,
+    //     useNativeDriver: true,
+    //   }).start() 
+    // } , [])
 
-    // for selecting multiple images. library not so good. need to find a better way
+    // for selecting multiple images. current library not so good. need to find a better way
     const ImageBrowserComponent = () => {
       return (
         <ImageBrowser onChange={(num, onSubmit)  => {}} callback={(callback) => {}}/>
       )
     }
 
-    useEffect(() => {
-      if (image.length > 0){
-        setShowFrame(false)
-      }
-      
-    }, [image])
-
-    console.log(showFrame)
 
     // camera permissions
     useEffect(() => {
@@ -195,7 +177,7 @@ function UploadPhoto({ navigation }) {
     return (
         <View style={styles.component}>
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'space-evenly'}}>
-            <Animated.View style={[styles.addButtonIconWrapper, {transform: [{translateY: YAnimTop}]}]}>
+            <Animated.View style={styles.addButtonIconWrapper}>
                 <Icon name="collections" color="white" />
                 <Button title="Add Photos" onPress={pickImage} titleStyle={{color: "white", fontSize: 25}} buttonStyle={styles.createPostButtons} />
             </Animated.View>
@@ -203,18 +185,17 @@ function UploadPhoto({ navigation }) {
               {image.map((img, index) => {
                 return (
                 <>
-                  <View key={`${index}`} style={styles.imageContainer}>
-                    <Image key={`${index}`} source={{uri: img}} style={{width: window.width-2, height: height4posts}} />
+                  <View style={styles.imageContainer}>
+                    <Image source={{uri: img}} style={{width: window.width-2, height: height4posts}} />
                     <Text style={{color:"white"}}>{`${index+1}/${image.length}`}</Text>
                   </View>
                 </>
                 )
                 })
                 }
-              {showFrame == true ?  <Animated.View style={[styles.imageContainerEmpty, {width: window.width-2, height:height4postcontainer ,transform: [{scaleY: heightAnim}]}]}></Animated.View> :  null}
             </ScrollView> 
 
-            <Animated.View style={[styles.uploadIconWrapper, {transform: [{translateY: YAnimBottom}]}]}>
+            <Animated.View style={styles.uploadIconWrapper}>
                 <Icon name="send" color="white" />
                 <Button title="Upload" onPress={()=> upload()} titleStyle={{color: "white", fontSize: 25}} buttonStyle={styles.createPostButtons} />
                 
@@ -261,7 +242,8 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         borderBottomEndRadius: 25,
-        borderBottomStartRadius: 25
+        borderBottomStartRadius: 25,
+        zIndex: 20
 
     },
 
@@ -277,13 +259,6 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         alignItems: "center",
       },
-      imageContainerEmpty: {
-        flexDirection: "column",
-        alignItems: "center",
-        borderStyle:'solid', 
-        borderWidth:1, 
-        borderColor:'white',
-        zIndex: 10
-      }
+
 
 })

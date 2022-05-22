@@ -76,7 +76,7 @@ const ProfilePage = ({ navigation }) => {
       console.log(auth)
     }
 
-    useEffect(() => {
+    useEffect(() => {   // if logout, go back to login page
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
         if (!authUser) {
             navigation.reset({
@@ -95,8 +95,17 @@ const ProfilePage = ({ navigation }) => {
       }
     }, [])
 
+    // useEffect(() => {    // debugging. clg milliseconds to date and reversing the postIDs array
+    //   postIDs.map((x)=>{
+    //     console.log(new Date(x))
+    //   })
+    //   setPostIDs(postIDs.reverse())
+    // }, [postIDs])
 
-    
+
+
+    //TODO: sorting posts by date
+
 
     return (
         <>
@@ -136,6 +145,7 @@ const ProfilePage = ({ navigation }) => {
         </View>
         <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center', backgroundColor: "rgba(15,15,15,1)"  }}>
           {postIDs.length > 0 ? postIDs.map((postID, index)=>{
+            console.log(`postid: ${postID}, index: ${index}`)
             return <PostComponent key={`${index}`} postID={postID} />}) 
           :
           <Text style={{color:'white',fontSize:20, marginTop:25}}>No Posts</Text>
@@ -177,7 +187,7 @@ const styles = StyleSheet.create({
   },
     container: {
         minHeight: 180,
-        height: 200,
+        height: 190,
         backgroundColor: "rgba(15,15,15,1)",
         overflow: "hidden",
     },

@@ -36,6 +36,7 @@ const globalScreenOptions = {
   headerTintColor: "white",
   gestureEnabled: true,
   headerShown: true,
+  cardStyle: { backgroundColor: 'rgba(0,0,0,1)' },    // to make the background black (transitions, reload etc)
 
 }
 
