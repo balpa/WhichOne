@@ -28,14 +28,13 @@ const ProfilePage = ({ navigation }) => {
     const user = auth.currentUser;
     const storage = getStorage();
 
-    useEffect(async()=>{
-      const bio = await getDoc(doc(db,'useruid',`${user.uid}`))
-      .then((document)=>{
-          setCurrentBio(document.data().bio)
+    useEffect(()=>{   // get bio from firebase
+      const bio =  onSnapshot(doc(db,'useruid',`${user.uid}`), (doc) => {
+        setCurrentBio(doc.data().bio)
       })
   },[])
 
-    getDownloadURL(ref(storage, `Users/${user.uid}/avatars/avatar_image`))
+    getDownloadURL(ref(storage, `Users/${user.uid}/avatars/avatar_image`))  // get avatar
       .then((url) => {
         setImage(url) 
     })
@@ -105,6 +104,8 @@ const ProfilePage = ({ navigation }) => {
 
 
     //TODO: sorting posts by date
+
+    //TODO: change some getDoc's to onSnapshot for efficiency and realtime updates
 
 
     return (

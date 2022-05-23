@@ -12,6 +12,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import PostComponentDotSettings from './PostComponentDotSettings'
 import { useNavigation } from '@react-navigation/native';
 import { async } from '@firebase/util'
+import { TabRouter } from 'react-navigation'
+import CommentsModal from './PostComponents/CommentsModal'
 
 
 function PostComponent({ postID, userID, name }){
@@ -22,6 +24,8 @@ function PostComponent({ postID, userID, name }){
     const [avatar,setAvatar] = useState(null)
     const [showDotSettings, setShowDotSettings] = useState(false)
     const [postDate, setPostDate] = useState(null)
+    const [showComments, setShowComments] = useState(false)
+
 
     const userIdToPass = userID != undefined ? userID : auth.currentUser.uid 
     const nameToPass = name != undefined ? name : auth.currentUser.displayName
@@ -43,8 +47,6 @@ function PostComponent({ postID, userID, name }){
             return `${day} ${months[month]}, ${year}`
         }
     }
-
-    dateFormatter(postDate)
 
     getDownloadURL(ref(storage, `Users/${userIdToPass}/avatars/avatar_image`))
       .then((url) => {
@@ -109,21 +111,25 @@ function PostComponent({ postID, userID, name }){
                         <>
                         <View style={{width: window.width-10, height: height4posts, justifyContent:'center', display:'flex', flexDirection:'column'}}>
                             <Image key={index} source={{uri : url}} style={{width: "100%", height: height4posts}}></Image>
-                            <Button buttonStyle={{width:50, height: 20}} titleStyle={{color: "white", fontSize: 15}} title='like(icon/gesture-tap:todo)'/>
+                            <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between'}}>
+                                <Button buttonStyle={{width:50, height: 20}} titleStyle={{color: "white", fontSize: 15}} title='like(icon/gesture-tap:todo)'/>
+                                <Text style={{color:'white'}}>Like count</Text>
+                            </View> 
                         </View>
                         </>
                         )
                     })}
                 </ScrollView>
-                <View style={{width:'100%',flexDirection: "row", alignItems:'center', justifyContent:'space-between'}}>
+                <View style={{width:'100%',justifyContent:'space-between', alignItems:'center',flexDirection:'row'}}>
+                    <TouchableOpacity onPress={()=>{setShowComments(true)}}>
+                        <Text style={{color:'white'}}>Comment section</Text>
+                    </TouchableOpacity>
                     <Text style={{color:'white'}}>{dateFormatter(postDate)}</Text>
-                    <Text style={{margin: 5, color:"white"}}>Like count</Text>
-                </View>
-                <View style={{justifyContent:'flex-start', width:'100%'}}>
-                    <Text style={{color:'white'}}>Comment section</Text>
                 </View>
                 {showDotSettings && <PostComponentDotSettings setShowDotSettings={setShowDotSettings} />}
+                {showComments && <CommentsModal setShowComments={setShowComments}/>}
             </View>
+            
         )
 }
 
