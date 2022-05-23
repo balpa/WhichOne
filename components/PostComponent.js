@@ -122,12 +122,12 @@ function PostComponent({ postID, userID, name }){
                 </ScrollView>
                 <View style={{width:'100%',justifyContent:'space-between', alignItems:'center',flexDirection:'row'}}>
                     <TouchableOpacity onPress={()=>{setShowComments(true)}}>
-                        <Text style={{color:'white'}}>Comment section</Text>
+                        <Text style={{color:'white'}}>Comments</Text>
                     </TouchableOpacity>
                     <Text style={{color:'white'}}>{dateFormatter(postDate)}</Text>
                 </View>
                 {showDotSettings && <PostComponentDotSettings setShowDotSettings={setShowDotSettings} />}
-                {showComments && <CommentsModal setShowComments={setShowComments}/>}
+                {showComments && <CommentsModal postID={postID} setShowComments={setShowComments}/>}
             </View>
             
         )
