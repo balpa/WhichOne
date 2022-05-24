@@ -52,9 +52,10 @@ const CommentsModal = ({ postID, setShowComments }) => {
         },300)
     }
 
+    // TODO: need to solve structure
     async function sendComment(){      // send comment to db. each user can send only one comment per post atm. 
         await setDoc(doc(db,"postInfo", `${postID}`, "comments", "commentsUserID"), {
-            comments: arrayUnion({[user.uid]: commentText})
+            
         })
 
     }
