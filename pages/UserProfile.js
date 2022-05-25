@@ -58,16 +58,6 @@ const UserProfile = ({ route, navigation }) => {
         <>
         <View style={styles.container}>
             <StatusBar style="light"></StatusBar>
-            <View style={styles.topSettings}>
-                <Button onPress={() => navigation.navigate("Settings")} titleStyle={{color: "white", fontSize: 15}} buttonStyle={styles.settingsButton} title={
-                  <Icon name="settings" color="white" />
-                }/>
-            </View>
-            <View style={styles.topLogout}>
-                <Button  titleStyle={{color: "white", fontSize: 15}} buttonStyle={styles.logoutButton} title={
-                  <Icon name="logout" color="white" />
-                }/>
-            </View>
             <View style={{justifyContent: "center", alignItems: "center", marginTop: 10}}>
                 <Image 
                 source={{uri: image}}

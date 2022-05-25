@@ -145,12 +145,15 @@ const ProfilePage = ({ navigation }) => {
             
         </View>
         <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center', backgroundColor: "rgba(15,15,15,1)"  }}>
-          {postIDs.length > 0 ? postIDs.map((postID, index)=>{
+          {postIDs.length > 0 ? postIDs.reverse().map((postID, index)=>{
             console.log(`postid: ${postID}, index: ${index}`)
             return <PostComponent key={`${index}`} postID={postID} />}) 
           :
           <Text style={{color:'white',fontSize:20, marginTop:25}}>No Posts</Text>
           }
+          <View style={{width:'100%',height:60, justifyContent:'center', alignItems:'center'}}>
+            <Image source={require("../assets/w1logowhite.png")} style={styles.logoBottom}/>
+          </View>
         </ScrollView>
         </>
 
@@ -209,7 +212,12 @@ const styles = StyleSheet.create({
       justifyContent: "space-between",
       width: "100%",
       alignItems:'center'
-    }
+    },
+    logoBottom:{
+      width: 50,
+      height: 50,
+      zIndex: 10
+  },
 
 
 })

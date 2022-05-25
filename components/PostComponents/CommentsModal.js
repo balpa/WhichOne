@@ -5,7 +5,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import SmallComment from './SmallComment'
 import { auth } from '../../firebase'
 import { db } from '../../firebase' 
-import { setDoc, doc, getDoc, arrayUnion, onSnapshot } from 'firebase/firestore'
+import { setDoc, doc, getDoc, getDocs, arrayUnion, onSnapshot, query } from 'firebase/firestore'
 
 const CommentsModal = ({ postID, setShowComments }) => {
 
@@ -24,13 +24,16 @@ const CommentsModal = ({ postID, setShowComments }) => {
         }).start()
     }, [])
 
+    // TODO: sometimes it doesn't get all data from the db. CHECK
+    // COMMENTS SHOWING ON WRONG POSTS
     useEffect(()=>{         // get comments from DB
-        const os = onSnapshot(doc(db,"postInfo", `${postID}`, "comments","commentsUserID"), (document)=>{
+        const os = onSnapshot(doc(db,"postInfo", `${postID}`, "comments","commentsUserID"),(document)=>{
             setCommentsOnDB(document.data())
         })
+
     },[])
 
-    console.log("comments: ",commentsOnDB)
+    // console.log("comments: ",commentsOnDB)
 
 
     // TODO: use interpolate function for animation value based on percentage
@@ -54,18 +57,21 @@ const CommentsModal = ({ postID, setShowComments }) => {
     // styling
 
     async function sendComment(){      // send comment to db. each user can send only one comment per post atm. 
+        let date = new Date()
         await setDoc(doc(db,"postInfo", `${postID}`, "comments", "commentsUserID"), {
-            [user.uid]: commentText
-        }, { merge: true })
-
+            [user.displayName]: commentText
+        },{ merge: true })
     }
+
+    console.log(commentsOnDB)
+
 
 
   return (
     <Animated.View style={[styles.container, {height: yAnim}]}>
       <View style={styles.commentsSection}>
-        {commentsOnDB && Object.keys(commentsOnDB).map((key, index)=>{
-            return <SmallComment key={index} comment={commentsOnDB[key]} />
+        {commentsOnDB && Object.keys(commentsOnDB).map((key, index) => {
+            return <SmallComment comment={commentsOnDB[key]} name={key} key={index} />
         })}
       </View>
       <View style={styles.inputSection}>
