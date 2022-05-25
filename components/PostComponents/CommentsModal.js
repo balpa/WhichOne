@@ -33,7 +33,7 @@ const CommentsModal = ({ postID, setShowComments }) => {
 
     },[])
 
-    // console.log("comments: ",commentsOnDB)
+    console.log("comments: ",commentsOnDB)
 
 
     // TODO: use interpolate function for animation value based on percentage
