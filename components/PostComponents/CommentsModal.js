@@ -33,7 +33,7 @@ const CommentsModal = ({ postID, setShowComments }) => {
 
     },[])
 
-    console.log("comments: ",commentsOnDB)
+    // console.log("comments: ",commentsOnDB)
 
 
     // TODO: use interpolate function for animation value based on percentage
@@ -42,7 +42,7 @@ const CommentsModal = ({ postID, setShowComments }) => {
     function closeComments(){  // animation for closing the modal and setting showComments to false 
         Animated.timing(yAnim, {              
             toValue: 0,
-            duration: 300,
+            duration: 350,
             useNativeDriver: false
         }).start()
         setTimeout(()=>{ setShowComments(false) },300)

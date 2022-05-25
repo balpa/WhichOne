@@ -188,6 +188,9 @@ function UploadPhoto({ navigation }) {
                   <View style={styles.imageContainer}>
                     <Image source={{uri: img}} style={{width: window.width-2, height: height4posts}} />
                     <Text style={{color:"white"}}>{`${index+1}/${image.length}`}</Text>
+                    <Button onPress={()=> {
+                      console.log("need to add this")
+                      }} title='remove'/>
                   </View>
                 </>
                 )

@@ -1,14 +1,26 @@
-import { View, Text, StyleSheet } from 'react-native'
-import React from 'react'
+import { View, Text, StyleSheet, Animated } from 'react-native'
+import React, { useRef, useState, useEffect } from 'react'
 
 const SmallComment = ({ comment, name }) => {
 
+  const xAnim = useRef(new Animated.Value(600)).current
+
+  useEffect(() => {   // spring animation for comments. 
+    Animated.spring(xAnim, {
+      toValue: 0,
+      delay: 200,
+      tension: 5,
+      friction: 5,
+      useNativeDriver: false
+    }).start()
+  },[])
+
   //TODO: might add profile visit, avatar needed etc.
   return (
-    <View style={styles.container}>
+    <Animated.View style={[styles.container, {transform: [{translateX: xAnim}]}]}>
       <Text style={{fontWeight: "bold"}}>{name}{'  '}</Text>
       <Text>{comment}</Text>
-    </View>
+    </Animated.View>
   )
 }
 
