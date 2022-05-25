@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, Animated } from 'react-native'
 import React, {useRef, useEffect,useState} from 'react'
-import { BottomSheet, Input, Icon } from 'react-native-elements'
+import { Input, Icon } from 'react-native-elements'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import SmallComment from './SmallComment'
 import { auth } from '../../firebase'
@@ -25,7 +25,7 @@ const CommentsModal = ({ postID, setShowComments }) => {
     }, [])
 
     // TODO: sometimes it doesn't get all data from the db. CHECK
-    // COMMENTS SHOWING ON WRONG POSTS
+    // COMMENTS SHOWING ON WRONG POSTS (weird cuz fetching by postid)
     useEffect(()=>{         // get comments from DB
         const os = onSnapshot(doc(db,"postInfo", `${postID}`, "comments","commentsUserID"),(document)=>{
             setCommentsOnDB(document.data())
@@ -40,16 +40,12 @@ const CommentsModal = ({ postID, setShowComments }) => {
 
 
     function closeComments(){  // animation for closing the modal and setting showComments to false 
-
         Animated.timing(yAnim, {              
             toValue: 0,
             duration: 300,
             useNativeDriver: false
         }).start()
-
-        setTimeout(()=>{
-            setShowComments(false)
-        },300)
+        setTimeout(()=>{ setShowComments(false) },300)
     }
 
     // TODO: can add comments but need to structure like an object to save date etc.
@@ -57,15 +53,11 @@ const CommentsModal = ({ postID, setShowComments }) => {
     // styling
 
     async function sendComment(){      // send comment to db. each user can send only one comment per post atm. 
-        let date = new Date()
+        let date = new Date()          // will add date
         await setDoc(doc(db,"postInfo", `${postID}`, "comments", "commentsUserID"), {
             [user.displayName]: commentText
         },{ merge: true })
     }
-
-    console.log(commentsOnDB)
-
-
 
   return (
     <Animated.View style={[styles.container, {height: yAnim}]}>

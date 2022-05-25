@@ -2,8 +2,6 @@ import React, { Component } from 'react'
 import { useState , useEffect} from 'react'
 import { Text, View, StyleSheet, ScrollView, Button, Image, Animated, useWindowDimensions } from 'react-native'
 import { Icon } from 'react-native-elements'
-import { BackgroundImage } from 'react-native-elements/dist/config'
-import { useSharedValue } from 'react-native-reanimated'
 import { doc, onSnapshot, getDoc } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { auth } from '../firebase'
@@ -11,8 +9,6 @@ import { db } from '../firebase'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import PostComponentDotSettings from './PostComponentDotSettings'
 import { useNavigation } from '@react-navigation/native';
-import { async } from '@firebase/util'
-import { TabRouter } from 'react-navigation'
 import CommentsModal from './PostComponents/CommentsModal'
 
 
@@ -49,12 +45,8 @@ function PostComponent({ postID, userID, name }){
     }
 
     getDownloadURL(ref(storage, `Users/${userIdToPass}/avatars/avatar_image`))
-      .then((url) => {
-        setAvatar(url) 
-    })
-      .catch((error) => {
-        console.log(error)
-    });
+      .then((url) => { setAvatar(url) })
+      .catch((error) => console.log(error))
 
     useEffect(async()=>{
         const date = getDoc(doc(db,"postInfo", `${postID}`))
@@ -65,7 +57,6 @@ function PostComponent({ postID, userID, name }){
     
     // getting images from storage. need to add non existing image exceptions and improve this w/o for loop etc
     useEffect(async() => {
-
         await getDoc(doc(db,"posts",`${userIdToPass}`,`${postID}`,'postData'))
             .then(doc => {
                 if (doc.exists) setImages(doc.data().imageURLs)
