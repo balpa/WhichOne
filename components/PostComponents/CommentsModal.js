@@ -5,7 +5,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import SmallComment from './SmallComment'
 import { auth } from '../../firebase'
 import { db } from '../../firebase' 
-import { setDoc, doc, getDoc, arrayUnion } from 'firebase/firestore'
+import { setDoc, doc, getDoc, arrayUnion, onSnapshot } from 'firebase/firestore'
 
 const CommentsModal = ({ postID, setShowComments }) => {
 
@@ -24,16 +24,13 @@ const CommentsModal = ({ postID, setShowComments }) => {
         }).start()
     }, [])
 
-    useEffect(async()=>{
-        await getDoc(doc(db,"postInfo",`${postID}`, "comments", "commentsUserID")).then(async(doc)=>{
-            if (doc.exists){
-
-            }
+    useEffect(()=>{         // get comments from DB
+        const os = onSnapshot(doc(db,"postInfo", `${postID}`, "comments","commentsUserID"), (document)=>{
+            setCommentsOnDB(document.data())
         })
-
     },[])
 
-    console.log(commentsOnDB)
+    console.log("comments: ",commentsOnDB)
 
 
     // TODO: use interpolate function for animation value based on percentage
@@ -52,11 +49,14 @@ const CommentsModal = ({ postID, setShowComments }) => {
         },300)
     }
 
-    // TODO: need to solve structure
+    // TODO: can add comments but need to structure like an object to save date etc.
+    // and need to display comments with username and avatar.
+    // styling
+
     async function sendComment(){      // send comment to db. each user can send only one comment per post atm. 
         await setDoc(doc(db,"postInfo", `${postID}`, "comments", "commentsUserID"), {
-            
-        })
+            [user.uid]: commentText
+        }, { merge: true })
 
     }
 
@@ -64,7 +64,9 @@ const CommentsModal = ({ postID, setShowComments }) => {
   return (
     <Animated.View style={[styles.container, {height: yAnim}]}>
       <View style={styles.commentsSection}>
-        
+        {commentsOnDB && Object.keys(commentsOnDB).map((key, index)=>{
+            return <SmallComment key={index} comment={commentsOnDB[key]} />
+        })}
       </View>
       <View style={styles.inputSection}>
         <Input

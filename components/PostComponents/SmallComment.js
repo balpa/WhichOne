@@ -1,10 +1,10 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-const SmallComment = () => {
+const SmallComment = ({ comment }) => {
   return (
     <View>
-      <Text>SmallComment</Text>
+      <Text>{comment}</Text>
     </View>
   )
 }
