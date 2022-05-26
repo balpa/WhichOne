@@ -23,5 +23,5 @@ This project was built using these technologies.
 Give a ⭐ if you like this app!
 
 <div>
-  <a href="https://api.codetabs.com/v1/loc?github=balpa/whichone&ignored=.expo-shared,assets,app.json,babel.config.js,package.json,package-lock.json,yarn.lock">
+  <a href="https://api.codetabs.com/v1/loc?github=balpa/whichone&ignored=.expo-shared,assets,app.json,babel.config.js,package.json,package-lock.json,yarn.lock">LOC</a>
 </div>
