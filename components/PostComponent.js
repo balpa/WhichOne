@@ -104,7 +104,7 @@ function PostComponent({ postID, userID, name }){
                         )
                     })}
                 </ScrollView>
-                <View style={{width:'100%',justifyContent:'space-between', alignItems:'center',flexDirection:'row'}}>
+                <View style={{width:'100%',justifyContent:'space-between', alignItems:'center',flexDirection:'row', marginLeft: 10, marginRight: 10}}>
                     <TouchableOpacity onPress={()=>{setShowComments(true)}}>
                         <Text style={{color:'white'}}>Comments</Text>
                     </TouchableOpacity>

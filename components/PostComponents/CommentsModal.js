@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, Animated } from 'react-native'
 import React, {useRef, useEffect,useState} from 'react'
 import { Input, Icon } from 'react-native-elements'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import SmallComment from './SmallComment'
 import { auth } from '../../firebase'
 import { db } from '../../firebase' 
@@ -61,11 +61,11 @@ const CommentsModal = ({ postID, setShowComments }) => {
 
   return (
     <Animated.View style={[styles.container, {height: yAnim}]}>
-      <View style={styles.commentsSection}>
+      <ScrollView style={styles.commentsSection}>
         {commentsOnDB && Object.keys(commentsOnDB).map((key, index) => {
             return <SmallComment comment={commentsOnDB[key]} name={key} key={index} />
         })}
-      </View>
+      </ScrollView>
       <View style={styles.inputSection}>
         <Input
           autoCapitalize='none'

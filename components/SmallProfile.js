@@ -101,7 +101,7 @@ export default function SmallProfile({ userID }) {
                         <Text style={{fontSize: 15, color:"white"}}>{userIDData.name}</Text>
                     </TouchableOpacity>
             </View>
-            <View >
+            <View>
                 <View style={{flexDirection: "row"}}>
                     {!followSituation && <Button onPress={follow} buttonStyle={styles.followButton} titleStyle={{fontSize: 10, color:'crimson'}} title={"Follow"}/>}
                     {followSituation && <Button onPress={unfollow} buttonStyle={styles.unfollowButton} titleStyle={{fontSize: 10}} title={"Following"}/>}
