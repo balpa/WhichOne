@@ -25,7 +25,7 @@ const CommentsModal = ({ postID, setShowComments }) => {
     }, [])
 
     // TODO: sometimes it doesn't get all data from the db. CHECK
-    // COMMENTS SHOWING ON WRONG POSTS (weird cuz fetching by postid)
+    // COMMENTS SHOWING ON WRONG POSTS (weird cuz fetching by postid, might be a rendering issue or sorting the postID array)
     useEffect(()=>{         // get comments from DB
         const os = onSnapshot(doc(db,"postInfo", `${postID}`, "comments","commentsUserID"),(document)=>{
             setCommentsOnDB(document.data())

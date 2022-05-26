@@ -10,6 +10,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import PostComponentDotSettings from './PostComponentDotSettings'
 import { useNavigation } from '@react-navigation/native';
 import CommentsModal from './PostComponents/CommentsModal'
+import PostImage from './PostComponents/PostImage';
 
 
 function PostComponent({ postID, userID, name }){
@@ -99,15 +100,7 @@ function PostComponent({ postID, userID, name }){
                 <ScrollView contentContainerStyle={{alignItems:'center'}} horizontal={true} minimumZoomScale={1} maximumZoomScale={2} pagingEnabled={true} pinchGestureEnabled={true}>
                     {images.length > 0 && images.map((url,index) => {
                         return (
-                        <>
-                        <View style={{width: window.width-10, height: height4posts, justifyContent:'center', display:'flex', flexDirection:'column'}}>
-                            <Image key={index} source={{uri : url}} style={{width: "100%", height: height4posts}}></Image>
-                            <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between'}}>
-                                <Button buttonStyle={{width:50, height: 20}} titleStyle={{color: "white", fontSize: 15}} title='like(icon/gesture-tap:todo)'/>
-                                <Text style={{color:'white'}}>Like count</Text>
-                            </View> 
-                        </View>
-                        </>
+                            <PostImage key={index} photoNumber={index+1} url={url} postID={postID} />
                         )
                     })}
                 </ScrollView>
