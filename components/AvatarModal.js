@@ -11,9 +11,10 @@ export default function AvatarModal({ changeModalStatus }) {
 
 
     // TODO: STYLING NOT CENTERED AutOMATICALLY
+    // NEED BETTER STYLING 
     useEffect(() => {
         Animated.spring(springAnim, {
-            toValue: -45,
+            toValue: -175,
             duration: 1000,
             useNativeDriver: true,
           }).start()
@@ -32,8 +33,9 @@ export default function AvatarModal({ changeModalStatus }) {
 const styles = StyleSheet.create({
     avatarModalContainer: {
         bottom: 0,
-        height: 40,
-        width: 150,
+        height: 100,
+        width: 70,
+        top:10,
         backgroundColor: "rgba(240,240,240,1)",
         zIndex: 10,
         position: "absolute",

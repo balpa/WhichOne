@@ -2,7 +2,7 @@ import React, { Children, Component } from 'react'
 import { useState , useEffect} from 'react'
 import { Text, View, StyleSheet, ScrollView, Button, Image, Animated, useWindowDimensions } from 'react-native'
 import { Icon } from 'react-native-elements'
-import { doc, onSnapshot, getDoc, setDoc, arrayUnion, updateDoc } from "firebase/firestore";
+import { doc, onSnapshot, getDoc, setDoc, arrayUnion, arrayRemove, updateDoc } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { auth } from '../../firebase'
 import { db } from '../../firebase'
@@ -27,17 +27,31 @@ function PostImage({url, photoNumber, postID}){
     let height4posts = (window.width*3)/4    // height of the post calculated by the width of the screen
     let height4postcontainer = ((window.width*3)/4)+70   // height of the post container calculated by the width of the screen plus the gap needed for likes comments etc. section
 
+    function dislike(){
+      updateDoc(doc(db,"postInfo", `${postID}`,"likes", `photo${photoNumber}`),{
+        likes: arrayRemove(user.uid)
+      })
+
+    }
+
     async function likeFunc(){    // adds likes to db by photo number
       const getLikes = await getDoc(doc(db,"postInfo", `${postID}`,"likes", `photo${photoNumber}`))
-      if (getLikes.data() != undefined){    // if likes exist, update doc
-        updateDoc(doc(db,"postInfo", `${postID}`,"likes", `photo${photoNumber}`), {
+
+      if (getLikes.data().likes.includes(user.uid)){    // if user already liked the photo, remove.
+        dislike()
+      }
+      else{
+
+        if (getLikes.data() != undefined){    // if likes exist, update doc
+          updateDoc(doc(db,"postInfo", `${postID}`,"likes", `photo${photoNumber}`), {
+            likes: arrayUnion(user.uid)
+          })
+        } else{                              // if likes don't exist, create doc
+        await setDoc(doc(db,"postInfo", `${postID}`, "likes", `photo${photoNumber}`), {
           likes: arrayUnion(user.uid)
         })
-      } else{                              // if likes don't exist, create doc
-      await setDoc(doc(db,"postInfo", `${postID}`, "likes", `photo${photoNumber}`), {
-        likes: arrayUnion(user.uid)
-      })
-    }
+      }
+  }
     }
 
     function doubleTapLike(){     // double tap to like with a cool animation
@@ -64,6 +78,7 @@ function PostImage({url, photoNumber, postID}){
 
     useEffect(()=>{             // check if user liked the photo
       if (likes.includes(user.uid)){ setUserLikedThePhoto(true) }
+      else{ setUserLikedThePhoto(false) }
     },[likes])
 
 
