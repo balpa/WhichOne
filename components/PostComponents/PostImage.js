@@ -6,14 +6,19 @@ import { doc, onSnapshot, getDoc, setDoc, arrayUnion, updateDoc } from "firebase
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { auth } from '../../firebase'
 import { db } from '../../firebase'
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity, TapGestureHandler } from 'react-native-gesture-handler';
 import LikesModal from './LikesModal';
 
 function PostImage({url, photoNumber, postID}){
 
+    const doubleTapRef = React.createRef()
+
+    const scaleAnim = React.useRef(new Animated.Value(0.7)).current
+
     const [likes, setLikes] = useState([])
     const [userLikedThePhoto, setUserLikedThePhoto] = useState(false)
     const [showLikes, setShowLikes] = useState(false)
+    const [showLikeAnimation, setShowLikeAnimation] = useState(false)
 
     const user = auth.currentUser
 
@@ -35,6 +40,21 @@ function PostImage({url, photoNumber, postID}){
     }
     }
 
+    function doubleTapLike(){     // double tap to like with a cool animation
+      setShowLikeAnimation(true)
+      likeFunc()
+      Animated.spring(scaleAnim, {
+        toValue: 1.5,
+        friction: 5,
+        useNativeDriver: true
+      }).start(()=>{              // chain anmations as a callback 
+        Animated.spring(scaleAnim, {
+          toValue: 0,
+          friction: 5,
+          useNativeDriver: true
+        }).start()
+      })
+    }
 
     useEffect(()=>{             // get likes from db
       onSnapshot(doc(db,"postInfo", `${postID}`, "likes", `photo${photoNumber}`), (doc)=>{
@@ -52,7 +72,14 @@ function PostImage({url, photoNumber, postID}){
     return (
       <>
         <View style={{width: window.width-10, height: height4posts, justifyContent:'center', display:'flex', flexDirection:'column'}}>
-          <Image source={{uri: url}}  style={{width: "100%", height: height4posts}}></Image>
+          <TapGestureHandler onActivated={()=> doubleTapLike()} numberOfTaps={2} ref={doubleTapRef}>
+            <Image source={{uri: url}}  style={{width: "100%", height: height4posts}}></Image>
+          </TapGestureHandler>
+          {showLikeAnimation && 
+            <Animated.View style={[styles.likeIconAnimation, {transform: [{scale: scaleAnim}]}]} >
+              <Icon size={100} name='favorite' color='red'></Icon>
+            </Animated.View>
+          }
           <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between'}}>
             <TouchableOpacity onPress={()=> likeFunc()}>
               <Icon name={userLikedThePhoto ? "favorite" : "favorite-border"} color={userLikedThePhoto ? "red" : "white"}></Icon>
@@ -68,3 +95,14 @@ function PostImage({url, photoNumber, postID}){
 }
 
 export default PostImage
+
+const styles = StyleSheet.create({
+  likeIconAnimation: {
+    position: 'absolute',
+    width: 100,
+    height: 100,
+    alignSelf: 'center',
+
+  }
+
+})
