@@ -55,7 +55,7 @@ function LikesModal({ setShowLikes, likes }){
       </ScrollView>
       <View style={styles.closeButton}>
         <TouchableOpacity onPress={()=> closeLikesModal()}>
-          <Text style={{color:'white'}}>close</Text>
+          <Text style={{color:'black'}}>close</Text>
         </TouchableOpacity>
       </View> 
       
@@ -73,10 +73,12 @@ const styles = StyleSheet.create({
       bottom: 10,
       width: "100%",
       height: 300,
-      backgroundColor: 'rgba(0,0,0,0.97)',
+      backgroundColor: 'rgba(240,240,240,1)',
       borderTopLeftRadius: 25,
       borderTopRightRadius: 25,
       padding: 10,
+      borderWidth:2,
+      borderColor:'black'
     },
     closeButton: {
       position: 'absolute',

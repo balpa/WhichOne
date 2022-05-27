@@ -93,11 +93,13 @@ const styles = StyleSheet.create({
         position:'absolute',
         width: "100%",
         // height: "100%",
-        backgroundColor:'white',
+        backgroundColor:'rgba(240,240,240,1)',
         bottom: 0,
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
-        padding: 5
+        padding: 5,
+        borderWidth:2,
+        borderColor:'black'
     },
     closeButton:{
         width: 300,

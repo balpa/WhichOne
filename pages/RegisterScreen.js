@@ -110,13 +110,13 @@ const RegisterScreen = ({ navigation }) => {
             <StatusBar style="light"/>
             <Animated.View style={[styles.elevation, {transform: [{scale: scaleAnim}]}]}>
                 <View style={{height: 20}}></View>
-            <Text h1 style={{marginBottom: 50, fontSize: 25, color: "white"}}>Create an account</Text>
+            <Text h1 style={{marginBottom: 50, fontSize: 25, color: "black"}}>Create an account</Text>
             <View style={styles.inputContainer}>
-                <Input style={{color: "white"}} selectionColor="white"  autoFocus placeholder="Full Name" value={name} onChangeText={(text) => setName(text)}/>
-                <Input style={{color: "white"}} selectionColor="white"  autoCapitalize="none" placeholder="Username" value={username} onChangeText={(text) => setUsername(text)}/>
-                <Input style={{color: "white"}} selectionColor="white"  autoCapitalize="none" type="email" placeholder="Email" value={email} onChangeText={(text) => setEmail(text)}/>
-                <Input style={{color: "white"}} selectionColor="white"  autoCapitalize="none" type="password" secureTextEntry placeholder="Password" value={password} onChangeText={(text) => setPassword(text)}/>
-                <Input style={{color: "white"}} selectionColor="white"  autoCapitalize="none" type="password" secureTextEntry placeholder="Confirm password" value={confirmpassword} onChangeText={(text) => setConfirmPassword(text)}/>
+                <Input style={{color: "black"}} selectionColor="black"  autoFocus placeholder="Full Name" value={name} onChangeText={(text) => setName(text)}/>
+                <Input style={{color: "black"}} selectionColor="black"  autoCapitalize="none" placeholder="Username" value={username} onChangeText={(text) => setUsername(text)}/>
+                <Input style={{color: "black"}} selectionColor="black"  autoCapitalize="none" type="email" placeholder="Email" value={email} onChangeText={(text) => setEmail(text)}/>
+                <Input style={{color: "black"}} selectionColor="black"  autoCapitalize="none" type="password" secureTextEntry placeholder="Password" value={password} onChangeText={(text) => setPassword(text)}/>
+                <Input style={{color: "black"}} selectionColor="black"  autoCapitalize="none" type="password" secureTextEntry placeholder="Confirm password" value={confirmpassword} onChangeText={(text) => setConfirmPassword(text)}/>
                 {isRight ? <RightPassword /> : <WrongPassword />}
             </View>
             <Button  title="Register" onPress={register} buttonStyle={styles.loginButton}/>
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems:"center",
         justifyContent: "center",
-        backgroundColor: "rgba(15,15,15,1)"
+        backgroundColor: "#ffffff"
     },
     inputContainer: {
         width:300,
@@ -147,8 +147,10 @@ const styles = StyleSheet.create({
     elevation:{
         justifyContent: "center", 
         alignItems: "center", 
-        backgroundColor: "'rgba(255,255,255,0.1)'",
+        backgroundColor: "rgba(240,240,240,1)",
         borderRadius: 40,
+        borderWidth:2,
+        borderColor:'black'
     }
 
 })

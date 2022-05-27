@@ -65,7 +65,8 @@ const HomePage = ({navigation}) => {
     
     } , [])
 
-    // TODO: needs re-rendering to show posts and after re-rendering again, it shows the same posts again. FIX
+    // TODO: needs re-rendering to show posts and after re-rendering again, 
+    // it shows the same posts again. FIX
 
     console.log(allPostsFromFollowing)
 
@@ -77,18 +78,18 @@ const HomePage = ({navigation}) => {
             <StatusBar style="light"></StatusBar>
             <View style={styles.topSearch}>
                 <Button onPress={() => navigation.navigate("Search")} titleStyle={{color: "white", fontSize: 15}} buttonStyle={styles.searchButton} title={
-                    <Icon name="search" color="white" />
+                    <Icon name="search" color="black" />
                 }/>
             </View>
             <TouchableOpacity style={{width: 50, height: 50, position: "absolute"}} onPress={()=> reloadPage()}>
-                <Image source={require("../assets/w1logowhite.png")}
+                <Image source={require("../assets/w1logocrimson.png")}
                 style={{width: 50, height: 50, position: "absolute"}}
                 />
             </TouchableOpacity>
             <View style={{height: 50}}></View>
             <View style={styles.topProfile}>
                 <Button onPress={ () => navigation.navigate("Profile") } titleStyle={{color: "white", fontSize: 15}} buttonStyle={styles.profileButton} title={
-                    <Icon name="account-circle" color="white" />
+                    <Icon name="account-circle" color="black" />
                 }/>
             </View>
             <ScrollView>
@@ -155,7 +156,7 @@ const styles = StyleSheet.create({
     },
     container: {
     flex: 1,
-    backgroundColor: "rgba(15,15,15,1)",
+    backgroundColor: "#ffffff",
     alignItems: "center"
 },
 })

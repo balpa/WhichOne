@@ -168,9 +168,9 @@ const SearchPage = ({ navigation }) => {
         <StatusBar style="light"/>
             <View style={styles.elevation}>
                 <View style={styles.searchBar}>
-                    <Input autoCapitalize="none" style={{color: "white", width: 250}}  selectionColor="white"  placeholder="Search by username" onChangeText={(text) => setSearchVal(text)} />
+                    <Input autoCapitalize="none" style={{color: "black", width: 250}}  selectionColor="black"  placeholder="Search by username" onChangeText={(text) => setSearchVal(text)} />
                     <Button buttonStyle={{backgroundColor: "transparent", borderRadius: 15, width: "auto", height: "auto"}} titleStyle={{fontSize: 15}} 
-                            onPress={search} title={<Icon size={30} name="search" color="white" />}/>
+                            onPress={search} title={<Icon size={30} name="search" color="black" />}/>
                 </View>
 
                 {exists && <UserSearchProfile 
@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
         width: "100%",
         height: "100%",
         justifyContent: "center", alignItems: "center", 
-        backgroundColor: "rgba(15,15,15,1)", //rgba(255,255,255,0.1)
+        backgroundColor: "#ffffff", //rgba(255,255,255,0.1)
         elevation: 5,
     },
     followButton: {

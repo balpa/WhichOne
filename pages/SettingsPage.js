@@ -16,32 +16,32 @@ const SettingsPage = ({ navigation }) => {
         <KeyboardAvoidingView style={styles.container}>
             <View style={styles.elevation}>
                 <View style={styles.buttonIconWrapper}>
-                    <Icon name="person" color="white" />
-                    <Button onPress={ ()=> navigation.navigate("Account") } titleStyle={{color: "white", fontSize: 25}} buttonStyle={styles.settingsButton} title="Account" />
+                    <Icon name="person" color="black" />
+                    <Button onPress={ ()=> navigation.navigate("Account") } titleStyle={{color: "black", fontSize: 25}} buttonStyle={styles.settingsButton} title="Account" />
                 </View>
                 <View style={styles.buttonIconWrapper}>
-                    <Icon name='notifications' color="white" />
-                    <Button titleStyle={{color: "white", fontSize: 25}} buttonStyle={styles.settingsButton} title="Notifications"/>
+                    <Icon name='notifications' color="black" />
+                    <Button titleStyle={{color: "black", fontSize: 25}} buttonStyle={styles.settingsButton} title="Notifications"/>
                 </View>
                 <View style={styles.buttonIconWrapper}>
-                    <Icon name='palette' color="white" />
-                    <Button titleStyle={{color: "white", fontSize: 25}} buttonStyle={styles.settingsButton} title="Theme"/>
+                    <Icon name='palette' color="black" />
+                    <Button titleStyle={{color: "black", fontSize: 25}} buttonStyle={styles.settingsButton} title="Theme"/>
                 </View>
                 <View style={styles.buttonIconWrapper}>
-                    <Icon name='lock' color="white" />
-                    <Button titleStyle={{color: "white", fontSize: 25}} buttonStyle={styles.settingsButton} title="Security"/>
+                    <Icon name='lock' color="black" />
+                    <Button titleStyle={{color: "black", fontSize: 25}} buttonStyle={styles.settingsButton} title="Security"/>
                 </View>
                 <View style={styles.buttonIconWrapper}>
-                    <Icon name='help' color="white" />
-                    <Button titleStyle={{color: "white", fontSize: 25}} buttonStyle={styles.settingsButton} title="Help"/>
+                    <Icon name='help' color="black" />
+                    <Button titleStyle={{color: "black", fontSize: 25}} buttonStyle={styles.settingsButton} title="Help"/>
                 </View>
                 <View style={styles.buttonIconWrapper}>
-                    <Icon name='info' color="white" />
-                    <Button onPress={ () => navigation.navigate("About") } titleStyle={{color: "white", fontSize: 25}} buttonStyle={styles.settingsButton} title="About"/>
+                    <Icon name='info' color="black" />
+                    <Button onPress={ () => navigation.navigate("About") } titleStyle={{color: "black", fontSize: 25}} buttonStyle={styles.settingsButton} title="About"/>
                 </View>
             </View>
             <View style={styles.logoBottomContainer}>
-                <Image source={require("../assets/w1logowhite.png")} style={styles.logoBottom}/>
+                <Image source={require("../assets/w1logocrimson.png")} style={styles.logoBottom}/>
             </View>
         </KeyboardAvoidingView>
     
@@ -79,14 +79,14 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems:"center",
-        backgroundColor: "rgba(15,15,15,1)", // #243447 old color
+        backgroundColor: "#ffffff", // #243447 old color
         borderWidth: 1, 
     },
     elevation:{
         width: "100%",
         height: "50%",
         justifyContent: "space-evenly", 
-        backgroundColor: "rgba(15,15,15,1)",
+        backgroundColor: "#ffffff",
         // shadowColor: '#000',
         // shadowOffset: { width: 1, height: 3 },
         // shadowOpacity: 0.9,

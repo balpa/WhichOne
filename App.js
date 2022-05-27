@@ -42,12 +42,12 @@ LogBox.ignoreLogs(['Setting a timer for a long period of time']) // to clear the
 const Stack = createStackNavigator();
 
 const globalScreenOptions = {
-  headerStyle: { backgroundColor: 'rgba(15,15,15,1)', height: 75 },
-  headerTitleStyle: { color: "white" },
-  headerTintColor: "white",
+  headerStyle: { backgroundColor: 'rgba(255,255,255,1)', height: 75 },
+  headerTitleStyle: { color: "black" },
+  headerTintColor: "black",
   gestureEnabled: true,
   headerShown: true,
-  cardStyle: { backgroundColor: 'rgba(0,0,0,1)' },    // to make the background black (transitions, reload etc)
+  cardStyle: { backgroundColor: 'rgba(255,255,255,1)' },    // to make the background black (transitions, reload etc)
 
 }
 

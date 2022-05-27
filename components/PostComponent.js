@@ -81,6 +81,7 @@ function PostComponent({ postID, userID, name }){
                 marginTop: 5,
                 marginBottom: 5,
                 padding: 5,
+                backgroundColor:'white'
                 // borderStyle:'solid',
                 // borderWidth: 0.25,
                 // borderBottomColor: 'white',
@@ -91,10 +92,10 @@ function PostComponent({ postID, userID, name }){
                         <TouchableOpacity onPress={()=>{navigation.navigate("UserProfile",{ name: `${nameToPass}`, userID: `${userIdToPass}`})}}>
                           <Image source={{uri: avatar}} style={{width: 35, height: 35, borderRadius: 35/2, marginRight:10}}/>
                         </TouchableOpacity>
-                      <Text style={{color:"white", textAlign:'center'}}>{nameToPass}</Text>
+                      <Text style={{color:"black", textAlign:'center'}}>{nameToPass}</Text>
                     </View>
                     <TouchableOpacity onPress={()=> {setShowDotSettings(true)}} style={{marginBottom:10}}>
-                        {userIdToPass == auth.currentUser.uid ?  <Icon name='more-vert' color='white' /> : null}
+                        {userIdToPass == auth.currentUser.uid ?  <Icon name='more-vert' color='black' /> : null}
                     </TouchableOpacity>
                 </View>
                 <ScrollView contentContainerStyle={{alignItems:'center'}} horizontal={true} minimumZoomScale={1} maximumZoomScale={2} pagingEnabled={true} pinchGestureEnabled={true}>
@@ -106,9 +107,9 @@ function PostComponent({ postID, userID, name }){
                 </ScrollView>
                 <View style={{width:'100%',justifyContent:'space-between', alignItems:'center',flexDirection:'row', marginLeft: 10, marginRight: 10}}>
                     <TouchableOpacity onPress={()=>{setShowComments(true)}}>
-                        <Text style={{color:'white'}}>Comments</Text>
+                        <Text style={{color:'black'}}>Comments</Text>
                     </TouchableOpacity>
-                    <Text style={{color:'white'}}>{dateFormatter(postDate)}</Text>
+                    <Text style={{color:'black'}}>{dateFormatter(postDate)}</Text>
                 </View>
                 {showDotSettings && <PostComponentDotSettings setShowDotSettings={setShowDotSettings} />}
                 {showComments && <CommentsModal postID={postID} setShowComments={setShowComments}/>}
@@ -125,7 +126,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         // width: window.width,
         // height: 400,
-        backgroundColor: "rgba(255,255,255,0.1)",
+        backgroundColor: "white",
         marginTop: 5,
         marginBottom: 5,
         padding: 5

@@ -57,14 +57,16 @@ const styles = StyleSheet.create({
     container: {
         width: 100,
         height: 150,
-        backgroundColor: 'white',
+        backgroundColor: 'rgba(240,240,240,1)',
         position:'absolute',
         top:10,
         right: 10,
         borderRadius: 15,
         padding: 5,
         justifyContent:'space-evenly',
-        alignItems:'center'
+        alignItems:'center',
+        borderWidth:2,
+        borderColor:'black'
     
     }
 })

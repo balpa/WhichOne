@@ -34,11 +34,13 @@ const styles = StyleSheet.create({
         bottom: 0,
         height: 40,
         width: 150,
-        backgroundColor: "rgba(255,255,255,1)",
+        backgroundColor: "rgba(240,240,240,1)",
         zIndex: 10,
         position: "absolute",
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 10,
+        borderWidth:2,
+        borderColor:'black'
     }
 })

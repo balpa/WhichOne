@@ -5,8 +5,14 @@ import { doc, onSnapshot } from "firebase/firestore";
 import { db } from '../firebase'
 import { auth } from '../firebase'
 import SmallProfile from '../components/SmallProfile';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import FollowingSection from '../components/FollowersFollowing/FollowingSection';
+import FollowerSection from '../components/FollowersFollowing/FollowerSection'
+
 
 export default function FollowersFollowingPage() {
+
+    const Tab = createMaterialTopTabNavigator()
 
     const user = auth.currentUser
 
@@ -39,29 +45,21 @@ export default function FollowersFollowingPage() {
     (doc) => setFollowingCount(doc.data().following.length))
 
 
+    const globalOptions = {
+      tabBarStyle: {
+        backgroundColor:'white',
+      },
+      tabBarIndicatorStyle :{
+        backgroundColor:'crimson'
+      }
+    }
+
   return (
-    <View style={styles.container}>
-    <ScrollView horizontal={true} minimumZoomScale={1} maximumZoomScale={2} pagingEnabled={true} pinchGestureEnabled={true}>
-      <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center', backgroundColor: "rgba(15,15,15,1)"  }}>
-        <View style={{width:window.width-2, height:50, justifyContent:'center', backgroundColor:'rgba(255,255,255,0.05)'}}>
-            <Text style={{fontSize:20, fontWeight:"bold", color:"white", textAlign:'center'}}>{followerCount}  followers</Text>
-        </View>
 
-        {/* render followers for each user id taken by array */}
-        {followers.map((followerID) => {return <SmallProfile key={followerID} userID={followerID}/>})} 
-
-      </ScrollView>
-      <ScrollView>
-        <View style={{width:window.width, height:50, justifyContent:'center', backgroundColor: "rgba(255,255,255,0.1)"}}>
-            <Text style={{fontSize:20, fontWeight:"bold", color:"white", textAlign:'center'}}>{followingCount}  following</Text>
-        </View>
-      
-        {/* render following for each user id taken by array */}
-        {following.map((followingID) => {return <SmallProfile key={followingID} userID={followingID}/>})} 
-
-      </ScrollView>
-    </ScrollView>
-    </View>
+    <Tab.Navigator screenOptions={globalOptions} >
+      <Tab.Screen  style={{backgroundColor:'black'}}  name='followers' children={()=> <FollowerSection followers={followers}/>} />
+      <Tab.Screen name='following' children={()=> <FollowingSection following={following}/>} />
+    </Tab.Navigator>
   )
 }
 

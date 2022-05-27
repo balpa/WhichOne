@@ -63,7 +63,7 @@ const UserProfile = ({ route, navigation }) => {
                 source={{uri: image}}
                 style={{ width: 60, height: 60, borderRadius: 60/2, marginBottom: 15}}
                 />
-                <Text style={{fontWeight: "900", letterSpacing: 1, color: "white"}}>{name}</Text>
+                <Text style={{fontWeight: "900", letterSpacing: 1, color: "black"}}>{name}</Text>
                 <View style={{flexDirection: "row"}}>
                     <Text style={styles.followersInfo}>{followerCount}{"\n"}Followers</Text>
                     <Text style={styles.followersInfo}>{followingCount}{"\n"}Following</Text>
@@ -72,8 +72,8 @@ const UserProfile = ({ route, navigation }) => {
             </View>
             
         </View>
-        <View style={{height: 2, backgroundColor: "white"}}></View>
-        <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center', backgroundColor: "rgba(15,15,15,1)"  }}>
+        <View style={{height: 2, backgroundColor: "black"}}></View>
+        <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center', backgroundColor: "#ffffff"  }}>
           {postIDs.length > 0 ? postIDs.map((postID, index)=>{
             return <PostComponent key={index} postID={postID} userID={userID} name={name} />}) 
           :
@@ -118,11 +118,11 @@ const styles = StyleSheet.create({
   },
     container: {
         height: 150,
-        backgroundColor: "rgba(15,15,15,1)",
+        backgroundColor: "#ffffff",
         overflow: "hidden",
     },
     followersInfo: {
-      color: "white",
+      color: "black",
       margin: 5, 
       textAlign:"center"
     }

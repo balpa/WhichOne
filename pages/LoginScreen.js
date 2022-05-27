@@ -47,8 +47,8 @@ const LoginScreen = ({ navigation }) => {
             style={{ width: 200, height: 150, marginBottom: 25}}
             />
             <View style={styles.inputContainer}>
-                <Input style={{color: "white"}} selectionColor="white"  autoCapitalize="none" placeholder="Email" autoFocus type="email" value={email} onChangeText={(text) => setEmail(text)} />
-                <Input style={{color: "white"}} selectionColor="white" autoCapitalize="none" placeholder="Password" secureTextEntry type="password" value={password} onChangeText={(text) => setPassword(text)} />
+                <Input style={{color: "black"}} selectionColor="black"  autoCapitalize="none" placeholder="Email" autoFocus type="email" value={email} onChangeText={(text) => setEmail(text)} />
+                <Input style={{color: "black"}} selectionColor="black" autoCapitalize="none" placeholder="Password" secureTextEntry type="password" value={password} onChangeText={(text) => setPassword(text)} />
                 <View style={{height:25}}></View>
             </View>
             <Button onPress={signIn} title="Login" buttonStyle={styles.loginButton}/>
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems:"center",
         justifyContent: "center",
-        backgroundColor: "rgba(15,15,15,1)"
+        backgroundColor: "#ffffff"
     },
     inputContainer: {
         width:300,
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     loginButton:{
         width: 250,
         borderRadius: 15,
-        backgroundColor: "#dc143c"
+        backgroundColor: "#dc143c",
     },
     registerButton:{
         width: 250,
@@ -83,8 +83,9 @@ const styles = StyleSheet.create({
     },
     elevation:{
         justifyContent: "center", alignItems: "center", 
-        backgroundColor: "'rgba(255,255,255,0.1)'",
-
+        backgroundColor: "rgba(240,240,240,1)",
+        borderWidth:2,
+        borderColor:'black',
         borderRadius: 40,
     }
 });

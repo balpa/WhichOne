@@ -82,10 +82,11 @@ function PostImage({url, photoNumber, postID}){
           }
           <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between'}}>
             <TouchableOpacity onPress={()=> likeFunc()}>
-              <Icon name={userLikedThePhoto ? "favorite" : "favorite-border"} color={userLikedThePhoto ? "red" : "white"}></Icon>
+              <Icon name={userLikedThePhoto ? "favorite" : "favorite-border"} color={userLikedThePhoto ? "red" : "black"}></Icon>
             </TouchableOpacity>
+            
             <TouchableOpacity onPress={()=> setShowLikes(true)}>
-              <Text style={{color:'white'}}>{likes.length == 1 ? `${likes.length} like` : `${likes.length} likes`}</Text>
+              <Text style={{color:'black'}}>{likes.length == 1 ? `${likes.length} like` : `${likes.length} likes`}</Text>
             </TouchableOpacity>
           </View>
           {showLikes && <LikesModal setShowLikes={setShowLikes} likes={likes} />} 

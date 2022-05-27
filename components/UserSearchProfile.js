@@ -54,7 +54,7 @@ const UserSearchProfile = ({ image, searchUsername, followerCount, followingCoun
         <Animated.View style={[styles.component, {transform: [{translateY: springAnim}]}]}>
             <View style={styles.imageNameField}>
                 <Image source={{uri: image}} style={{width: 70, height: 70, borderRadius: 70/2}}/>
-                <Text style={{fontSize: 25, color:"white"}}> {searchUsername}</Text>
+                <Text style={{fontSize: 25, color:"black"}}> {searchUsername}</Text>
             </View>
             <View style={styles.userSearchProfile}>
                 <View style={{flexDirection: "row"}}>
@@ -63,8 +63,8 @@ const UserSearchProfile = ({ image, searchUsername, followerCount, followingCoun
                     <Text style={styles.followersInfo}>0{"\n"}Posts</Text>
                 </View>
 
-                {!followSituation && <TouchableOpacity style={styles.followButton} onPress={follow}><Button color={'white'}  titleStyle={{fontSize: 10}} title={"Follow"}/></TouchableOpacity>}
-                {followSituation && <TouchableOpacity style={styles.followButton} onPress={unfollow}><Button color={'white'}  titleStyle={{fontSize: 10}} title={"Following"}/></TouchableOpacity>}
+                {!followSituation && <TouchableOpacity style={styles.followButton} onPress={follow}><Button color={'crimson'}  titleStyle={{fontSize: 10}} title={"Follow"}/></TouchableOpacity>}
+                {followSituation && <TouchableOpacity style={styles.unfollowButton} onPress={unfollow}><Button color={'white'}  titleStyle={{fontSize: 10}} title={"Following"}/></TouchableOpacity>}
             </View>
         </Animated.View>
     )}
@@ -82,8 +82,10 @@ const styles = StyleSheet.create({
     component: {
         width: "100%",
         height: 250,
-        backgroundColor: "rgba(255,255,255,0.1)",
+        backgroundColor: "rgba(0,0,0,0.1)",
         borderRadius:20,
+        borderWidth: 2,
+        borderColor: 'black',
         display: "flex",
         justifyContent: "space-between",
         alignItems:"center",
@@ -97,7 +99,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     followersInfo: {
-        color: "white",
+        color: "black",
         margin: 10,
         textAlign:"center"
       },
@@ -109,6 +111,11 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     followButton: {
+        width: 100,
+        backgroundColor: "rgba(240,240,240,1)",
+        borderRadius: 10,
+    },
+    unfollowButton: {
         width: 100,
         backgroundColor: "crimson",
         borderRadius: 10,

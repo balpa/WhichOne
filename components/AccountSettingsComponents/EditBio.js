@@ -80,12 +80,15 @@ const styles = StyleSheet.create({
         alignItems: "center",
         width: 350,
         height: 250,
-        backgroundColor: "rgba(250,250,250,1)",
+        backgroundColor: "rgba(240,240,240,1)",
         marginTop: 5,
         marginBottom: 5,
         borderRadius:20,
         padding: 5,
-        zIndex: 10
+        zIndex: 10,
+        borderWidth:2,
+        borderColor:'black'
+
 
     }
 })

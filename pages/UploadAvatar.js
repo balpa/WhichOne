@@ -58,13 +58,13 @@ function UploadAvatar() {
         <View style={styles.component}>
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'space-evenly'}}>
             <View style={styles.addButtonIconWrapper}>
-                <Icon name="collections" color="white" />
-                <Button title="Add Photos" onPress={pickImage} titleStyle={{color: "white", fontSize: 25}} buttonStyle={styles.createPostButtons} />
+                <Icon name="collections" color="black" />
+                <Button title="Add Photos" onPress={pickImage} titleStyle={{color: "black", fontSize: 25}} buttonStyle={styles.createPostButtons} />
             </View>
                 {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
             <View style={styles.uploadIconWrapper}>
-                <Icon name="send" color="white" />
-                <Button title="Upload" onPress={upload} titleStyle={{color: "white", fontSize: 25}} buttonStyle={styles.createPostButtons} />
+                <Icon name="send" color="black" />
+                <Button title="Upload" onPress={upload} titleStyle={{color: "black", fontSize: 25}} buttonStyle={styles.createPostButtons} />
             </View> 
           </View>
         </View>
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     height: "100%",
-    backgroundColor: "rgba(15,15,15,1)",
+    backgroundColor: "#ffffff",
     zIndex: 10
 },
   uploadIconWrapper: {
@@ -89,12 +89,14 @@ const styles = StyleSheet.create({
     height: 80,
     flexDirection: "row",
     width: "100%",
-    backgroundColor: "rgba(255,255,255,0.1)",
+    backgroundColor: "rgba(240,240,240,1)",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     borderTopEndRadius: 25,
-    borderTopStartRadius: 25
+    borderTopStartRadius: 25,
+    borderWidth:2,
+    borderColor:'black'
 
 },
   addButtonIconWrapper: {
@@ -103,12 +105,14 @@ const styles = StyleSheet.create({
     height: 80,
     flexDirection: "row",
     width: "100%",
-    backgroundColor: "rgba(255,255,255,0.1)",
+    backgroundColor: "rgba(240,240,240,1)",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     borderBottomEndRadius: 25,
-    borderBottomStartRadius: 25
+    borderBottomStartRadius: 25,
+    borderWidth:2,
+    borderColor:'black'
 
 },
 

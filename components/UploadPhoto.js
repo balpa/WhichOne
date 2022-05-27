@@ -178,8 +178,8 @@ function UploadPhoto({ navigation }) {
         <View style={styles.component}>
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'space-evenly'}}>
             <Animated.View style={styles.addButtonIconWrapper}>
-                <Icon name="collections" color="white" />
-                <Button title="Add Photos" onPress={pickImage} titleStyle={{color: "white", fontSize: 25}} buttonStyle={styles.createPostButtons} />
+                <Icon name="collections" color="black" />
+                <Button title="Add Photos" onPress={pickImage} titleStyle={{color: "black", fontSize: 25}} buttonStyle={styles.createPostButtons} />
             </Animated.View>
             <ScrollView style={styles.scrollViewStyling} horizontal={true} minimumZoomScale={1} maximumZoomScale={2} pagingEnabled={true} pinchGestureEnabled={true}>
               {image.map((img, index) => {
@@ -187,7 +187,7 @@ function UploadPhoto({ navigation }) {
                 <>
                   <View style={styles.imageContainer}>
                     <Image source={{uri: img}} style={{width: window.width-2, height: height4posts}} />
-                    <Text style={{color:"white"}}>{`${index+1}/${image.length}`}</Text>
+                    <Text style={{color:"black"}}>{`${index+1}/${image.length}`}</Text>
                     <Button onPress={()=> {
                       console.log("need to add this")
                       }} title='remove'/>
@@ -199,8 +199,8 @@ function UploadPhoto({ navigation }) {
             </ScrollView> 
 
             <Animated.View style={styles.uploadIconWrapper}>
-                <Icon name="send" color="white" />
-                <Button title="Upload" onPress={()=> upload()} titleStyle={{color: "white", fontSize: 25}} buttonStyle={styles.createPostButtons} />
+                <Icon name="send" color="black" />
+                <Button title="Upload" onPress={()=> upload()} titleStyle={{color: "black", fontSize: 25}} buttonStyle={styles.createPostButtons} />
                 
             </Animated.View> 
           </View>
@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         width: "100%",
         height: "100%",
-        backgroundColor: "rgba(15,15,15,1)",
+        backgroundColor: "#ffffff",
         zIndex: 10
     },
       uploadIconWrapper: {
@@ -226,27 +226,31 @@ const styles = StyleSheet.create({
         height: 80,
         flexDirection: "row",
         width: "100%",
-        backgroundColor: "rgba(255,255,255,0.1)",
+        backgroundColor: "rgba(240,240,240,1)",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
         borderTopEndRadius: 25,
-        borderTopStartRadius: 25
+        borderTopStartRadius: 25,
+        borderWidth: 2,
+        borderColor: 'black'
 
     },
       addButtonIconWrapper: {
         position: "absolute",
-        top: 0,
+        top: -1,
         height: 80,
         flexDirection: "row",
         width: "100%",
-        backgroundColor: "rgba(255,255,255,0.1)",
+        backgroundColor: "rgba(240,240,240,1)",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
         borderBottomEndRadius: 25,
         borderBottomStartRadius: 25,
-        zIndex: 20
+        zIndex: 20,
+        borderWidth: 2,
+        borderColor: 'black'
 
     },
 

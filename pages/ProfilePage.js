@@ -113,13 +113,13 @@ const ProfilePage = ({ navigation }) => {
         <View style={styles.container}>
             <StatusBar style="light"></StatusBar>
             <View style={styles.header}>
-              <Button onPress={() => navigation.navigate("Settings")} titleStyle={{color: "white", fontSize: 15}} buttonStyle={styles.settingsButton}
-                 title={<Icon name="settings" color="white" />}/>
+              <Button onPress={() => navigation.navigate("Settings")} titleStyle={{color: "black", fontSize: 15}} buttonStyle={styles.settingsButton}
+                 title={<Icon name="settings" color="black" />}/>
               <View>
-                <Text style={{fontWeight: "900", letterSpacing: 1, color: "white"}}>{user.displayName}</Text> 
+                <Text style={{fontWeight: "900", letterSpacing: 1, color: "black"}}>{user.displayName}</Text> 
               </View>
               <Button onPress={showLogoutConfirm} titleStyle={{color: "white", fontSize: 15}} buttonStyle={styles.logoutButton} 
-                 title={<Icon name="logout" color="white" />}/> 
+                 title={<Icon name="logout" color="black" />}/> 
             </View>
             <View style={styles.profileTop}>
               <View style={{flexDirection:'column'}}>
@@ -131,7 +131,7 @@ const ProfilePage = ({ navigation }) => {
                   />
                 </TouchableOpacity>
               </View>
-              <Text style={{color:'white',fontSize:15}}>{currentBio}</Text>
+              <Text style={{color:'black',fontSize:15}}>{currentBio}</Text>
                 <View style={{flexDirection: "row", marginTop:10}}>
                   <TouchableOpacity onPress={() => navigation.navigate("Followers-Following")}> 
                     <Text style={styles.followersInfo}>{followerCount}{" "}Followers</Text>
@@ -144,7 +144,7 @@ const ProfilePage = ({ navigation }) => {
             </View>
             
         </View>
-        <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center', backgroundColor: "rgba(15,15,15,1)"  }}>
+        <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center', backgroundColor: "#ffffff"  }}>
           {postIDs.length > 0 ? postIDs.reverse().map((postID, index)=>{
             console.log(`postid: ${postID}, index: ${index}`)
             return <PostComponent key={`${index}`} postID={postID} />}) 
@@ -152,7 +152,7 @@ const ProfilePage = ({ navigation }) => {
           <Text style={{color:'white',fontSize:20, marginTop:25}}>No Posts</Text>
           }
           <View style={{width:'100%',height:60, justifyContent:'center', alignItems:'center'}}>
-            <Image source={require("../assets/w1logowhite.png")} style={styles.logoBottom}/>
+            <Image source={require("../assets/w1logocrimson.png")} style={styles.logoBottom}/>
           </View>
         </ScrollView>
         </>
@@ -192,11 +192,11 @@ const styles = StyleSheet.create({
     container: {
         minHeight: 180,
         height: 190,
-        backgroundColor: "rgba(15,15,15,1)",
+        backgroundColor: "#ffffff",  // #222222 for dark 
         overflow: "hidden",
     },
     followersInfo: {
-      color: "white",
+      color: "black",
       margin: 5, 
       textAlign:"center",
     },

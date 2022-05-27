@@ -43,9 +43,9 @@ const AccountSettings = ({ navigation }) => {
         <>
         <View style={styles.container}>
             <View style={styles.elevation}>
-                <Button onPress={()=> setIsChangeNameShown(true)} titleStyle={{color: "white", fontSize: 20}} buttonStyle={styles.accountButton} title="Change Name"/>
-                <Button onPress={()=> setIsEditBioShown(true)} titleStyle={{color: "white", fontSize: 20}} buttonStyle={styles.accountButton} title="Edit Bio"/>
-                <Button onPress={()=> navigation.navigate("Upload Avatar")} titleStyle={{color: "white", fontSize: 20}} buttonStyle={styles.accountButton} title="Upload Avatar"/>
+                <Button onPress={()=> setIsChangeNameShown(true)} titleStyle={{color: "black", fontSize: 20}} buttonStyle={styles.accountButton} title="Change Name"/>
+                <Button onPress={()=> setIsEditBioShown(true)} titleStyle={{color: "black", fontSize: 20}} buttonStyle={styles.accountButton} title="Edit Bio"/>
+                <Button onPress={()=> navigation.navigate("Upload Avatar")} titleStyle={{color: "black", fontSize: 20}} buttonStyle={styles.accountButton} title="Upload Avatar"/>
                 {isChangeNameShown ? <ChangeName setIsChangeNameShown={setIsChangeNameShown} /> : null}
                 {isEditBioShown ? <EditBio setIsEditBioShown={setIsEditBioShown} /> : null}
             </View>
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
         width: "100%",
         height: "100%",
         justifyContent: "center", alignItems: "center", 
-        backgroundColor: "rgba(15,15,15,1)",
+        backgroundColor: "#ffffff",
     },
     profileBody: {
     },
