@@ -78,6 +78,7 @@ const styles = StyleSheet.create({
       borderTopRightRadius: 25,
       padding: 10,
       borderWidth:2,
+      borderBottomWidth: 1,
       borderColor:'black'
     },
     closeButton: {

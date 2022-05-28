@@ -8,6 +8,7 @@ import firebase from 'firebase/compat/app'
 
 const UserSearchProfile = ({ image, searchUsername, followerCount, followingCount, followSituation, searchedUsersUID, loggedinUser }) => {
 
+    const navigation = useNavigation()
 
     const springAnim = useRef(new Animated.Value(1000)).current
 
@@ -53,7 +54,9 @@ const UserSearchProfile = ({ image, searchUsername, followerCount, followingCoun
     return (
         <Animated.View style={[styles.component, {transform: [{translateY: springAnim}]}]}>
             <View style={styles.imageNameField}>
+                <TouchableOpacity onPress={()=>{navigation.navigate("UserProfile",{ name: `${searchUsername}`, userID: `${searchedUsersUID}`})}}>
                 <Image source={{uri: image}} style={{width: 70, height: 70, borderRadius: 70/2}}/>
+                </TouchableOpacity>
                 <Text style={{fontSize: 25, color:"black"}}> {searchUsername}</Text>
             </View>
             <View style={styles.userSearchProfile}>

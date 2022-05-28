@@ -54,6 +54,9 @@ const UserProfile = ({ route, navigation }) => {
     }, [])
     console.log(postIDs)
 
+
+    // TODO: ADD LIKES AND COMMENTS HERE
+
     return (
         <>
         <View style={styles.container}>
@@ -72,7 +75,6 @@ const UserProfile = ({ route, navigation }) => {
             </View>
             
         </View>
-        <View style={{height: 2, backgroundColor: "black"}}></View>
         <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center', backgroundColor: "#ffffff"  }}>
           {postIDs.length > 0 ? postIDs.map((postID, index)=>{
             return <PostComponent key={index} postID={postID} userID={userID} name={name} />}) 
