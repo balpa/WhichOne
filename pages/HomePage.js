@@ -46,12 +46,11 @@ const HomePage = ({navigation}) => {
     //             }})}
     // } , [])
 
-    useEffect(async()=>{ 
-        await getDoc(doc(db, "useruid", `${user.uid}`)).then((document) => {
-        setFollowingList(document.data().following)     // DOESN'T SET THE ARRAY. IT PASSES HERE
-    })
-    }, [])
-
+    // useEffect(async()=>{ 
+    //     await getDoc(doc(db, "useruid", `${user.uid}`)).then((document) => {
+    //     setFollowingList(document.data().following)     // DOESN'T SET THE ARRAY. IT PASSES HERE
+    // })
+    // }, [])
 
 
 
