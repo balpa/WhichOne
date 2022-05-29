@@ -133,10 +133,10 @@ const ProfilePage = ({ navigation }) => {
               </View>
               <Text style={{color:'black',fontSize:15}}>{currentBio}</Text>
                 <View style={{flexDirection: "row", marginTop:10}}>
-                  <TouchableOpacity onPress={() => navigation.navigate("Followers-Following")}> 
+                  <TouchableOpacity onPress={() => navigation.navigate("Followers & Following")}> 
                     <Text style={styles.followersInfo}>{followerCount}{" "}Followers</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity onPress={() => navigation.navigate("Followers-Following")}>
+                  <TouchableOpacity onPress={() => navigation.navigate("Followers & Following")}>
                     <Text style={styles.followersInfo}>{followingCount}{" "}Following</Text>
                   </TouchableOpacity>
                   <Text style={styles.followersInfo}>{postIDs.length}{" "}Posts</Text>

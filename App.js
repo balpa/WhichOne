@@ -74,7 +74,7 @@ export default function App() {
       <Stack.Screen name="Register" options={{transitionSpec: {open: config, close: config}}} component={RegisterScreen} />
       <Stack.Screen name="Home" options={{transitionSpec: {open: config, close: config}}} component={HomeScreen} />
       <Stack.Screen name="Profile" options={{headerBackTitle: "Home", transitionSpec: { open: config, close: config }}} component={ProfilePage} />
-      <Stack.Screen name="Followers-Following" options={{headerBackTitle: "Profile", transitionSpec: {open: config, close: config}}} component={FollowersFollowingPage}/>
+      <Stack.Screen name="Followers & Following" options={{headerBackTitle: "Profile", transitionSpec: {open: config, close: config}}} component={FollowersFollowingPage}/>
       <Stack.Screen name="HomePage" options={{title: "WhichOne", transitionSpec: {open: config, close: config}}} component={HomePage} />
       <Stack.Screen name="Stats" options={{transitionSpec: {open: config, close: config}}} component={StatsPage} />
       <Stack.Screen name="Settings" options={{transitionSpec: {open: config, close: config}}} component={SettingsPage} />

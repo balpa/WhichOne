@@ -25,50 +25,68 @@ const HomePage = ({navigation}) => {
 
     const user = auth.currentUser
 
-    console.log("render and following list:  ", followingList)
+    //  console.log("render and following list:  ", followingList)
 
     function reloadPage(){      //page reload dummy func
        setDummy(!dummy)
     }
 
-    useEffect(() => {           // get list of people that logged in user follows for home page post display
-        const getFollowingList = onSnapshot(doc(db, "useruid", `${user.uid}`), (doc) => {
-            setFollowingList(doc.data().following)
-          })
-    }, [])
+    // useEffect(async() => {           // get list of people that logged in user follows for home page post display
+    //     const getFollowingList = await getDoc(doc(db, "useruid", `${user.uid}`))
+    //         .then((doc) => setFollowingList(doc.data().following))
+    // }, [])
 
+    // useEffect(async () => {
+    //     if (allPostsFromFollowing.length != 0) {
+    //         allPostsFromFollowing.map(async(postID,index) => {
+    //             const getPostData = await getDoc(doc(db,'postInfo',`${postID}`))
+    //             if (getPostData.exists){
+    //                 setComponents(old=> [...old, <PostComponent key={index} postID={postID} userID={getPostData.data().userID} name={getPostData.data().name} />])
+    //             }})}
+    // } , [])
 
-    useEffect(() => {           // take following list and get all post id's from each user and store in array to fetch them all 
-        if (followingList.length > 0) { 
+    useEffect(async() => {           // take following list and get all post id's from each user and store in array to fetch them all 
+
+        const getFollowingList = await getDoc(doc(db, "useruid", `${user.uid}`))
+            .then((doc) => setFollowingList(doc.data().following))
+
+        // TODO: at first render, it doesn't run this useEffect. CHECK
+        // at second render, it runs 1-2-3 clg's. meaning second if statement not running. CHECK
+
+        // followingList and allPostsFromFollowing abre empty at first render.
+
+        console.log("useEffect running: ", allPostsFromFollowing)
+        if (allPostsFromFollowing.length == 0 && followingList.length > 0) { 
+            console.log("first if read")
             followingList.map(async(id,index) =>{
+                console.log("followinglist.map read")
             const followingPersonsPostID = await getDoc(doc(db,"posts",`${id}`))
+            console.log("followingpersonspostid read")
+
             if (followingPersonsPostID.exists){
-                followingPersonsPostID.data().postID.map(async(item,index) => {
-                    if (allPostsFromFollowing.includes(item) == false) setAllPostsFromFollowing(old => [...old, item])
+                console.log("followingpersonspostid exists read")
+                followingPersonsPostID.data().postID.map((item,index) => {
+                    console.log("followingpersonspostid.data.postid.map read")
+                    if (allPostsFromFollowing.includes(item) === false) setAllPostsFromFollowing(old => [...old, item])
                 })
             }
         })}
-    } , [])
-
-    useEffect(async () => {
-
-        if (allPostsFromFollowing.length > 0) {
-            allPostsFromFollowing.map( async(postID,index) => {
-                const getPostData = await getDoc(doc(db,'postInfo',`${postID}`))
+        if (allPostsFromFollowing.length != 0) {
+            allPostsFromFollowing.map(async(postID,index) => {
+            const getPostData = await getDoc(doc(db,'postInfo',`${postID}`))
                 if (getPostData.exists){
-                    setComponents(old=> [...old, <PostComponent postID={postID} userID={getPostData.data().userID} name={getPostData.data().name} />])
-                }
+                    setComponents(old=> [...old, <PostComponent key={index} postID={postID} userID={getPostData.data().userID} name={getPostData.data().name} />])
+                }})}
+    },[])
 
-            })
-        }
-        
-    
-    } , [])
 
     // TODO: needs re-rendering to show posts and after re-rendering again, 
     // it shows the same posts again. FIX
 
-    console.log(allPostsFromFollowing)
+    // SOLUTION MIGHT BE COLLECTING ALL OF THE useEffect's in one
+
+    
+    // console.log("allpostsfromfollowing => ",allPostsFromFollowing) // THIS NOT GETTING ON FIRST RENDER
 
 
     // TODO: use FlatList instead of ScrollView
@@ -93,7 +111,7 @@ const HomePage = ({navigation}) => {
                 }/>
             </View>
             <ScrollView>
-                {components}
+                {components.reverse()}
             </ScrollView>
             <View style={{position: "absolute", flex: 1, top: 150}}>
                 {isShown === true ? <CreatePost /> : null}

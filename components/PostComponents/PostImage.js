@@ -37,16 +37,14 @@ function PostImage({url, photoNumber, postID}){
     async function likeFunc(){    // adds likes to db by photo number
       const getLikes = await getDoc(doc(db,"postInfo", `${postID}`,"likes", `photo${photoNumber}`))
 
-      if (getLikes.data().likes.includes(user.uid)){    // if user already liked the photo, remove.
+      if (getLikes.data() != undefined && getLikes.data().likes.includes(user.uid)){    // if user already liked the photo, remove.
         dislike()
-      }
-      else{
-
+      } else {
         if (getLikes.data() != undefined){    // if likes exist, update doc
           updateDoc(doc(db,"postInfo", `${postID}`,"likes", `photo${photoNumber}`), {
             likes: arrayUnion(user.uid)
           })
-        } else{                              // if likes don't exist, create doc
+        } else {                              // if likes don't exist, create doc
         await setDoc(doc(db,"postInfo", `${postID}`, "likes", `photo${photoNumber}`), {
           likes: arrayUnion(user.uid)
         })
