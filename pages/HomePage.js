@@ -46,15 +46,14 @@ const HomePage = ({navigation}) => {
     //             }})}
     // } , [])
 
-
-    const getList = async() => await getDoc(doc(db, "useruid", `${user.uid}`))
-            .then((document) => {
-                console.log(document.data().following)
-                setFollowingList(document.data().following)      // DOESN'T SET THE ARRAY. IT PASSES HERE
-                console.log("getFollowingList worked 11111", followingList)
+    useEffect(async()=>{ 
+        await getDoc(doc(db, "useruid", `${user.uid}`)).then((document) => {
+        setFollowingList(document.data().following)     // DOESN'T SET THE ARRAY. IT PASSES HERE
     })
-    // closing the gap nuhaha
-    
+    }, [])
+
+
+
 
     async function setPosts(){
         console.log("setPosts worked 2222222")

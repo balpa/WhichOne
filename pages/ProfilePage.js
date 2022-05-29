@@ -86,7 +86,7 @@ const ProfilePage = ({ navigation }) => {
     });
     }, [])
 
-    // get post ids from firebase and store in array NEED POST IDS IN ARRAY LOCATED IN posts/useruid/postID
+    // get post ids from firebase and store in array
     useEffect(async() => {
       const toPostIDs = await getDoc(doc(db,"posts",`${user.uid}`))
       if (toPostIDs != undefined){
