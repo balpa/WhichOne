@@ -10,6 +10,7 @@ import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { auth } from '../firebase'
 import { db } from '../firebase'
 import { set } from 'react-native-reanimated'
+import { async } from '@firebase/util'
 
 
 const HomePage = ({navigation}) => {
@@ -45,39 +46,79 @@ const HomePage = ({navigation}) => {
     //             }})}
     // } , [])
 
-    useEffect(async() => {           // take following list and get all post id's from each user and store in array to fetch them all 
 
-        const getFollowingList = await getDoc(doc(db, "useruid", `${user.uid}`))
-            .then((doc) => setFollowingList(doc.data().following))
+    const getList = async() => await getDoc(doc(db, "useruid", `${user.uid}`))
+            .then((document) => {
+                console.log(document.data().following)
+                setFollowingList(document.data().following)      // DOESN'T SET THE ARRAY. IT PASSES HERE
+                console.log("getFollowingList worked 11111", followingList)
+    })
+    // closing the gap nuhaha
+    
 
-        // TODO: at first render, it doesn't run this useEffect. CHECK
-        // at second render, it runs 1-2-3 clg's. meaning second if statement not running. CHECK
+    async function setPosts(){
+        console.log("setPosts worked 2222222")
 
-        // followingList and allPostsFromFollowing abre empty at first render.
-
-        console.log("useEffect running: ", allPostsFromFollowing)
+        // console.log("useEffect running: ", allPostsFromFollowing)
         if (allPostsFromFollowing.length == 0 && followingList.length > 0) { 
-            console.log("first if read")
+        // console.log("first if read")
             followingList.map(async(id,index) =>{
-                console.log("followinglist.map read")
-            const followingPersonsPostID = await getDoc(doc(db,"posts",`${id}`))
-            console.log("followingpersonspostid read")
+                const followingPersonsPostID = await getDoc(doc(db,"posts",`${id}`))
+        // console.log("followingpersonspostid read")
 
             if (followingPersonsPostID.exists){
-                console.log("followingpersonspostid exists read")
+        // console.log("followingpersonspostid exists read")
                 followingPersonsPostID.data().postID.map((item,index) => {
-                    console.log("followingpersonspostid.data.postid.map read")
+        // console.log("followingpersonspostid.data.postid.map read")
                     if (allPostsFromFollowing.includes(item) === false) setAllPostsFromFollowing(old => [...old, item])
-                })
-            }
+                })}
         })}
+    }
+    async function createComponent(){
+        console.log("createComponent worked 3333333")
+        // console.log("createComponent running: ", components)
         if (allPostsFromFollowing.length != 0) {
             allPostsFromFollowing.map(async(postID,index) => {
             const getPostData = await getDoc(doc(db,'postInfo',`${postID}`))
                 if (getPostData.exists){
                     setComponents(old=> [...old, <PostComponent key={index} postID={postID} userID={getPostData.data().userID} name={getPostData.data().name} />])
-                }})}
-    },[])
+                }})} 
+    }
+
+    useEffect(() => {
+       setPosts().then(() => createComponent())
+    }, [])
+
+    // useEffect(async() => {           // take following list and get all post id's from each user and store in array to fetch them all 
+
+    //     // TODO: at first render, it doesn't run this useEffect. CHECK
+    //     // at second render, it runs 1-2-3 clg's. meaning second if statement not running. CHECK
+
+    //     // followingList and allPostsFromFollowing abre empty at first render.
+
+    //     console.log("useEffect running: ", allPostsFromFollowing)
+    //     if (allPostsFromFollowing.length == 0 && followingList.length > 0) { 
+    //         console.log("first if read")
+    //         followingList.map(async(id,index) =>{
+    //             console.log("followinglist.map read")
+    //         const followingPersonsPostID = await getDoc(doc(db,"posts",`${id}`))
+    //         console.log("followingpersonspostid read")
+
+    //         if (followingPersonsPostID.exists){
+    //             console.log("followingpersonspostid exists read")
+    //             followingPersonsPostID.data().postID.map((item,index) => {
+    //                 console.log("followingpersonspostid.data.postid.map read")
+    //                 if (allPostsFromFollowing.includes(item) === false) setAllPostsFromFollowing(old => [...old, item])
+    //             })
+    //         }
+    //     })}
+    //     if (allPostsFromFollowing.length != 0) {
+    //         allPostsFromFollowing.map(async(postID,index) => {
+    //         const getPostData = await getDoc(doc(db,'postInfo',`${postID}`))
+    //             if (getPostData.exists){
+    //                 setComponents(old=> [...old, <PostComponent key={index} postID={postID} userID={getPostData.data().userID} name={getPostData.data().name} />])
+    //             }})}
+    // },[])
 
 
     // TODO: needs re-rendering to show posts and after re-rendering again, 
