@@ -45,6 +45,8 @@ function PostComponent({ postID, userID, name }){
         }
     }
 
+    // TODO: DATA FORMATTING (1.06.2022 => 01.06.2022)
+
     getDownloadURL(ref(storage, `Users/${userIdToPass}/avatars/avatar_image`))
       .then((url) => { setAvatar(url) })
       .catch((error) => console.log(error))
@@ -111,7 +113,7 @@ function PostComponent({ postID, userID, name }){
                     </TouchableOpacity>
                     <Text style={{color:'black'}}>{dateFormatter(postDate)}</Text>
                 </View>
-                {showDotSettings && <PostComponentDotSettings setShowDotSettings={setShowDotSettings} />}
+                {showDotSettings && <PostComponentDotSettings userID={userIdToPass} postID={postID} setShowDotSettings={setShowDotSettings} />}
                 {showComments && <CommentsModal postID={postID} setShowComments={setShowComments}/>}
             </View>
             

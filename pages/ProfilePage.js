@@ -34,7 +34,7 @@ const ProfilePage = ({ navigation }) => {
       const bio =  onSnapshot(doc(db,'useruid',`${user.uid}`), (doc) => {
         setCurrentBio(doc.data().bio)
       })
-  },[])
+    },[])
 
     getDownloadURL(ref(storage, `Users/${user.uid}/avatars/avatar_image`))  // get avatar
       .then((url) => {
