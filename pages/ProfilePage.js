@@ -18,6 +18,8 @@ import AvatarModal from '../components/AvatarModal'
 
 const ProfilePage = ({ navigation }) => {
 
+  // TODO: Change avatar resolution to save data usage
+
     const [followerCount, setFollowerCount] = useState(0)
     const [followingCount, setFollowingCount] = useState(0)
     const [image,setImage] = useState(null)

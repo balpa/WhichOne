@@ -15,6 +15,7 @@ import { async } from '@firebase/util'
 
 const HomePage = ({navigation}) => {
 
+
     const [dummy,setDummy] = useState(false)
     const [isShown, setIsShown] = useState(false)
     const [followingList, setFollowingList] = useState([])    
