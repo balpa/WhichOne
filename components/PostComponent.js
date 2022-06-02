@@ -38,14 +38,14 @@ function PostComponent({ postID, userID, name }){
     function dateFormatter( postDate ){     // func to return date in a readable format
         let months = {"01": "January", "02": "February", "03": "March", "04": "April", "05": "May", "06": "June", "07": "July", "08": "August", "09": "September", "10": "October", "11": "November", "12": "December"}
         if (postDate){
-            let day = postDate.slice(0,2)
-            let month = postDate.slice(3,5)
-            let year = postDate.slice(6,10)
-            return `${day} ${months[month]}, ${year}`
+            let dateArray = postDate.split(".")
+            let day = dateArray[0]
+            let month = months[dateArray[1]]
+            let year = dateArray[2].slice(0,4)
+            return `${day} ${month}, ${year}`
         }
     }
 
-    // TODO: DATA FORMATTING (1.06.2022 => 01.06.2022)
 
     getDownloadURL(ref(storage, `Users/${userIdToPass}/avatars/avatar_image`))
       .then((url) => { setAvatar(url) })
