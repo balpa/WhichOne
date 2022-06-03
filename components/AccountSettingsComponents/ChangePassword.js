@@ -18,8 +18,15 @@ function ChangePassword({ color, setIsChangePasswordShown }) {
     const [confirmPassword, setConfirmPassword] = useState("")
     const [isMatched, setIsMatched] = useState(false)
     const [lockIcon, setLockIcon] = useState("unlock")
+    const [eyeIcon, setEyeIcon] = useState("eye-slash")
+    const [isPasswordShown, setIsPasswordShown] = useState(false)
 
     const springAnim = useRef(new Animated.Value(1000)).current
+
+    useEffect(() => {       // password show or not
+      if (eyeIcon === "eye") { setIsPasswordShown(true) }
+      else { setIsPasswordShown(false) }
+    }, [eyeIcon])
 
     useEffect(() => {       // show "password matched or does not match" message
       if (confirmPassword === newPassword && confirmPassword.length > 3) {
@@ -48,11 +55,17 @@ function ChangePassword({ color, setIsChangePasswordShown }) {
         setTimeout(() => {setIsChangePasswordShown(false)}, 700)
     }
 
-    function uploadPassword(){
-      updatePassword(user, confirmPassword).then(() => {
+    function uploadPassword(){      // might need to add or change conditions
+      if (confirmPassword.length >= 6 && isMatched) {
+      updatePassword(user, confirmPassword)
+      .then(() => {
         Alert.alert("Password updated")
         closeModal()
       }).catch((error) => console.log(error))
+    } else {
+        if (confirmPassword.length < 6) Alert.alert("Password must be at least 6 characters")
+        else Alert.alert("Passwords do not match")
+    }
     }
 
 
@@ -61,15 +74,19 @@ function ChangePassword({ color, setIsChangePasswordShown }) {
         <Animated.View style={[styles.component, {transform: [{translateY: springAnim}]}]}>
           {/* <Input placeholder="Current password" value={currentPassword} onChangeText={(text) => setCurrentPassword(text)} /> */}
           <Input 
+            {...(isPasswordShown ? {secureTextEntry: false} : {secureTextEntry: true})}
             placeholder="New password" 
             label='New password'
             leftIcon={{ type: 'font-awesome', name: lockIcon }}
+            rightIcon={{ type: 'font-awesome', name: eyeIcon, onPress: () => {setEyeIcon(eyeIcon === "eye-slash" ? "eye" : "eye-slash")} }}
             value={newPassword} 
             onChangeText={(text) => setNewPassword(text)} />
           <Input 
+            {...(isPasswordShown ? {secureTextEntry: false} : {secureTextEntry: true})}
             placeholder="Confirm new password" 
             label='Confirm new password' 
             leftIcon={{ type: 'font-awesome', name: lockIcon }}
+            rightIcon={{ type: 'font-awesome', name: eyeIcon, onPress: () => {setEyeIcon(eyeIcon === "eye-slash" ? "eye" : "eye-slash")} }}
             value={confirmPassword} 
             onChangeText={(text) => setConfirmPassword(text)} />
           {isMatched == true ? <Text style={{color:'green'}}>Passwords match</Text> : <Text style={{color: "red"}}>Passwords do not match</Text>}
@@ -104,12 +121,12 @@ const styles = StyleSheet.create({
       width: 150,
       height: 50,
       borderBottomLeftRadius: 17,
-      borderTopRightRadius:17
+      borderTopRightRadius:40
     },
     rightButton: {
       width: 150,
       height: 50,
-      borderTopLeftRadius: 17,
+      borderTopLeftRadius: 40,
       borderBottomRightRadius:17
     }
 })

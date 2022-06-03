@@ -1,20 +1,16 @@
-import React from 'react'
-import { useEffect } from 'react'
+import React, {useState, useEffect} from 'react'
 import { StatusBar } from 'expo-status-bar'
-import { View, Text, StyleSheet, Alert, Animated } from 'react-native'
+import { View, Text, StyleSheet, Alert, Animated, Platform, TouchableOpacity } from 'react-native'
 import { Button, Image, Input } from "react-native-elements"
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StackActions } from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler'
-import { TouchableOpacity } from 'react-native'
-import { useState } from 'react'
 import ChangeName from '../components/AccountSettingsComponents/ChangeName'
 import EditBio from '../components/AccountSettingsComponents/EditBio'
 import ChangePassword from '../components/AccountSettingsComponents/ChangePassword'
 import "firebase/firestore";
-import { db } from '../firebase'
-import { auth } from '../firebase'
+import { db, auth } from '../firebase'
 import UploadAvatar from '../components/UploadPhoto'
 
 const AccountSettings = ({ navigation }) => {
@@ -27,32 +23,100 @@ const AccountSettings = ({ navigation }) => {
     const [isChangeNameShown, setIsChangeNameShown] = useState(false)
     const [isEditBioShown, setIsEditBioShown] = useState(false)
     const [isChangePasswordShown, setIsChangePasswordShown] = useState(false)
-    const [changedName, setChangedName] = useState("") 
+    const [changedName, setChangedName] = useState("")     
+    const [platform, setPlatform] = useState("")
+    const [shadowOptions, setShadowOptions] = useState({})
+
     const user = auth.currentUser;
 
+    let yAnim0FromTop = React.useRef(new Animated.Value(1000)).current;
+    let yAnim1FromTop = React.useRef(new Animated.Value(1000)).current;
+    let yAnim2FromTop = React.useRef(new Animated.Value(1000)).current;
+    let yAnim3FromTop = React.useRef(new Animated.Value(1000)).current;
+    let yAnim4FromTop = React.useRef(new Animated.Value(1000)).current;
+    let yAnim5FromTop = React.useRef(new Animated.Value(1000)).current;
 
-  
+    useEffect(() => {       // spesific animation timings for each menu item
+        setTimeout(() => {
+            Animated.spring(yAnim0FromTop, {
+                toValue: 0,
+                friction: 8,
+                tension: 40,
+                useNativeDriver: true,
+            }).start();
+        } , 400)
+        setTimeout(() => {
+            Animated.spring(yAnim1FromTop, {
+                toValue: 0,
+                friction: 8,
+                tension: 40,
+                useNativeDriver: true,
+            }).start();
+        } , 550)
+        setTimeout(() => {
+            Animated.spring(yAnim2FromTop, {
+                toValue: 0,
+                friction: 8,
+                tension: 40,
+                useNativeDriver: true,
+            }).start();
+        } , 700)
+        setTimeout(() => {
+            Animated.spring(yAnim3FromTop, {
+                toValue: 0,
+                friction: 8,
+                tension: 40,
+                useNativeDriver: true,
+            }).start();
+        } , 850)
+        setTimeout(() => {
+            Animated.spring(yAnim4FromTop, {
+                toValue: 0,
+                friction: 8,
+                tension: 40,
+                useNativeDriver: true,
+            }).start();
+        } , 1000)
+        setTimeout(() => {
+            Animated.spring(yAnim5FromTop, {
+                toValue: 0,
+                friction: 8,
+                tension: 40,
+                useNativeDriver: true,
+            }).start();
+        } , 1150)
+    }, [])
 
-    let fadeAnim = new Animated.Value(0)
-        Animated.timing(
-          fadeAnim,
-          {
-            toValue: 1,
-            duration: 1000,
-            useNativeDriver: true
-          }
-        ).start();
-        const animStyle = {
-            opacity: fadeAnim
-        }
+    useEffect(() => {          // platform based shadow options
+     if (Platform.OS === "android") {
+       setPlatform("android")
+       setShadowOptions({
+         elevation: 0
+       })
+    }
+      else if (Platform.OS === "ios") {
+        setPlatform("ios")
+        setShadowOptions({
+          shadowColor: '#171717',
+          shadowOffset: {width: -1, height: 3},
+          shadowOpacity: 0.4,
+          shadowRadius: 5, 
+        })
+    }}, [])
 
 
+   
 
     return (
         <>
 
             <View style={styles.elevation}>
-                <View style={[styles.buttonView,{backgroundColor:`#${COLOR_PALETTE_1[3]}`}]}>
+                <Animated.View style={[
+                    styles.buttonView, 
+                    shadowOptions,
+                    {transform: [{translateY: yAnim0FromTop}]}, 
+                    {backgroundColor:`#${COLOR_PALETTE_1[3]}`}
+                    ]}>
                     <TouchableOpacity onPress={()=> setIsChangeNameShown(true)} style={{
                         width:'100%', height: 50, justifyContent:'center', alignItems:'center'}}>
                         <Text 
@@ -60,8 +124,13 @@ const AccountSettings = ({ navigation }) => {
                             Change Name
                         </Text>
                     </TouchableOpacity>
-                </View>
-                <View style={[styles.buttonView,{backgroundColor:`#${COLOR_PALETTE_1[3]}`}]}>
+                </Animated.View>
+                <Animated.View style={[
+                    styles.buttonView, 
+                    shadowOptions,
+                    {transform: [{translateY: yAnim1FromTop}]}, 
+                    {backgroundColor:`#${COLOR_PALETTE_1[3]}`}
+                    ]}>
                     <TouchableOpacity onPress={()=> setIsEditBioShown(true)} style={{
                         width:'100%', height:50, justifyContent:'center', alignItems:'center'}}>
                         <Text 
@@ -69,8 +138,13 @@ const AccountSettings = ({ navigation }) => {
                             Edit Bio
                         </Text>
                     </TouchableOpacity>
-                </View> 
-                <View style={[styles.buttonView,{backgroundColor:`#${COLOR_PALETTE_1[5]}`}]}>
+                </Animated.View> 
+                <Animated.View style={[
+                    styles.buttonView, 
+                    shadowOptions, 
+                    {transform: [{translateY: yAnim2FromTop}]},
+                    {backgroundColor:`#${COLOR_PALETTE_1[5]}`}
+                    ]}>
                     <TouchableOpacity onPress={()=> navigation.navigate("Upload Avatar")} style={{
                         width:'100%', height: 50, justifyContent:'center', alignItems:'center'}}>
                         <Text 
@@ -78,8 +152,13 @@ const AccountSettings = ({ navigation }) => {
                             Upload Avatar
                         </Text>
                     </TouchableOpacity>
-                </View>
-                <View style={[styles.buttonView,{backgroundColor:`#${COLOR_PALETTE_1[6]}`}]}>
+                </Animated.View>
+                <Animated.View style={[
+                    styles.buttonView, 
+                    shadowOptions, 
+                    {transform: [{translateY: yAnim3FromTop}]},
+                    {backgroundColor:`#${COLOR_PALETTE_1[6]}`}
+                    ]}>
                     <TouchableOpacity onPress={()=> setIsChangePasswordShown(true)} style={{
                         width:'100%', height: 50, justifyContent:'center', alignItems:'center'}}>
                         <Text 
@@ -87,10 +166,7 @@ const AccountSettings = ({ navigation }) => {
                             Change Password
                         </Text>
                     </TouchableOpacity>
-                </View>
-
-
-               
+                </Animated.View>
             </View>
             {isChangeNameShown ? 
                 <View style={{width:'100%',height:'100%',justifyContent:'center', alignItems:'center'}} >
@@ -106,10 +182,6 @@ const AccountSettings = ({ navigation }) => {
                 <View style={{width:'100%',height:'100%',justifyContent:'center', alignItems:'center'}}>
                     <ChangePassword color={`#${COLOR_PALETTE_1[6]}`} setIsChangePasswordShown={setIsChangePasswordShown} /> 
                 </View> : null}
-
-           
-
-    
         </>
 
     )
@@ -145,6 +217,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         borderRadius:10
-    }
+    },
 
 })

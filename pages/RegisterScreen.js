@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar'
 import React from 'react'
-import { StyleSheet, View, Text, KeyboardAvoidingView, Alert, Animated } from 'react-native'
+import { StyleSheet, View, Text, KeyboardAvoidingView, Alert, Animated, Platform } from 'react-native'
 import { Button, Input } from 'react-native-elements/'
 import {useState, useLayoutEffect, useEffect, useRef} from "react"
 import { auth } from "../firebase";
@@ -17,8 +17,29 @@ const RegisterScreen = ({ navigation }) => {
     const [username, setUsername] = useState("")
     const [confirmpassword, setConfirmPassword] = useState("")
     const [isRight, setIsRight] = useState(null)
+    const [platform, setPlatform] = useState('')
+    const [shadowOptions, setShadowOptions] = useState({})
 
     const scaleAnim = useRef(new Animated.Value(0)).current
+
+    useEffect(() => {          // platform based shadow options
+        if (Platform.OS === "android") {
+          setPlatform("android")
+          setShadowOptions({
+            elevation: 20
+          })
+      }
+        else if (Platform.OS === "ios") {
+          setPlatform("ios")
+          setShadowOptions({
+            shadowColor: '#171717',
+            shadowOffset: {width: -1, height: 3},
+            shadowOpacity: 0.4,
+            shadowRadius: 5, 
+          })
+        }
+    
+      }, [])
 
     useEffect(() => {
         Animated.spring(scaleAnim, {
@@ -108,7 +129,7 @@ const RegisterScreen = ({ navigation }) => {
     return (
         <View behavior="padding" style={styles.container}>
             <StatusBar style="light"/>
-            <Animated.View style={[styles.elevation, {transform: [{scale: scaleAnim}]}]}>
+            <Animated.View style={[styles.elevation, shadowOptions, {transform: [{scale: scaleAnim}]}]}>
                 <View style={{height: 20}}></View>
             <Text h1 style={{marginBottom: 50, fontSize: 25, color: "black"}}>Create an account</Text>
             <View style={styles.inputContainer}>

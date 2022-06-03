@@ -11,6 +11,8 @@ import { ScrollView } from 'react-native-gesture-handler'
 
 const SettingsPage = ({ navigation }) => {
 
+    // TODO: check container and elevation box styling
+
     return (
         <>
         <KeyboardAvoidingView style={styles.container}>

@@ -100,12 +100,12 @@ const styles = StyleSheet.create({
         width: 150,
         height: 50,
         borderBottomLeftRadius: 17,
-        borderTopRightRadius:17
+        borderTopRightRadius:40
       },
       rightButton: {
         width: 150,
         height: 50,
-        borderTopLeftRadius: 17,
+        borderTopLeftRadius: 40,
         borderBottomRightRadius:17
       }
 })

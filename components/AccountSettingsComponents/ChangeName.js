@@ -1,5 +1,5 @@
 import React, { Component, useRef, useEffect } from 'react'
-import { Text, View, StyleSheet, ScrollView, Image, KeyboardAvoidingView, Alert, Animated } from 'react-native'
+import { Text, View, StyleSheet, ScrollView, Image, KeyboardAvoidingView, Alert, Animated, Platform } from 'react-native'
 import { BackgroundImage } from 'react-native-elements/dist/config'
 import { Button } from 'react-native-elements'
 import { useState } from 'react'
@@ -10,10 +10,12 @@ import { Icon } from 'react-native-elements'
 function ChangeName({ color, setIsChangeNameShown }) {
 
     const [changedName, setChangedName] = useState("") 
-
+    
     const user = auth.currentUser
 
     const springAnim = useRef(new Animated.Value(1000)).current
+
+   
 
     useEffect(() => {           // animation
         Animated.spring(springAnim, {
@@ -55,7 +57,7 @@ function ChangeName({ color, setIsChangeNameShown }) {
 
 
     return (
-        <Animated.View style={[styles.component, {transform: [{translateY: springAnim}]}]}>
+        <Animated.View style={[styles.component,{transform: [{translateY: springAnim}]}]}>
             <Text style={{marginBottom: 20, textAlign:'center', fontSize:20}}>Your name:{'\n'} {user.displayName}</Text>
             <Input 
               placeholder="Change your name" 
@@ -94,12 +96,12 @@ const styles = StyleSheet.create({
       width: 150,
       height: 50,
       borderBottomLeftRadius: 17,
-      borderTopRightRadius:17
+      borderTopRightRadius:40
     },
     rightButton: {
       width: 150,
       height: 50,
-      borderTopLeftRadius: 17,
+      borderTopLeftRadius: 40,
       borderBottomRightRadius:17
     }
 })
