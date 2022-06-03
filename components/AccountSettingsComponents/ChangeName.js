@@ -5,8 +5,9 @@ import { Button } from 'react-native-elements'
 import { useState } from 'react'
 import { auth } from '../../firebase'
 import { Input } from 'react-native-elements/dist/input/Input'
+import { Icon } from 'react-native-elements'
 
-function ChangeName({ setIsChangeNameShown }) {
+function ChangeName({ color, setIsChangeNameShown }) {
 
     const [changedName, setChangedName] = useState("") 
 
@@ -56,10 +57,15 @@ function ChangeName({ setIsChangeNameShown }) {
     return (
         <Animated.View style={[styles.component, {transform: [{translateY: springAnim}]}]}>
             <Text style={{marginBottom: 20, textAlign:'center', fontSize:20}}>Your name:{'\n'} {user.displayName}</Text>
-            <Input placeholder="Change your name" value={changedName} onChangeText={(text) => setChangedName(text)} />
-            <View style={{flexDirection:'row', bottom: 10, }}>
-              <Button title='Submit' onPress={submitFunction}  buttonStyle={{width: 90,height: 50,backgroundColor: "crimson",borderRadius: 20,}} />
-              <Button title='Cancel' onPress={()=> closeModal()} buttonStyle={{width: 90,height: 50,backgroundColor: "crimson",borderRadius: 20,}} />
+            <Input 
+              placeholder="Change your name" 
+              label='New name'
+              leftIcon={{ type: 'font-awesome', name: 'id-card' }}
+              value={changedName} 
+              onChangeText={(text) => setChangedName(text)} />
+            <View style={{flexDirection:'row', justifyContent:'space-between', width:'100%', bottom: -15 }}>
+              <Button title='Submit' onPress={submitFunction}  buttonStyle={[styles.leftButton,{backgroundColor: color}]} />
+              <Button title='Cancel' onPress={()=> closeModal()} buttonStyle={[styles.rightButton, {backgroundColor: color}]} />
 
             </View>             
         </Animated.View>
@@ -73,16 +79,27 @@ const styles = StyleSheet.create({
         position: "absolute",
         justifyContent: "space-evenly",
         alignItems: "center",
+        alignSelf:'center',
         width: 350,
-        height: 250,
         backgroundColor: "rgba(240,240,240,1)",
-        marginTop: 5,
-        marginBottom: 5,
         borderRadius:20,
-        padding: 5,
+        paddingTop: 15,
+        paddingBottom:15,
         zIndex: 10,
         borderColor:'black',
         borderWidth: 2
 
+    },
+    leftButton: {
+      width: 150,
+      height: 50,
+      borderBottomLeftRadius: 17,
+      borderTopRightRadius:17
+    },
+    rightButton: {
+      width: 150,
+      height: 50,
+      borderTopLeftRadius: 17,
+      borderBottomRightRadius:17
     }
 })

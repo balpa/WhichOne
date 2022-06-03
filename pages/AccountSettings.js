@@ -11,6 +11,7 @@ import { TouchableOpacity } from 'react-native'
 import { useState } from 'react'
 import ChangeName from '../components/AccountSettingsComponents/ChangeName'
 import EditBio from '../components/AccountSettingsComponents/EditBio'
+import ChangePassword from '../components/AccountSettingsComponents/ChangePassword'
 import "firebase/firestore";
 import { db } from '../firebase'
 import { auth } from '../firebase'
@@ -18,10 +19,18 @@ import UploadAvatar from '../components/UploadPhoto'
 
 const AccountSettings = ({ navigation }) => {
 
+    // TODO: styling bad & add shadow platform based
+    // need problems with styling. need refactoring probably
+
+    const COLOR_PALETTE_1 = ["FEF9A7","FAC213", "F77E21", "D61C4E", "990000", "FF5B00", "D4D925", "FFEE63"]
+
     const [isChangeNameShown, setIsChangeNameShown] = useState(false)
     const [isEditBioShown, setIsEditBioShown] = useState(false)
+    const [isChangePasswordShown, setIsChangePasswordShown] = useState(false)
     const [changedName, setChangedName] = useState("") 
     const user = auth.currentUser;
+
+
   
 
     let fadeAnim = new Animated.Value(0)
@@ -41,15 +50,65 @@ const AccountSettings = ({ navigation }) => {
 
     return (
         <>
-        <View style={styles.container}>
+
             <View style={styles.elevation}>
-                <Button onPress={()=> setIsChangeNameShown(true)} titleStyle={{color: "black", fontSize: 20}} buttonStyle={styles.accountButton} title="Change Name"/>
-                <Button onPress={()=> setIsEditBioShown(true)} titleStyle={{color: "black", fontSize: 20}} buttonStyle={styles.accountButton} title="Edit Bio"/>
-                <Button onPress={()=> navigation.navigate("Upload Avatar")} titleStyle={{color: "black", fontSize: 20}} buttonStyle={styles.accountButton} title="Upload Avatar"/>
-                {isChangeNameShown ? <ChangeName setIsChangeNameShown={setIsChangeNameShown} /> : null}
-                {isEditBioShown ? <EditBio setIsEditBioShown={setIsEditBioShown} /> : null}
+                <View style={[styles.buttonView,{backgroundColor:`#${COLOR_PALETTE_1[3]}`}]}>
+                    <TouchableOpacity onPress={()=> setIsChangeNameShown(true)} style={{
+                        width:'100%', height: 50, justifyContent:'center', alignItems:'center'}}>
+                        <Text 
+                            style={{fontSize:25, fontWeight:'800'}}>
+                            Change Name
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={[styles.buttonView,{backgroundColor:`#${COLOR_PALETTE_1[3]}`}]}>
+                    <TouchableOpacity onPress={()=> setIsEditBioShown(true)} style={{
+                        width:'100%', height:50, justifyContent:'center', alignItems:'center'}}>
+                        <Text 
+                            style={{fontSize:25, fontWeight:'800'}}>
+                            Edit Bio
+                        </Text>
+                    </TouchableOpacity>
+                </View> 
+                <View style={[styles.buttonView,{backgroundColor:`#${COLOR_PALETTE_1[5]}`}]}>
+                    <TouchableOpacity onPress={()=> navigation.navigate("Upload Avatar")} style={{
+                        width:'100%', height: 50, justifyContent:'center', alignItems:'center'}}>
+                        <Text 
+                            style={{fontSize:25, fontWeight:'800'}}>
+                            Upload Avatar
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={[styles.buttonView,{backgroundColor:`#${COLOR_PALETTE_1[6]}`}]}>
+                    <TouchableOpacity onPress={()=> setIsChangePasswordShown(true)} style={{
+                        width:'100%', height: 50, justifyContent:'center', alignItems:'center'}}>
+                        <Text 
+                            style={{fontSize:25, fontWeight:'800'}}>
+                            Change Password
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+
+
+               
             </View>
-        </View>
+            {isChangeNameShown ? 
+                <View style={{width:'100%',height:'100%',justifyContent:'center', alignItems:'center'}} >
+                    <ChangeName color={`#${COLOR_PALETTE_1[3]}`} setIsChangeNameShown={setIsChangeNameShown} />
+                </View> : null}
+
+                {isEditBioShown ? 
+                <View style={{width:'100%',height:'100%',justifyContent:'center', alignItems:'center'}}>
+                    <EditBio color={`#${COLOR_PALETTE_1[3]}`} setIsEditBioShown={setIsEditBioShown} /> 
+                </View> : null}
+
+                {isChangePasswordShown ? 
+                <View style={{width:'100%',height:'100%',justifyContent:'center', alignItems:'center'}}>
+                    <ChangePassword color={`#${COLOR_PALETTE_1[6]}`} setIsChangePasswordShown={setIsChangePasswordShown} /> 
+                </View> : null}
+
+           
+
     
         </>
 
@@ -67,34 +126,25 @@ const styles = StyleSheet.create({
     top: {
         alignItems: "flex-end"
     },
-    container: {
-        flex: 1,
-        alignItems:"center",
-        justifyContent: "center",
-        backgroundColor: "black",
-        borderWidth: 1, 
-    },
+    // container: {
+    //     alignItems:"center",
+    //     justifyContent: "space-evenly",
+    //     backgroundColor: "black",
+    //     borderWidth: 1, 
+    // },
     elevation:{
+        position:'absolute',
         width: "100%",
         height: "100%",
-        justifyContent: "center", alignItems: "center", 
-        backgroundColor: "#ffffff",
+        alignItems: "center",
     },
-    profileBody: {
-    },
-    component: {
-        position: "absolute",
+    buttonView: {
+        margin: 10, 
+        width:'90%',
+        height:50,
         justifyContent: "center",
         alignItems: "center",
-        width: 350,
-        height: 400,
-        backgroundColor: "rgba(250,250,250,0.9)",
-        marginTop: 5,
-        marginBottom: 5,
-        borderRadius:20,
-        padding: 5,
-        zIndex: 10,
-
+        borderRadius:10
     }
 
 })

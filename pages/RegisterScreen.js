@@ -34,7 +34,7 @@ const RegisterScreen = ({ navigation }) => {
         })
     }, [navigation])
 
-    const register = () => {
+    const register = () => {        // TODO: PASSWORD MIN CHAR SIZE
         auth.createUserWithEmailAndPassword(email, password)
         .then((authUser) => {
             authUser.user.updateProfile({

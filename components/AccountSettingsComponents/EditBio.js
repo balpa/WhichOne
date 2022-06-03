@@ -7,8 +7,9 @@ import { auth } from '../../firebase'
 import { db } from '../../firebase'
 import { Input } from 'react-native-elements/dist/input/Input'
 import { doc, getDoc, updateDoc} from 'firebase/firestore'
+import { Icon } from 'react-native-elements'
 
-function EditBio({ setIsEditBioShown }) {
+function EditBio({ color, setIsEditBioShown }) {
 
     const [bioText, setBioText] = useState("") 
     const [currentBio, setCurrentBio] = useState('')
@@ -61,10 +62,15 @@ function EditBio({ setIsEditBioShown }) {
     return (
         <Animated.View style={[styles.component, {transform: [{translateY: springAnim}]}]}>
             <Text style={{marginBottom: 20, textAlign:'center', fontSize:20}}>Current bio:{'\n'} {currentBio}</Text>
-            <Input placeholder="Add bio" value={bioText} onChangeText={(text) => setBioText(text)} />
-            <View style={{flexDirection:'row', bottom: 10, }}>
-              <Button title='Submit' onPress={submitFunction}  buttonStyle={{width: 90,height: 50,backgroundColor: "crimson",borderRadius: 20,}} />
-              <Button title='Cancel' onPress={()=> closeModal()} buttonStyle={{width: 90,height: 50,backgroundColor: "crimson",borderRadius: 20,}} />
+            <Input 
+                placeholder="..." 
+                label='Add bio'
+                leftIcon={{ type: 'font-awesome', name: 'pencil' }}
+                value={bioText} 
+                onChangeText={(text) => setBioText(text)} />
+            <View style={{flexDirection:'row',justifyContent:'space-between',width:'100%', bottom: -15, }}>
+              <Button title='Submit' onPress={submitFunction}  buttonStyle={[styles.leftButton, {backgroundColor:color}]} />
+              <Button title='Cancel' onPress={()=> closeModal()} buttonStyle={[styles.rightButton,{backgroundColor:color}]} />
 
             </View>             
         </Animated.View>
@@ -79,16 +85,27 @@ const styles = StyleSheet.create({
         justifyContent: "space-evenly",
         alignItems: "center",
         width: 350,
-        height: 250,
         backgroundColor: "rgba(240,240,240,1)",
         marginTop: 5,
-        marginBottom: 5,
         borderRadius:20,
-        padding: 5,
+        paddingTop: 15,
+        paddingBottom:15,
         zIndex: 10,
         borderWidth:2,
         borderColor:'black'
 
 
-    }
+    },
+    leftButton: {
+        width: 150,
+        height: 50,
+        borderBottomLeftRadius: 17,
+        borderTopRightRadius:17
+      },
+      rightButton: {
+        width: 150,
+        height: 50,
+        borderTopLeftRadius: 17,
+        borderBottomRightRadius:17
+      }
 })
