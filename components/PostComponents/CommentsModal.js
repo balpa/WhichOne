@@ -57,6 +57,8 @@ const CommentsModal = ({ postID, setShowComments }) => {
         await setDoc(doc(db,"postInfo", `${postID}`, "comments", "commentsUserID"), {
             [user.displayName]: commentText
         },{ merge: true })
+
+        setCommentText("")          // TODO: doesnt clear the input field
     }
 
   return (

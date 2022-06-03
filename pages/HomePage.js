@@ -33,25 +33,25 @@ const HomePage = ({navigation}) => {
        setDummy(!dummy)
     }
 
-    // useEffect(async() => {           // get list of people that logged in user follows for home page post display
-    //     const getFollowingList = await getDoc(doc(db, "useruid", `${user.uid}`))
-    //         .then((doc) => setFollowingList(doc.data().following))
-    // }, [])
+    useEffect(async() => {           // get list of people that logged in user follows for home page post display
+        const getFollowingList = await getDoc(doc(db, "useruid", `${user.uid}`))
+            .then((doc) => setFollowingList(doc.data().following))
+    }, [])
 
-    // useEffect(async () => {
-    //     if (allPostsFromFollowing.length != 0) {
-    //         allPostsFromFollowing.map(async(postID,index) => {
-    //             const getPostData = await getDoc(doc(db,'postInfo',`${postID}`))
-    //             if (getPostData.exists){
-    //                 setComponents(old=> [...old, <PostComponent key={index} postID={postID} userID={getPostData.data().userID} name={getPostData.data().name} />])
-    //             }})}
-    // } , [])
+    useEffect(async () => {
+        if (allPostsFromFollowing.length != 0) {
+            allPostsFromFollowing.map(async(postID,index) => {
+                const getPostData = await getDoc(doc(db,'postInfo',`${postID}`))
+                if (getPostData.exists){
+                    setComponents(old=> [...old, <PostComponent key={index} postID={postID} userID={getPostData.data().userID} name={getPostData.data().name} />])
+                }})}
+    } , [])
 
-    // useEffect(async()=>{ 
-    //     await getDoc(doc(db, "useruid", `${user.uid}`)).then((document) => {
-    //     setFollowingList(document.data().following)     // DOESN'T SET THE ARRAY. IT PASSES HERE
-    // })
-    // }, [])
+    useEffect(async()=>{ 
+        await getDoc(doc(db, "useruid", `${user.uid}`)).then((document) => {
+        setFollowingList(document.data().following)     // DOESN'T SET THE ARRAY. IT PASSES HERE
+    })
+    }, [])
 
 
 

@@ -133,7 +133,13 @@ const ProfilePage = ({ navigation }) => {
                   />
                 </TouchableOpacity>
               </View>
-              <Text style={{color:'black',fontSize:15}}>{currentBio}</Text>
+              <Text style={{
+                color:'black',
+                fontSize:15,
+                marginRight: 15,
+                marginLeft: 15,
+                textAlign:'center'
+                }}>{currentBio}</Text>
                 <View style={{flexDirection: "row", marginTop:10}}>
                   <TouchableOpacity onPress={() => navigation.navigate("Followers & Following")}> 
                     <Text style={styles.followersInfo}>{followerCount}{" "}Followers</Text>
