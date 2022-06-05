@@ -25,8 +25,6 @@ export default function SmallProfile({ userID }) {
 
     const storage = getStorage();
 
-    console.log(navigation)
-
     getDownloadURL(ref(storage, `Users/${userID}/avatars/avatar_image`))    // get the user's avatar
       .then((url) => setImage(url))
       .catch((error) => console.log(error))

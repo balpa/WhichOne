@@ -41,7 +41,7 @@ const HomePage = ({navigation}) => {
         }
     }, [activePage])
 
-    //TODO: hide label not working somehow. find a solution
+    //TODO: hide label not working somehow. find a solution (found by creating the nav bar manually)
     
     return (
     <>
