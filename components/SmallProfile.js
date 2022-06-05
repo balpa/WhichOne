@@ -94,9 +94,20 @@ export default function SmallProfile({ userID }) {
             paddingRight: 20,
             }}>
             <View style={styles.nameAndImage} >
-                    <Image style={{width: 30, height: 30, borderRadius: 30/2, marginRight:10}} source={{uri: image}}/>
-                    <TouchableOpacity onPress={()=>{navigation.navigate("UserProfile",{ name: `${userIDData.name}`, userID: `${userID}`})}}>
-                        <Text style={{fontSize: 17, color:'black'}}>{userIDData.name}</Text>
+                    <Image 
+                        style={{
+                            width: 30, 
+                            height: 30, 
+                            borderRadius: 30/2, 
+                            marginRight:10}} 
+                        source={{uri: image}}/>
+                    <TouchableOpacity 
+                        onPress={()=>{navigation.navigate("UserProfile",{ name: `${userIDData.name}`, userID: `${userID}`})}}>
+                        <Text 
+                            style={{
+                                fontSize: 17, 
+                                color:'black'}}
+                        >{userIDData.name}</Text>
                     </TouchableOpacity>
             </View>
             <View>

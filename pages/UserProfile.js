@@ -94,11 +94,6 @@ const UserProfile = ({ route, navigation }) => {
       }
   }
 
-  // TODO: follow button background change with useeffect
-
-
-    // TODO: ADD LIKES AND COMMENTS HERE
-
     return (
         <>
         <View style={styles.container}>
@@ -112,8 +107,9 @@ const UserProfile = ({ route, navigation }) => {
                 <View style={{flexDirection: "row"}}>
                     <Text style={styles.followersInfo}>{followerCount}{"\n"}Followers</Text>
                     <Text style={styles.followersInfo}>{followingCount}{"\n"}Following</Text>
-                  <Text style={styles.followersInfo}>{postIDs.length}{"\n"}Posts</Text>
+                    <Text style={styles.followersInfo}>{postIDs.length}{"\n"}Posts</Text>
                 </View>
+                {followSituation == true ? 
                 <View 
                   style={{
                     width: 125,
@@ -131,9 +127,31 @@ const UserProfile = ({ route, navigation }) => {
                       justifyContent:'center',
                       alignItems: 'center',
                       }}>
-                    <Text style={followSituation == true ? {color: 'white'} : {color: 'crimson'}}>Following</Text>
+                    <Text style={{color:'white'}}>Following</Text>
                   </TouchableOpacity>
                 </View>
+                :
+                <View 
+                  style={{
+                    width: 125,
+                    height: 40,
+                    marginTop: 10,
+                    backgroundColor: 'rgb(240,240,240)',
+                    justifyContent:'center',
+                    alignItems: 'center',
+                    borderRadius: 10,
+                  }}>
+                  <TouchableOpacity
+                    style={{
+                      width:'100%',
+                      height: '100%',
+                      justifyContent:'center',
+                      alignItems: 'center',
+                      }}>
+                    <Text style={{color:'crimson'}}>Follow</Text>
+                  </TouchableOpacity>
+                </View>
+                }
             </View>
             
         </View>

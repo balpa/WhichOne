@@ -51,8 +51,8 @@ export default function MessagePerson({ userID, color }) {
             width: window.width-5,
             height: 70,
             backgroundColor: 'rgba(255,255,255,0)',
-            paddingLeft: 20,
-            paddingRight: 20,
+            paddingLeft: 10,
+            paddingRight: 10,
             }}>
             <View style={styles.nameAndImage} >
                     <Image 
@@ -85,7 +85,7 @@ export default function MessagePerson({ userID, color }) {
                   justifyContent:'center', 
                   alignItems:'center'}}>
                   <TouchableOpacity 
-                    onPress={()=>console.log("navigate here")} 
+                    onPress={()=> navigation.navigate("DMChatPage", { userID: `${userID}`, name: `${userIDData.name}`, userData: userIDData })} 
                     style={{
                       width:'100%',
                       height:'100%',
