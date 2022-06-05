@@ -28,7 +28,7 @@ export default function MessagePerson({ userID, color }) {
 
     getDownloadURL(ref(storage, `Users/${userID}/avatars/avatar_image`))    // get the user's avatar
       .then((url) => setImage(url))
-      .catch((error) => console.log(error))
+      .catch((error) => setImage("https://emedia1.nhs.wales/HEIW2/cache/file/F4C33EF0-69EE-4445-94018B01ADCF6FD4.png"))
 
     // get the user's data. id is passed through component props
     useEffect(() => {

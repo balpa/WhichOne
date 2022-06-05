@@ -22,11 +22,12 @@ const UserProfile = ({ route, navigation }) => {
     const [followingCount, setFollowingCount] = useState(0)
     const [image,setImage] = useState(null)
     const [postIDs, setPostIDs] = useState([])
+    const [followSituation, setFollowSituation] = useState(false)
 
-    const user = auth.currentUser;
+    const loggedinUser = auth.currentUser;
     const storage = getStorage();
 
-    const { userID, name } = route.params  //userID and name are passd through route params
+    const { userID, name } = route.params  //userID and name are passed through route params
 
     getDownloadURL(ref(storage, `Users/${userID}/avatars/avatar_image`))
       .then((url) => {
@@ -45,6 +46,15 @@ const UserProfile = ({ route, navigation }) => {
       setFollowingCount(doc.data().following.length)
     })
 
+    useEffect(() => {       // check if the user is following or not
+      if (userID !== "" || userID !== null || userID !== undefined) {
+          const isFollowingSearchedUser = onSnapshot(doc(db, "useruid", `${userID}`), (doc) => {
+              if (userID === loggedinUser.uid) setFollowSituation(true)
+              else setFollowSituation(doc.data().followers.includes(loggedinUser.uid))
+          })
+          }
+  }, [userID])
+
     // get post ids from firebase and store in array NEED POST IDS IN ARRAY LOCATED IN posts/useruid/postID
     useEffect(async() => {
       const toPostIDs = await getDoc(doc(db,"posts",`${userID}`))
@@ -52,7 +62,39 @@ const UserProfile = ({ route, navigation }) => {
       setPostIDs(toPostIDs.data().postID)
       }
     }, [])
-    console.log(postIDs)
+
+    // follow button func
+    function follow () {   
+      if (searchedUsersUID !== loggedinUser.uid) {
+      const addToFollowingForFollowingUser = db.collection('useruid')
+          .doc(`${loggedinUser.uid}`)
+          .update({
+              following: firebase.firestore.FieldValue.arrayUnion(searchedUsersUID)
+          })
+      const addToFollowersForSearchedUser = db.collection('useruid')
+          .doc(`${searchedUsersUID}`)
+          .update({
+              followers: firebase.firestore.FieldValue.arrayUnion(loggedinUser.uid)
+          })
+      }
+  }
+  // unfollow button func
+  function unfollow () {
+      if (searchedUsersUID !== loggedinUser.uid) {
+      const removeFromFollowingForFollowingUser = db.collection('useruid')
+          .doc(`${loggedinUser.uid}`)
+          .update({
+              following: firebase.firestore.FieldValue.arrayRemove(searchedUsersUID)
+      })
+      const removeFromFollowersForSearchedUser = db.collection('useruid')
+          .doc(`${searchedUsersUID}`)
+          .update({
+              followers: firebase.firestore.FieldValue.arrayRemove(loggedinUser.uid)
+          })
+      }
+  }
+
+  // TODO: follow button background change with useeffect
 
 
     // TODO: ADD LIKES AND COMMENTS HERE
@@ -71,6 +113,26 @@ const UserProfile = ({ route, navigation }) => {
                     <Text style={styles.followersInfo}>{followerCount}{"\n"}Followers</Text>
                     <Text style={styles.followersInfo}>{followingCount}{"\n"}Following</Text>
                   <Text style={styles.followersInfo}>{postIDs.length}{"\n"}Posts</Text>
+                </View>
+                <View 
+                  style={{
+                    width: 125,
+                    height: 40,
+                    marginTop: 10,
+                    backgroundColor: 'crimson',
+                    justifyContent:'center',
+                    alignItems: 'center',
+                    borderRadius: 10,
+                  }}>
+                  <TouchableOpacity
+                    style={{
+                      width:'100%',
+                      height: '100%',
+                      justifyContent:'center',
+                      alignItems: 'center',
+                      }}>
+                    <Text style={followSituation == true ? {color: 'white'} : {color: 'crimson'}}>Following</Text>
+                  </TouchableOpacity>
                 </View>
             </View>
             
@@ -119,7 +181,7 @@ const styles = StyleSheet.create({
 
   },
     container: {
-        height: 150,
+        height: 200,
         backgroundColor: "#ffffff",
         overflow: "hidden",
     },
