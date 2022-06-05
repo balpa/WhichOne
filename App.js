@@ -19,7 +19,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { StyleSheet, Text, View, Alert, LogBox } from 'react-native';
 import LoginScreen from "./pages/LoginScreen";
 import RegisterScreen from './pages/RegisterScreen';
-import HomeScreen from "./pages/HomeScreen";
 import ProfilePage from './pages/ProfilePage';
 import HomePage from './pages/HomePage';
 import StatsPage from './pages/StatsPage';
@@ -72,7 +71,6 @@ export default function App() {
      <Stack.Navigator screenOptions={globalScreenOptions} headerMode="screen" >
       <Stack.Screen name="Login" options={{transitionSpec: {open: config, close: config}}} component={LoginScreen} />
       <Stack.Screen name="Register" options={{transitionSpec: {open: config, close: config}}} component={RegisterScreen} />
-      <Stack.Screen name="Home" options={{transitionSpec: {open: config, close: config}}} component={HomeScreen} />
       <Stack.Screen name="Profile" options={{headerBackTitle: "Home", transitionSpec: { open: config, close: config }}} component={ProfilePage} />
       <Stack.Screen name="Followers & Following" options={{headerBackTitle: "Profile", transitionSpec: {open: config, close: config}}} component={FollowersFollowingPage}/>
       <Stack.Screen name="HomePage" options={{title: "WhichOne", transitionSpec: {open: config, close: config}}} component={HomePage} />

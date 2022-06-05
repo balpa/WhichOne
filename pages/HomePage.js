@@ -1,138 +1,51 @@
-import React, { useRef } from 'react'
-import { StatusBar } from 'expo-status-bar'
-import { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Animated } from 'react-native'
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import Home from '../components/HomePageNavigationPages/Home'
+import CreateFromNav from '../components/HomePageNavigationPages/CreateFromNav'
+import DMPage from '../components/HomePageNavigationPages/DMPage'
+import { NavigationContainer } from '@react-navigation/native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Animated } from 'react-native'
 import { Button, Icon } from "react-native-elements"
-import CreatePost from '../components/CreatePost'
-import PostComponent from '../components/PostComponent'
-import { doc, onSnapshot,get, getDoc, getDocs, query, where, collection, querySnapshot } from "firebase/firestore";
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
-import { auth } from '../firebase'
-import { db } from '../firebase'
-import { set } from 'react-native-reanimated'
-import { async } from '@firebase/util'
+import React, {useEffect,useState} from 'react'
+import { StatusBar } from 'expo-status-bar'
+import { auth, db } from '../firebase'
+
 
 
 const HomePage = ({navigation}) => {
 
+    const [activePage, setActivePage] = React.useState('Home')
+    const [homeIcon, setHomeIcon] = React.useState("home-outline")
+    const [createIcon, setCreateIcon] = React.useState("plus-outline")
+    const [dmIcon, setDmIcon] = React.useState("message-outline")
 
-    const [dummy,setDummy] = useState(false)
-    const [isShown, setIsShown] = useState(false)
-    const [followingList, setFollowingList] = useState([])    
-    const [postComponentList, setPostComponentList] = useState({})
-    const [components, setComponents] = useState([])
-    const [allPostsFromFollowing, setAllPostsFromFollowing] = useState([])
+    const Tab = createMaterialBottomTabNavigator()
 
-    const createPostFunc = () => { setIsShown(!isShown) }
+    React.useEffect(() => {             // icon changes but in a very bad way tho
+        if(activePage === "Home") {
+            setHomeIcon("home")
+            setCreateIcon("plus-outline")
+            setDmIcon("message-outline")
+        }
+        else if (activePage === "Create") {
+            setCreateIcon("plus")
+            setHomeIcon("home-outline")
+            setDmIcon("message-outline")
+        }
+        else if (activePage === "DM") {
+            setDmIcon("message")
+            setHomeIcon("home-outline")
+            setCreateIcon("plus-outline")
+        }
+        else {
+            console.log("what's happening bro")
+        }
+    }, [activePage])
 
-    const user = auth.currentUser
-
-    //  console.log("render and following list:  ", followingList)
-
-    function reloadPage(){      //page reload dummy func
-       setDummy(!dummy)
-    }
-
-    useEffect(async() => {           // get list of people that logged in user follows for home page post display
-        const getFollowingList = await getDoc(doc(db, "useruid", `${user.uid}`))
-            .then((doc) => setFollowingList(doc.data().following))
-    }, [])
-
-    useEffect(async () => {
-        if (allPostsFromFollowing.length != 0) {
-            allPostsFromFollowing.map(async(postID,index) => {
-                const getPostData = await getDoc(doc(db,'postInfo',`${postID}`))
-                if (getPostData.exists){
-                    setComponents(old=> [...old, <PostComponent key={index} postID={postID} userID={getPostData.data().userID} name={getPostData.data().name} />])
-                }})}
-    } , [])
-
-    useEffect(async()=>{ 
-        await getDoc(doc(db, "useruid", `${user.uid}`)).then((document) => {
-        setFollowingList(document.data().following)     // DOESN'T SET THE ARRAY. IT PASSES HERE
-    })
-    }, [])
-
-
-
-    async function setPosts(){
-        console.log("setPosts worked 2222222")
-
-        // console.log("useEffect running: ", allPostsFromFollowing)
-        if (allPostsFromFollowing.length == 0 && followingList.length > 0) { 
-        // console.log("first if read")
-            followingList.map(async(id,index) =>{
-                const followingPersonsPostID = await getDoc(doc(db,"posts",`${id}`))
-        // console.log("followingpersonspostid read")
-
-            if (followingPersonsPostID.exists){
-        // console.log("followingpersonspostid exists read")
-                followingPersonsPostID.data().postID.map((item,index) => {
-        // console.log("followingpersonspostid.data.postid.map read")
-                    if (allPostsFromFollowing.includes(item) === false) setAllPostsFromFollowing(old => [...old, item])
-                })}
-        })}
-    }
-    async function createComponent(){
-        console.log("createComponent worked 3333333")
-        // console.log("createComponent running: ", components)
-        if (allPostsFromFollowing.length != 0) {
-            allPostsFromFollowing.map(async(postID,index) => {
-            const getPostData = await getDoc(doc(db,'postInfo',`${postID}`))
-                if (getPostData.exists){
-                    setComponents(old=> [...old, <PostComponent key={index} postID={postID} userID={getPostData.data().userID} name={getPostData.data().name} />])
-                }})} 
-    }
-
-    useEffect(() => {
-       setPosts().then(() => createComponent())
-    }, [])
-
-    // useEffect(async() => {           // take following list and get all post id's from each user and store in array to fetch them all 
-
-    //     // TODO: at first render, it doesn't run this useEffect. CHECK
-    //     // at second render, it runs 1-2-3 clg's. meaning second if statement not running. CHECK
-
-    //     // followingList and allPostsFromFollowing abre empty at first render.
-
-    //     console.log("useEffect running: ", allPostsFromFollowing)
-    //     if (allPostsFromFollowing.length == 0 && followingList.length > 0) { 
-    //         console.log("first if read")
-    //         followingList.map(async(id,index) =>{
-    //             console.log("followinglist.map read")
-    //         const followingPersonsPostID = await getDoc(doc(db,"posts",`${id}`))
-    //         console.log("followingpersonspostid read")
-
-    //         if (followingPersonsPostID.exists){
-    //             console.log("followingpersonspostid exists read")
-    //             followingPersonsPostID.data().postID.map((item,index) => {
-    //                 console.log("followingpersonspostid.data.postid.map read")
-    //                 if (allPostsFromFollowing.includes(item) === false) setAllPostsFromFollowing(old => [...old, item])
-    //             })
-    //         }
-    //     })}
-    //     if (allPostsFromFollowing.length != 0) {
-    //         allPostsFromFollowing.map(async(postID,index) => {
-    //         const getPostData = await getDoc(doc(db,'postInfo',`${postID}`))
-    //             if (getPostData.exists){
-    //                 setComponents(old=> [...old, <PostComponent key={index} postID={postID} userID={getPostData.data().userID} name={getPostData.data().name} />])
-    //             }})}
-    // },[])
-
-
-    // TODO: needs re-rendering to show posts and after re-rendering again, 
-    // it shows the same posts again. FIX
-
-    // SOLUTION MIGHT BE COLLECTING ALL OF THE useEffect's in one
-
-    
-    // console.log("allpostsfromfollowing => ",allPostsFromFollowing) // THIS NOT GETTING ON FIRST RENDER
-
-
-    // TODO: use FlatList instead of ScrollView
+    //TODO: hide label not working somehow. find a solution
     
     return (
-        <View style={styles.container}>
+    <>
+        <View style={styles.top}>
             <StatusBar style="light"></StatusBar>
             <View style={styles.topSearch}>
                 <Button onPress={() => navigation.navigate("Search")} titleStyle={{color: "white", fontSize: 15}} buttonStyle={styles.searchButton} title={
@@ -150,39 +63,55 @@ const HomePage = ({navigation}) => {
                     <Icon name="account-circle" color="black" />
                 }/>
             </View>
-            <ScrollView>
-                {components.reverse()}
-            </ScrollView>
-            <View style={{position: "absolute", flex: 1, top: 150}}>
-                {isShown === true ? <CreatePost /> : null}
-            </View>
-            <TouchableOpacity style={styles.createButton}>
-                <Button onPress={()=> navigation.navigate("Create")} icon={{name: "add-to-photos"}} buttonStyle={{borderRadius:40,backgroundColor: "crimson"}} />
-            </TouchableOpacity>
-          
         </View>
+        <View style={styles.bottom}>
+
+            <View style={styles.bottomContents}>
+                {activePage == 'Home' ? <Home /> : (activePage == 'Create') ? <CreateFromNav /> : (activePage == 'DM') ? <DMPage /> : null}
+            </View>
+
+        </View>
+        <View style={styles.bottomNavBar}>
+            <Animated.View style={styles.TO}>
+                <TouchableOpacity onPress={()=>setActivePage('Home')} style={styles.TO}>
+                    <Icon name={homeIcon} type='material-community' color="black" />
+                </TouchableOpacity>
+            </Animated.View>
+            <Animated.View style={styles.TO}>
+                <TouchableOpacity onPress={()=>setActivePage('Create')} style={styles.TO}>
+                    <Icon name={createIcon} type='material-community' color="black" />
+                </TouchableOpacity>
+            </Animated.View>
+            <Animated.View style={styles.TO}>    
+                <TouchableOpacity onPress={()=>setActivePage('DM')} style={styles.TO}>
+                    <Icon name={dmIcon} type='material-community' color="black" />
+                </TouchableOpacity>
+            </Animated.View>    
+        </View>
+    </>
     )
 }
 
 export default HomePage
 
+
 const styles = StyleSheet.create({
-    createButton:{
-        backgroundColor: "crimson", 
-        justifyContent:"center", 
-        alignItems: "center", 
-        width: 50, 
-        height:50, 
-        position: "absolute", 
-        zIndex: 100, 
-        bottom: 30, 
-        right: 30,
-        borderRadius: 50,
-        shadowColor: '#000',
-        shadowOffset: { width: 1, height: 3 },
-        shadowOpacity: 0.8,
-        shadowRadius: 1,
-        elevation: 5,
+
+    TO: {
+        width: "33%",
+        height: "100%",
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    bottomNavBar: {
+        position: "absolute",
+        bottom: 0,
+        width: "100%",
+        height: "7%",
+        backgroundColor: "#ffffff",
+        justifyContent: 'space-around',
+        alignItems:'center',
+        flexDirection:'row'
     },
     topSearch: {
         position: "absolute",
@@ -210,11 +139,14 @@ const styles = StyleSheet.create({
         width: 100,
         right: 0,
         zIndex: 10,
-
+  
     },
-    container: {
-    flex: 1,
-    backgroundColor: "#ffffff",
-    alignItems: "center"
-},
-})
+    top: {
+        height: "7%",
+        alignItems: "center"
+  },
+    bottom: {
+        height: "86%",
+        zIndex: 10
+    }
+  })

@@ -154,7 +154,7 @@ const ProfilePage = ({ navigation }) => {
         </View>
         <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center', backgroundColor: "#ffffff"  }}>
           {postIDs.length > 0 ? postIDs.reverse().map((postID, index)=>{
-            console.log(`postid: ${postID}, index: ${index}`)
+            // console.log(`postid: ${postID}, index: ${index}`)
             return <PostComponent key={`${index}`} postID={postID} />}) 
           :
           <Text style={{color:'white',fontSize:20, marginTop:25}}>No Posts</Text>

@@ -16,6 +16,8 @@ import { NavigationContainer } from '@react-navigation/native'
 
 function UploadPhoto({ navigation }) {
 
+  // TODO: RESTYLING
+
     const user = auth.currentUser
 
     const [image, setImage] = useState([])
