@@ -28,7 +28,9 @@ const DMPage = () => {
       </View>
       <View style={styles.messagePersonContainer}>
         {following.map((userID, index)=> {
+          if (followers.includes(userID) && following.includes(userID)) {
           return <MessagePerson key={index} userID={userID} color={COLOR_PALETTE_1[Math.floor(Math.random()*COLOR_PALETTE_1.length)]}/>
+          }
         })}
       </View>
     </View>

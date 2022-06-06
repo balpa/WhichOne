@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
   
     },
     top: {
-        height: "7%",
+        height: 50,
         alignItems: "center"
   },
     bottom: {

@@ -91,6 +91,7 @@ export default function MessagePerson({ userID, color }) {
                       height:'100%',
                       justifyContent:'center',
                       alignItems:'center'}}>
+                    {/* <Icon name="paper-plane" type='font-awesome' color="black" /> */}
                     <Text>Message</Text>
                   </TouchableOpacity>
                 </View>
