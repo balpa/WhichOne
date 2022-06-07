@@ -40,7 +40,7 @@ const LoginScreen = ({ navigation }) => {
         else { setIsPasswordShown(false) }
     }, [lockIcon])
 
-    useEffect(() => {
+    useEffect(() =>{                // animations (fade-in)
         Animated.spring(scaleAnim, {
             toValue: 1,
             duration: 5000,
@@ -48,7 +48,7 @@ const LoginScreen = ({ navigation }) => {
           }).start()
     }, [])
 
-    useEffect(() => {
+    useEffect(() => {           // go to homepage if sign in successful of already logged in
         const unsubscribe = auth.onAuthStateChanged((authUser) => {
             if (authUser) {
                 navigation.replace("HomePage");
@@ -57,12 +57,19 @@ const LoginScreen = ({ navigation }) => {
         return unsubscribe;
     }, [])
 
-    const signIn = () => {
+    const signIn = () => {         // sign in function
+
+        if (email.length > 0 && password.length > 0) {
+
         auth.signInWithEmailAndPassword(email,password)
         .then(() => {
             navigation.replace("HomePage");
         })
         .catch((error) => alert(error.message))
+
+    } else {
+        alert("Please enter email and password")
+    }
 
     }
 

@@ -19,6 +19,8 @@ const RegisterScreen = ({ navigation }) => {
     const [isRight, setIsRight] = useState(null)
     const [platform, setPlatform] = useState('')
     const [shadowOptions, setShadowOptions] = useState({})
+    const [lockIcon, setLockIcon] = useState("eye-slash")
+    const [isPasswordShown, setIsPasswordShown] = useState(false)
 
     const scaleAnim = useRef(new Animated.Value(0)).current
 
@@ -54,6 +56,11 @@ const RegisterScreen = ({ navigation }) => {
             headerBackTitle:"Login",
         })
     }, [navigation])
+
+    useEffect(() => {
+        if (lockIcon === "eye"){ setIsPasswordShown(true) }
+        else { setIsPasswordShown(false) }
+    }, [lockIcon])
 
     const register = () => {        // TODO: PASSWORD MIN CHAR SIZE
         auth.createUserWithEmailAndPassword(email, password)
@@ -133,15 +140,65 @@ const RegisterScreen = ({ navigation }) => {
                 <View style={{height: 20}}></View>
             <Text h1 style={{marginBottom: 50, fontSize: 25, color: "black"}}>Create an account</Text>
             <View style={styles.inputContainer}>
-                <Input style={{color: "black"}} selectionColor="black"  autoFocus placeholder="Full Name" value={name} onChangeText={(text) => setName(text)}/>
-                <Input style={{color: "black"}} selectionColor="black"  autoCapitalize="none" placeholder="Username" value={username} onChangeText={(text) => setUsername(text)}/>
-                <Input style={{color: "black"}} selectionColor="black"  autoCapitalize="none" type="email" placeholder="Email" value={email} onChangeText={(text) => setEmail(text)}/>
-                <Input style={{color: "black"}} selectionColor="black"  autoCapitalize="none" type="password" secureTextEntry placeholder="Password" value={password} onChangeText={(text) => setPassword(text)}/>
-                <Input style={{color: "black"}} selectionColor="black"  autoCapitalize="none" type="password" secureTextEntry placeholder="Confirm password" value={confirmpassword} onChangeText={(text) => setConfirmPassword(text)}/>
+                <Input 
+                    label="Full Name"
+                    labelStyle={{color: "black", fontSize: 15}}
+                    leftIcon={{ type: 'material', name: 'badge', color: 'black' }}
+                    style={{color: "black"}} 
+                    selectionColor="black"  
+                    autoFocus placeholder="Jack Smith" 
+                    value={name} 
+                    onChangeText={(text) => setName(text)}/>
+                <Input 
+                    label="Username"
+                    labelStyle={{color: "black", fontSize: 15}}
+                    leftIcon={{ type: 'material', name: 'edit', color: 'black' }}
+                    style={{color: "black"}} 
+                    selectionColor="black"  
+                    autoCapitalize="none" 
+                    placeholder="jacksmith" 
+                    value={username} 
+                    onChangeText={(text) => setUsername(text)}/>
+                <Input 
+                    label="E-Mail"
+                    labelStyle={{color: "black", fontSize: 15}}
+                    leftIcon={{ type: 'material', name: 'email', color: 'black' }}
+                    style={{color: "black"}} 
+                    selectionColor="black"  
+                    autoCapitalize="none" 
+                    type="email" 
+                    placeholder="jack@gmail.com" 
+                    value={email} 
+                    onChangeText={(text) => setEmail(text)}/>
+                <Input 
+                    label="Password"
+                    labelStyle={{color: "black", fontSize: 15}}
+                    leftIcon={{ type: 'font-awesome', name: lockIcon, onPress: () => setLockIcon(lockIcon === "eye-slash" ? "eye" : "eye-slash") }}
+                    {...(isPasswordShown ? {secureTextEntry: false} : {secureTextEntry: true})}
+                    style={{color: "black"}} 
+                    selectionColor="black"  
+                    autoCapitalize="none" 
+                    type="password" 
+                    placeholder="Password" 
+                    value={password} 
+                    onChangeText={(text) => setPassword(text)}/>
+                <Input 
+                    label="Confirm Password"
+                    labelStyle={{color: "black", fontSize: 15}}
+                    leftIcon={{ type: 'font-awesome', name: lockIcon, onPress: () => setLockIcon(lockIcon === "eye-slash" ? "eye" : "eye-slash") }}
+                    {...(isPasswordShown ? {secureTextEntry: false} : {secureTextEntry: true})}
+                    style={{color: "black"}} 
+                    selectionColor="black"  
+                    autoCapitalize="none" 
+                    type="password" 
+                    placeholder="Confirm password" 
+                    value={confirmpassword} 
+                    onChangeText={(text) => setConfirmPassword(text)}/>
                 {isRight ? <RightPassword /> : <WrongPassword />}
             </View>
             <Button  title="Register" onPress={register} buttonStyle={styles.loginButton}/>
-            <View style={{height: 100}}/>
+            <Button  title="Cancel" titleStyle={{color:'crimson'}} onPress={()=> navigation.navigate("Login")} buttonStyle={styles.cancelButton}/>
+            <View style={{height: 50}}/>
             </Animated.View>
         </View>
     )
@@ -163,6 +220,12 @@ const styles = StyleSheet.create({
         width: 250,
         borderRadius: 15,
         backgroundColor: "#dc143c",
+        marginTop: 10,
+    },
+    cancelButton:{
+        width: 250,
+        borderRadius: 15,
+        backgroundColor: "white",
         marginTop: 10,
     },
     elevation:{
