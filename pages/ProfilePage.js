@@ -37,12 +37,8 @@ const ProfilePage = ({ navigation }) => {
     },[])
 
     getDownloadURL(ref(storage, `Users/${user.uid}/avatars/avatar_image`))  // get avatar
-      .then((url) => {
-        setImage(url) 
-    })
-      .catch((error) => {
-        console.log(error)
-    });
+      .then((url) => setImage(url))
+      .catch((error) => console.log(error))
 
     // get total follower count
     const getTotalFollowerCount = onSnapshot(doc(db, "useruid", `${user.uid}`), (doc) => {
@@ -105,9 +101,9 @@ const ProfilePage = ({ navigation }) => {
 
 
 
-    //TODO: sorting posts by date
-
     //TODO: change some getDoc's to onSnapshot for efficiency and realtime updates
+
+    //TODO: avatar show bigger animation etc
 
 
     return (

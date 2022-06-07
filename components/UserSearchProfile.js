@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
         display: "flex",
         justifyContent: "space-between",
         alignItems:"center",
-        top: -200
+        top: -150
 
     },
     userSearchProfile: {

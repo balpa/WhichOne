@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar'
 import React, { useEffect, useRef } from 'react'
-import { StyleSheet, View, Text, KeyboardAvoidingView, Image, Animated } from 'react-native'
+import { StyleSheet, View, Text, KeyboardAvoidingView, Image, Animated, TextInput, useWindowDimensions } from 'react-native'
 import { Button, Input, Icon } from 'react-native-elements/'
 import { useState, useLayoutEffect } from "react"
 import { auth } from "../firebase";
@@ -23,10 +23,26 @@ const SearchPage = ({ navigation }) => {
     const [followingCount, setFollowingCount] = useState(0)
     const [isSearchedMyself, setIsSearchedMyself] = useState(false)
     const [image, setImage] = useState(null)
+    const [errorMessage, setErrorMessage] = useState("")
+
+    const windowDim = useWindowDimensions()
+
+    const searchBarWidthAnim = React.useRef(new Animated.Value(0)).current
 
     const loggedinUser = auth.currentUser
 
     const storage = getStorage();
+
+    useEffect(() => {
+        Animated.timing(searchBarWidthAnim, {
+            toValue: windowDim.width,
+
+            duration: 1000,
+            useNativeDriver: false
+        }).start()
+    }, [])
+
+
     // get searched user's avatar 
     useEffect(() => {
         getDownloadURL(ref(storage, `Users/${searchedUsersUID}/avatars/avatar_image`))
@@ -104,7 +120,6 @@ const SearchPage = ({ navigation }) => {
             }
     }, [searchedUsersUID])
 
-
     // searched user's component
     // const UserSearchProfile = React.memo(() => {
 
@@ -167,21 +182,25 @@ const SearchPage = ({ navigation }) => {
         <View behavior="padding" style={styles.container}>
         <StatusBar style="light"/>
             <View style={styles.elevation}>
-                <View style={styles.searchBar}>
+                <Animated.View style={[styles.searchBar, {width: searchBarWidthAnim}]}>
                     <Input 
                         label="Search by username"
                         labelStyle={{color: "black", fontSize: 15}}
-                        leftIcon={{ type: 'font-awesome', name: 'search', color: 'black' }}
+                        leftIcon={{ type: 'font-awesome', name: 'search', color: 'black', onPress: () => search() }}
+                        onKeyPress={({ nativeEvent }) => {
+                            if (nativeEvent.key === 'Enter') search()
+                        }}
                         autoCapitalize="none" 
                         style={{
                             color: "black", 
-                            width: 250}}  
+                            width: '100%'}}  
                         selectionColor="black"  
                         placeholder="username" 
                         onChangeText={(text) => setSearchVal(text)} />
-                    <Button buttonStyle={{backgroundColor: "transparent", borderRadius: 15, width: "auto", height: "auto"}} titleStyle={{fontSize: 15}} 
-                            onPress={search} title={<Icon size={30} name="search" color="black" />}/>
-                </View>
+                    {/* <Button buttonStyle={{backgroundColor: "transparent", borderRadius: 15, width: "auto", height: "auto"}} titleStyle={{fontSize: 15}} 
+                            onPress={search} title={<Icon size={30} name="search" color="black" />}/> */}
+
+                </Animated.View>
 
                 {exists && <UserSearchProfile 
                 searchedUsersUID={searchedUsersUID} 
@@ -192,6 +211,7 @@ const SearchPage = ({ navigation }) => {
                 followingCount={followingCount} 
                 followSituation={followSituation}/> }
 
+                <Image source={require("../assets/w1logocrimson.png")} style={styles.logoBottom}/>
             </View>
         </View>
     )
@@ -214,7 +234,8 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     searchBar:{
-        width: "90%",
+        width: "100%",
+        height: 40,
         left: 0,
         position: "absolute",
         top: "1%",
@@ -253,5 +274,12 @@ const styles = StyleSheet.create({
     followButton: {
         width: 100,
         backgroundColor: "crimson",
-    }
+    },
+    logoBottom:{
+        position: 'absolute',
+        width: 50,
+        height: 50,
+        bottom: 10,
+        zIndex: 10
+    },
 })
