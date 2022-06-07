@@ -2,7 +2,7 @@
   WhichOne Social Media App<br/>
 </h2>
 <div align="center">
-  <img alt="Demo" src="./READMEIMAGE/whichone.png" />
+  <img alt="Demo" src="./READMEIMAGE/whichone-white.jpeg" />
 </div>
 
 <br/>
