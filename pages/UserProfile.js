@@ -156,7 +156,7 @@ const UserProfile = ({ route, navigation }) => {
             
         </View>
         <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center', backgroundColor: "#ffffff"  }}>
-          {postIDs.length > 0 ? postIDs.map((postID, index)=>{
+          {postIDs.length > 0 ? postIDs.reverse().map((postID, index)=>{
             return <PostComponent key={index} postID={postID} userID={userID} name={name} />}) 
           :
           <Text style={{color:'white',fontSize:20, marginTop:25}}>No Posts</Text>

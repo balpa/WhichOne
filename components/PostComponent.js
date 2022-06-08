@@ -79,7 +79,7 @@ function PostComponent({ postID, userID, name }){
                 justifyContent: "center",
                 alignItems: "center",
                 width: window.width,
-                height: height4postcontainer+50,
+                minHeight: height4postcontainer+60,
                 marginTop: 5,
                 marginBottom: 5,
                 padding: 5,
@@ -107,6 +107,11 @@ function PostComponent({ postID, userID, name }){
                         )
                     })}
                 </ScrollView>
+                <View style={{width:'100%'}}>
+                    <Text style={{fontSize:12, fontWeight:'800'}}>
+                        todo:post description
+                    </Text>
+                </View>
                 <View style={{width:'100%',justifyContent:'space-between', alignItems:'center',flexDirection:'row', marginLeft: 10, marginRight: 10}}>
                     <TouchableOpacity onPress={()=>{setShowComments(true)}}>
                         <Text style={{color:'black'}}>Comments</Text>

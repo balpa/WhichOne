@@ -15,8 +15,7 @@ const SettingsPage = ({ navigation }) => {
 
     return (
         <>
-        <KeyboardAvoidingView style={styles.container}>
-            <View style={styles.elevation}>
+            <View style={styles.container}>
                 <View style={styles.buttonIconWrapper}>
                     <Icon name="person" color="black" />
                     <Button onPress={ ()=> navigation.navigate("Account") } titleStyle={{color: "black", fontSize: 25}} buttonStyle={styles.settingsButton} title="Account" />
@@ -45,8 +44,7 @@ const SettingsPage = ({ navigation }) => {
             <View style={styles.logoBottomContainer}>
                 <Image source={require("../assets/w1logocrimson.png")} style={styles.logoBottom}/>
             </View>
-        </KeyboardAvoidingView>
-    
+
         </>
 
     )
@@ -78,13 +76,7 @@ const styles = StyleSheet.create({
     top: {
         alignItems: "flex-end"
     },
-    container: {
-        flex: 1,
-        alignItems:"center",
-        backgroundColor: "#ffffff", // #243447 old color
-        borderWidth: 1, 
-    },
-    elevation:{
+    container:{
         width: "100%",
         height: "50%",
         justifyContent: "space-evenly", 
@@ -94,7 +86,6 @@ const styles = StyleSheet.create({
         // shadowOpacity: 0.9,
         // shadowRadius: 2,
         elevation: 5,
-
     },
     profileBody: {
     },
