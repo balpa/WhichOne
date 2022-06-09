@@ -23,7 +23,7 @@ export default function AvatarModal({ changeModalStatus }) {
   return (
     <Animated.View style={[styles.avatarModalContainer, {transform: [{translateX: springAnim}]}]}>
         <TouchableOpacity onPress={()=> navigation.navigate('Upload Avatar')}>
-            <Text>Change Avatar</Text>
+            <Text style={{textAlign:'center'}}>Change Avatar</Text>
         </TouchableOpacity>
     </Animated.View>
   )
@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
         height: 100,
         width: 70,
         top:10,
+        left: "5%",
         backgroundColor: "rgba(240,240,240,1)",
         zIndex: 10,
         position: "absolute",

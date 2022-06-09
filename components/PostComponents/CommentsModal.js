@@ -18,7 +18,7 @@ const CommentsModal = ({ postID, setShowComments }) => {
 
     useEffect(() => {       // animation for height of the modal (opening)
         Animated.spring(yAnim, {
-            toValue: 425,
+            toValue: 350,
             duration: 300,
             useNativeDriver: false
         }).start()

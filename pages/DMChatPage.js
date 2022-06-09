@@ -1,9 +1,10 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, KeyboardAvoidingView, Animated } from 'react-native'
 import React, { useEffect } from 'react'
 import {auth,db} from '../firebase'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Input } from 'react-native-elements'
 import { doc, onSnapshot, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import useKeyboardHeight from 'react-native-use-keyboard-height'
 
 const DMChatPage = ({ route, navigation }) => {
 
@@ -14,6 +15,19 @@ const DMChatPage = ({ route, navigation }) => {
 
   const { userID, name, userData } = route.params
   const loggedinUser = auth.currentUser
+
+  const ref = React.useRef(null)    // try to implement this to remove delay on animation
+  let keyboardHeight = useKeyboardHeight()
+  let inputAnim = React.useRef(new Animated.Value(0)).current  
+
+  useEffect(() => {          // input animation for keyboard. TODO: animations starts after keyboard fully opened. Another solution might be using keyboardavoidingview
+    Animated.timing(inputAnim, {
+      toValue: keyboardHeight,
+      duration: 200,
+      useNativeDriver: false,
+    }).start()
+  }, [ref, keyboardHeight])
+
 
   async function sendMessage(){
 
@@ -41,13 +55,14 @@ const DMChatPage = ({ route, navigation }) => {
         <Text>Chatting with {name}</Text>
         <Text>Chatting with {name}</Text>
       </ScrollView>
-      <View style={styles.messageInputContainer}>
+      <Animated.View style={[styles.messageInputContainer, {bottom: inputAnim}]}>
         <Input  
+          ref={ref}
           placeholder="Type your message here"
           rightIcon={{ type: 'material-community', name: 'send', color: 'black', onPress: () => sendMessage()}} 
           onChangeText={(text) => setMessageText(text)}
           />
-      </View>
+      </Animated.View>
     </View>
   )
 }
@@ -65,6 +80,5 @@ const styles = StyleSheet.create({
   },
   messageInputContainer: {
     width:'100%',
-    height:'20%',
   }
 })

@@ -138,7 +138,7 @@ const RegisterScreen = ({ navigation }) => {
             <StatusBar style="light"/>
             <Animated.View style={[styles.elevation, shadowOptions, {transform: [{scale: scaleAnim}]}]}>
                 <View style={{height: 20}}></View>
-            <Text h1 style={{marginBottom: 50, fontSize: 25, color: "black"}}>Create an account</Text>
+            <Text h1 style={{marginBottom: 20, fontSize: 25, color: "black"}}>Create an account</Text>
             <View style={styles.inputContainer}>
                 <Input 
                     label="Full Name"
