@@ -2,7 +2,8 @@ import { View, Text, StyleSheet } from 'react-native'
 import React from 'react'
 import { registerVersion } from 'firebase/app'
 
-const ChatBalloon = ({ message, sender }) => {
+const ChatBalloon = ({ message, sender, item }) => {
+
   return (
     <View style={[styles.container, sender == 'loggedinuser' ? {flexGrow: 1} : {}]}>
       <Text style={{
@@ -10,7 +11,7 @@ const ChatBalloon = ({ message, sender }) => {
         textAlign:'center',
         fontSize:15,
         fontWeight:'600'
-      }}>{message}</Text>
+      }}>{item.message}</Text>
     </View>
   )
 }

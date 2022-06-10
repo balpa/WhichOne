@@ -1,5 +1,5 @@
-import { View, Text, StyleSheet, KeyboardAvoidingView, Animated } from 'react-native'
-import React, { useEffect } from 'react'
+import { View, Text, StyleSheet, KeyboardAvoidingView, Animated, FlatList } from 'react-native'
+import React, { Children, useEffect } from 'react'
 import {auth,db} from '../firebase'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Input } from 'react-native-elements'
@@ -9,11 +9,12 @@ import ChatBalloon from '../components/DMComponents/ChatBalloon'
 
 const DMChatPage = ({ route, navigation }) => {
 
-  // TODO: Create chatting page
+  // TODO: PREVENT RE-RENDERING FOR ONSNAPSHOT LISTENER ( might be just a multiple rendering for console log not fetching data check )
 
   const [isEmpty, setIsEmpty] = React.useState(false)
   const [messageText, setMessageText] = React.useState('')
   const [messageData, setMessageData] = React.useState(null)
+  const [whichUser, setWhichUser] = React.useState('')
 
   const { userID, name, userData } = route.params
   const loggedinUser = auth.currentUser
@@ -30,17 +31,27 @@ const DMChatPage = ({ route, navigation }) => {
     }).start()
   }, [ref, keyboardHeight])
 
-  useEffect(() => {
-    const unsubscribe = onSnapshot(doc(db, "messages",`bw${loggedinUser.uid}and${userID}` ), (doc) => {
-      setMessageData(doc.data())
+  // USERID IS THE OTHER USER'S ID. karşı kullanıcının idsi
+  useEffect(() => {     // check for message. id is converted so check both. ITS A GENIUS SOLUTION THO xd
+    onSnapshot(doc(db, "messages",`bw${loggedinUser.uid}and${userID}` ), (document) => {
+      if (document.data() != undefined) { 
+        setWhichUser('loggedinuser')
+        setMessageData(document.data())
+      }
+      else {
+        setWhichUser('otheruser')
+        onSnapshot(doc(db, "messages",`bw${userID}and${loggedinUser.uid}` ), (docu) => {
+          if (docu.data() != undefined) setMessageData(docu.data())
+        })
+      }
   })
  }, [])
 
- // console.log(Object.keys(messageData.data).map(key => messageData.data[key].message))
 
-  async function sendMessage(){
+  async function sendMessage(){         // send message to firebase. same logic with the snapshot listener
 
     if (messageText.length > 0 && messageText.length < 150) {
+
       let date = new Date().toLocaleString()
       let data = {[messageText]: {
         message: messageText,
@@ -48,13 +59,25 @@ const DMChatPage = ({ route, navigation }) => {
         receiver: userID,
         timestamp: date, 
       }}
-        await setDoc(doc(db,'messages', `bw${loggedinUser.uid}and${userID}`), {data},{merge: true})
+
+      if (whichUser == 'loggedinuser') await setDoc(doc(db,'messages', `bw${loggedinUser.uid}and${userID}`), {data},{merge: true})
+      else if (whichUser == 'otheruser') await setDoc(doc(db,'messages', `bw${userID}and${loggedinUser.uid}`), {data},{merge: true})
+
       } else alert("Message must be between 1 and 150 characters")
     }
 
+
   return (
     <View style={styles.container}>
-      <ScrollView style={styles.chatMessagesContainer}>
+      {messageData != null ? 
+        <FlatList 
+          data={Object.values(messageData.data)} 
+          renderItem={({item}) => (<ChatBalloon item={item} />)} 
+          keyExtractor={(item, index) => index.toString()}
+          ListEmptyComponent={() => <Text style={styles.emptyText}>No messages yet</Text>}
+          /> 
+        : null}
+      {/* <ScrollView style={styles.chatMessagesContainer}>
         {messageData != null ? Object.keys(messageData.data).map(key => {
           if (messageData.data[key].sender === loggedinUser.uid) {
             return (
@@ -65,7 +88,7 @@ const DMChatPage = ({ route, navigation }) => {
               <ChatBalloon message={messageData.data[key].message} sender={"otheruser"} />
             )}
         }) : null}
-      </ScrollView>
+      </ScrollView> */}
       <Animated.View style={[styles.messageInputContainer, {bottom: inputAnim}]}>
         <Input  
           ref={ref}
@@ -83,7 +106,7 @@ export default DMChatPage
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems:'center'
+
   },
   chatMessagesContainer: {
     width:'100%',
