@@ -119,7 +119,7 @@ function PostComponent({ postID, userID, name }){
                     <Text style={{color:'black'}}>{dateFormatter(postDate)}</Text>
                 </View>
                 {showDotSettings && <PostComponentDotSettings userID={userIdToPass} postID={postID} setShowDotSettings={setShowDotSettings} />}
-                {showComments && <CommentsModal postID={postID} setShowComments={setShowComments}/>}
+                {showComments && <CommentsModal height4postcontainer={height4postcontainer} postID={postID} setShowComments={setShowComments}/>}
             </View>
             
         )

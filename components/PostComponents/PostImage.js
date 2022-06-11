@@ -102,7 +102,7 @@ function PostImage({url, photoNumber, postID}){
               <Text style={{color:'black'}}>{likes.length == 1 ? `${likes.length} like` : `${likes.length} likes`}</Text>
             </TouchableOpacity>
           </View>
-          {showLikes && <LikesModal setShowLikes={setShowLikes} likes={likes} />} 
+          {showLikes && <LikesModal height4postcontainer={height4postcontainer} setShowLikes={setShowLikes} likes={likes} />} 
         </View>
       </> 
     )

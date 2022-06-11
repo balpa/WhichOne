@@ -7,7 +7,7 @@ import { auth } from '../../firebase'
 import { db } from '../../firebase' 
 import { setDoc, doc, getDoc, getDocs, arrayUnion, onSnapshot, query } from 'firebase/firestore'
 
-const CommentsModal = ({ postID, setShowComments }) => {
+const CommentsModal = ({ postID, setShowComments, height4postcontainer }) => {
 
     const user = auth.currentUser
 
@@ -18,7 +18,7 @@ const CommentsModal = ({ postID, setShowComments }) => {
 
     useEffect(() => {       // animation for height of the modal (opening)
         Animated.spring(yAnim, {
-            toValue: 350,
+            toValue: height4postcontainer-50,
             duration: 300,
             useNativeDriver: false
         }).start()

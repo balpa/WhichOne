@@ -9,7 +9,9 @@ import ChatBalloon from '../components/DMComponents/ChatBalloon'
 
 const DMChatPage = ({ route, navigation }) => {
 
-  // TODO: PREVENT RE-RENDERING FOR ONSNAPSHOT LISTENER ( might be just a multiple rendering for console log not fetching data check )
+  // TODO: PREVENT RE-RENDERING FOR ONSNAPSHOT LISTENER ( might be just a multiple rendering for console log not fetching data, check )
+
+  // TODO: SORTING MESSAGES BY TIMESTAMP
 
   const [isEmpty, setIsEmpty] = React.useState(false)
   const [messageText, setMessageText] = React.useState('')
@@ -41,7 +43,9 @@ const DMChatPage = ({ route, navigation }) => {
       else {
         setWhichUser('otheruser')
         onSnapshot(doc(db, "messages",`bw${userID}and${loggedinUser.uid}` ), (docu) => {
-          if (docu.data() != undefined) setMessageData(docu.data())
+          if (docu.data() != undefined) {
+            setMessageData(docu.data())
+          }
         })
       }
   })
@@ -71,24 +75,13 @@ const DMChatPage = ({ route, navigation }) => {
     <View style={styles.container}>
       {messageData != null ? 
         <FlatList 
+          
           data={Object.values(messageData.data)} 
           renderItem={({item}) => (<ChatBalloon item={item} />)} 
           keyExtractor={(item, index) => index.toString()}
           ListEmptyComponent={() => <Text style={styles.emptyText}>No messages yet</Text>}
           /> 
         : null}
-      {/* <ScrollView style={styles.chatMessagesContainer}>
-        {messageData != null ? Object.keys(messageData.data).map(key => {
-          if (messageData.data[key].sender === loggedinUser.uid) {
-            return (
-              <ChatBalloon message={messageData.data[key].message} sender={"loggedinuser"} />
-            )}
-          else {
-            return (
-              <ChatBalloon message={messageData.data[key].message} sender={"otheruser"} />
-            )}
-        }) : null}
-      </ScrollView> */}
       <Animated.View style={[styles.messageInputContainer, {bottom: inputAnim}]}>
         <Input  
           ref={ref}

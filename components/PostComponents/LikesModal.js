@@ -6,7 +6,7 @@ import { db } from '../../firebase'
 import { setDoc, doc, getDoc, getDocs, arrayUnion, onSnapshot, query } from 'firebase/firestore'
 import SmallProfile from '../SmallProfile'
 
-function LikesModal({ setShowLikes, likes }){
+function LikesModal({ setShowLikes, likes, height4postcontainer }){
 
   const yAnim = useRef(new Animated.Value(0)).current
   const xAnim = useRef(new Animated.Value(0)).current
@@ -14,7 +14,7 @@ function LikesModal({ setShowLikes, likes }){
 
   useEffect(() => {       // animation for height of the modal
       Animated.spring(yAnim, {
-          toValue: 300,
+          toValue: height4postcontainer-100,
           tension: 2,
           friction: 3.5,
           useNativeDriver: false

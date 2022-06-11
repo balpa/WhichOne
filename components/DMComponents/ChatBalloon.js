@@ -1,11 +1,24 @@
 import { View, Text, StyleSheet } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { registerVersion } from 'firebase/app'
+import { auth, db } from '../../firebase'
 
 const ChatBalloon = ({ message, sender, item }) => {
 
+  const loggedinUser = auth.currentUser
+
+  const [senderPosition, setSenderPosition] = React.useState(null)
+
+  useEffect(() => {
+    if (item.sender === loggedinUser.uid) {
+      setSenderPosition('flex-end')
+    } else {
+      setSenderPosition('flex-start')
+    }
+  }, [])
+
   return (
-    <View style={[styles.container, sender == 'loggedinuser' ? {flexGrow: 1} : {}]}>
+    <View style={[styles.container, {alignSelf: senderPosition}]}>
       <Text style={{
         color:'white',
         textAlign:'center',
