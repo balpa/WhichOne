@@ -66,7 +66,7 @@ function PostComponentDotSettings ({userID, setShowDotSettings, postID }){
         }
     }
 
-    const showDeleteConfirm = () => {
+    function showDeleteConfirm(){
         return Alert.alert(
             "Deleted posts can not be recovered",
             "Are you sure you want to delete?",
@@ -82,9 +82,13 @@ function PostComponentDotSettings ({userID, setShowDotSettings, postID }){
           )
     }
 
+    function showEditPost(){
+
+    }
+
   return (
     <Animated.View style={[styles.container,{height: scaleYanimation, width: scaleXanimation}]}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={()=> showEditPost()}>
           <Text style={{fontSize: 15}}>Edit</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={()=> showDeleteConfirm()}>
