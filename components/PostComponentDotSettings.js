@@ -5,10 +5,13 @@ import { doc, onSnapshot, getDoc, deleteDoc, updateDoc, deleteField, arrayRemove
 import { getStorage, ref, deleteObject } from "firebase/storage";
 import { auth } from '../firebase'
 import { db } from '../firebase'
+import EditPost from './PostComponents/EditPost';
 
 function PostComponentDotSettings ({userID, setShowDotSettings, postID }){
 
     // INFO: deleting is not actually deleting sub-collections etc. need to do it manually if needed. security issues etc.
+
+    const [isEditPostShown, setIsEditPostShown] = useState(false)
 
     const storage = getStorage()
 
@@ -83,10 +86,13 @@ function PostComponentDotSettings ({userID, setShowDotSettings, postID }){
     }
 
     function showEditPost(){
-
+        setIsEditPostShown(true)
     }
 
+    // TODO: whenever click for an edit menu, expand the window and change component inside
+
   return (
+    <>
     <Animated.View style={[styles.container,{height: scaleYanimation, width: scaleXanimation}]}>
         <TouchableOpacity onPress={()=> showEditPost()}>
           <Text style={{fontSize: 15}}>Edit</Text>
@@ -99,6 +105,8 @@ function PostComponentDotSettings ({userID, setShowDotSettings, postID }){
         </TouchableOpacity>
       <Button onPress={()=> closeModal()} title='close'/>
     </Animated.View>
+    {isEditPostShown && <EditPost postID={postID} setIsEditPostShown={setIsEditPostShown}/>}
+    </>
   )
 }
 
