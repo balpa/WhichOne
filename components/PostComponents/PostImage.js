@@ -9,7 +9,7 @@ import { db } from '../../firebase'
 import { TouchableOpacity, TapGestureHandler } from 'react-native-gesture-handler';
 import LikesModal from './LikesModal';
 
-function PostImage({url, photoNumber, postID}){
+function PostImage({url, photoNumber, postID, arrayLength}){
 
     const doubleTapRef = React.createRef()
 
@@ -84,18 +84,46 @@ function PostImage({url, photoNumber, postID}){
 
     return (
       <>
-        <View style={{width: window.width-10, height: height4posts, justifyContent:'center', display:'flex', flexDirection:'column'}}>
+        <View 
+          style={{
+            width: window.width-19, 
+            height: height4posts, 
+            justifyContent:'center', 
+            display:'flex', 
+            flexDirection:'column'}}>
+            <Text 
+              style={{
+                fontSize: 12,
+                fontWeight:'800',
+                textAlign:'right'
+
+              }}>{`${photoNumber}/${arrayLength}`}</Text>
           <TapGestureHandler onActivated={()=> doubleTapLike()} numberOfTaps={2} ref={doubleTapRef}>
-            <Image source={{uri: url}}  style={{width: "100%", height: height4posts}}></Image>
+            <Image 
+              source={{uri: url}}  
+              style={{
+                width: "100%", 
+                borderRadius: 10,
+                height: height4posts}}></Image>
           </TapGestureHandler>
           {showLikeAnimation && 
             <Animated.View style={[styles.likeIconAnimation, {transform: [{scale: scaleAnim}]}]} >
-              <Icon size={100} name='favorite' color='red'></Icon>
+              <Icon 
+                size={100} 
+                name='favorite' 
+                color='red'></Icon>
             </Animated.View>
           }
-          <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between'}}>
+          <View 
+            style={{
+              flexDirection:'row', 
+              alignItems:'center', 
+              justifyContent:'space-between',
+              marginBottom: 10}}>
             <TouchableOpacity onPress={()=> likeFunc()}>
-              <Icon name={userLikedThePhoto ? "favorite" : "favorite-border"} color={userLikedThePhoto ? "red" : "black"}></Icon>
+              <Icon 
+                name={userLikedThePhoto ? "favorite" : "favorite-border"} 
+                color={userLikedThePhoto ? "red" : "black"}></Icon>
             </TouchableOpacity>
             
             <TouchableOpacity onPress={()=> setShowLikes(true)}>

@@ -78,41 +78,79 @@ function PostComponent({ postID, userID, name }){
             <View style={{    // width & height set to window w/h vars. used styles w that
                 justifyContent: "center",
                 alignItems: "center",
-                width: window.width,
-                minHeight: height4postcontainer+60,
+                width: window.width-5,
+                minHeight: height4postcontainer+70,
                 marginTop: 5,
                 marginBottom: 5,
                 padding: 5,
-                backgroundColor:'white'
-                // borderStyle:'solid',
-                // borderWidth: 0.25,
-                // borderBottomColor: 'white',
-                // borderTopColor: 'white',
+                borderRadius: 20,
+                borderWidth: 2,
+                borderColor: '#000',
+
             }}>
-                <View style={{width: '100%', justifyContent:'space-between',alignItems:'center', display:'flex', flexDirection:'row'}}>
-                    <View style={{width: '50%', flexDirection:'row', marginBottom:10, alignItems:'center'}}>
-                        <TouchableOpacity onPress={()=>{navigation.navigate("UserProfile",{ name: `${nameToPass}`, userID: `${userIdToPass}`})}}>
-                          <Image source={{uri: avatar}} style={{width: 35, height: 35, borderRadius: 35/2, marginRight:10}}/>
+                <View 
+                    style={{
+                        width: '100%', 
+                        justifyContent:'space-between',
+                        alignItems:'center', 
+                        display:'flex', 
+                        flexDirection:'row'}}>
+                    <View 
+                        style={{
+                            width: '50%', 
+                            flexDirection:'row', 
+                            marginBottom:10, 
+                            alignItems:'center'}}>
+                        <TouchableOpacity 
+                            onPress={()=>{navigation.navigate("UserProfile",{ name: `${nameToPass}`, userID: `${userIdToPass}`})}}>
+                          <Image 
+                            source={{uri: avatar}} 
+                            style={{
+                                width: 35, 
+                                height: 35, 
+                                borderRadius: 35/2, 
+                                marginRight:10}}/>
                         </TouchableOpacity>
-                      <Text style={{color:"black", textAlign:'center'}}>{nameToPass}</Text>
+                      <Text 
+                        style={{
+                            color:"black", 
+                            textAlign:'center'}}>{nameToPass}</Text>
                     </View>
-                    <TouchableOpacity onPress={()=> {setShowDotSettings(true)}} style={{marginBottom:10}}>
+                    <TouchableOpacity 
+                        onPress={()=> {setShowDotSettings(true)}} 
+                        style={{marginBottom:10}}>
                         {userIdToPass == auth.currentUser.uid ?  <Icon name='more-vert' color='black' /> : null}
                     </TouchableOpacity>
                 </View>
-                <ScrollView contentContainerStyle={{alignItems:'center'}} horizontal={true} minimumZoomScale={1} maximumZoomScale={2} pagingEnabled={true} pinchGestureEnabled={true}>
+                <ScrollView 
+                    contentContainerStyle={{alignItems:'center'}} 
+                    horizontal={true} 
+                    minimumZoomScale={1} 
+                    maximumZoomScale={2} 
+                    pagingEnabled={true} 
+                    pinchGestureEnabled={true}>
                     {images.length > 0 && images.map((url,index) => {
                         return (
-                            <PostImage key={index} photoNumber={index+1} url={url} postID={postID} />
+                            <PostImage key={index} arrayLength={images.length} photoNumber={index+1} url={url} postID={postID} />
                         )
                     })}
                 </ScrollView>
                 <View style={{width:'100%'}}>
-                    <Text style={{fontSize:12, fontWeight:'800'}}>
+                    <Text 
+                        style={{
+                            fontSize:12, 
+                            fontWeight:'800'}}>
                         todo:post description
                     </Text>
                 </View>
-                <View style={{width:'100%',justifyContent:'space-between', alignItems:'center',flexDirection:'row', marginLeft: 10, marginRight: 10}}>
+                <View 
+                    style={{
+                        width:'100%',
+                        justifyContent:'space-between', 
+                        alignItems:'center',
+                        flexDirection:'row', 
+                        marginLeft: 10, 
+                        marginRight: 10}}>
                     <TouchableOpacity onPress={()=>{setShowComments(true)}}>
                         <Text style={{color:'black'}}>Comments</Text>
                     </TouchableOpacity>

@@ -18,8 +18,12 @@ import AvatarModal from '../components/AvatarModal'
 
 const ProfilePage = ({ navigation }) => {
 
+  
   // TODO: Change avatar resolution to save data usage
 
+    const COLOR_PALETTE_1 = ["FEF9A7","FAC213", "F77E21", "D61C4E", "990000", "FF5B00", "D4D925", "FFEE63"]
+
+  
     const [followerCount, setFollowerCount] = useState(0)
     const [followingCount, setFollowingCount] = useState(0)
     const [image,setImage] = useState(null)
@@ -92,15 +96,6 @@ const ProfilePage = ({ navigation }) => {
       }
     }, [])
 
-    // useEffect(() => {    // debugging. clg milliseconds to date and reversing the postIDs array
-    //   postIDs.map((x)=>{
-    //     console.log(new Date(x))
-    //   })
-    //   setPostIDs(postIDs.reverse())
-    // }, [postIDs])
-
-
-
     //TODO: change some getDoc's to onSnapshot for efficiency and realtime updates
 
     //TODO: avatar show bigger animation etc
@@ -123,7 +118,7 @@ const ProfilePage = ({ navigation }) => {
               <View style={{flexDirection:'column'}}>
                 {isShown && <AvatarModal changeModalStatus={setIsShown} />}
                 <TouchableOpacity onPress={()=> setIsShown(!isShown)}>
-                  <Image 
+                  <Image
                   source={{uri: image}}
                   style={{ width: 60, height: 60, borderRadius: 60/2, marginBottom: 15}}
                   />
