@@ -71,9 +71,6 @@ function PostComponent({ postID, userID, name }){
     // NEED TO ADD WHO POSTED, DATE, COMMENTS, LIKES, SHARE, DELETE, EDIT, FAV BUTTONS
     // ****************
 
-    // TODO: comment section; if or show the first comment, if more, navigate to
-    // post's spesific page (need to create)
-
         return (
             <View style={{    // width & height set to window w/h vars. used styles w that
                 justifyContent: "center",

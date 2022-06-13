@@ -38,18 +38,28 @@ const DMChatPage = ({ route, navigation }) => {
     onSnapshot(doc(db, "messages",`bw${loggedinUser.uid}and${userID}` ), (document) => {
       if (document.data() != undefined) { 
         setWhichUser('loggedinuser')
-        setMessageData(document.data())
+        sorter(document.data())
+        //setMessageData(sorter(document.data()))
       }
       else {
         setWhichUser('otheruser')
         onSnapshot(doc(db, "messages",`bw${userID}and${loggedinUser.uid}` ), (docu) => {
           if (docu.data() != undefined) {
-            setMessageData(docu.data())
+            // setMessageData(sorter(docu.data()))
           }
         })
       }
   })
  }, [])
+
+ function sorter(obj) {       // SORTING NOT WORKING FFS
+   let objArr =  Object.values(obj.data)
+
+    let sortedArr = objArr.sort((a,b) => { return Date.parse(`${a.timestamp}`) - Date.parse(`${b.timestamp}`)})
+
+    console.log(sortedArr)
+    return sortedArr
+ }
 
 
   async function sendMessage(){         // send message to firebase. same logic with the snapshot listener

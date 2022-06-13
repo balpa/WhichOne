@@ -42,9 +42,7 @@ const ProfilePage = ({ navigation }) => {
     const storage = getStorage();
 
     useEffect(()=>{   // get bio from firebase
-      const bio =  onSnapshot(doc(db,'useruid',`${user.uid}`), (doc) => {
-        setCurrentBio(doc.data().bio)
-      })
+      const bio =  onSnapshot(doc(db,'useruid',`${user.uid}`), (doc) => setCurrentBio(doc.data().bio))
     },[])
 
     getDownloadURL(ref(storage, `Users/${user.uid}/avatars/avatar_image`))  // get avatar
@@ -52,13 +50,9 @@ const ProfilePage = ({ navigation }) => {
       .catch((error) => console.log(error))
 
     // get total follower count
-    const getTotalFollowerCount = onSnapshot(doc(db, "useruid", `${user.uid}`), (doc) => {
-      setFollowerCount(doc.data().followers.length)
-    })
+    const getTotalFollowerCount = onSnapshot(doc(db, "useruid", `${user.uid}`), (doc) => setFollowerCount(doc.data().followers.length))
     // get total following count
-    const getTotalFollowingCount = onSnapshot(doc(db, "useruid", `${user.uid}`), (doc) => {
-      setFollowingCount(doc.data().following.length)
-    })
+    const getTotalFollowingCount = onSnapshot(doc(db, "useruid", `${user.uid}`), (doc) => setFollowingCount(doc.data().following.length))
 
     const showLogoutConfirm = () => {
     return Alert.alert(
@@ -79,10 +73,7 @@ const ProfilePage = ({ navigation }) => {
     );
     };
 
-    const logout = async () => {
-      await auth.signOut()
-      console.log(auth)
-    }
+    const logout = async () => { await auth.signOut() }
 
     useEffect(() => {   // if logout, go back to login page
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
@@ -98,21 +89,17 @@ const ProfilePage = ({ navigation }) => {
     // get post ids from firebase and store in array
     useEffect(async() => {
       const toPostIDs = await getDoc(doc(db,"posts",`${user.uid}`))
-      if (toPostIDs != undefined){
-      setPostIDs(toPostIDs.data().postID)
-      }
+      if (toPostIDs != undefined) setPostIDs(toPostIDs.data().postID)
     }, [])
 
     function expand(){
-      if (isExpanded == false){
-        setIsExpanded(true)
+      if (isExpanded == false){ setIsExpanded(true)
         Animated.timing(expandAnim, {
           toValue: 180,
           duration: 500,
           useNativeDriver: false,
         }).start()
-      } else {
-        setIsExpanded(false)
+      } else { setIsExpanded(false)
         Animated.timing(expandAnim, {
           toValue: 120,
           duration: 500,
@@ -126,17 +113,31 @@ const ProfilePage = ({ navigation }) => {
 
     return (
         <>
-        <TapGestureHandler onActivated={()=> expand()} numberOfTaps={1} ref={singleTapRef}>
-        <Animated.View style={[styles.container, {width: window.width-5}, {height: expandAnim}]}>
+        <TapGestureHandler 
+          onActivated={()=> expand()} 
+          numberOfTaps={1} 
+          ref={singleTapRef}>
+        <Animated.View 
+          style={[styles.container, {width: window.width-5}, {height: expandAnim}]}>
             <StatusBar style="light"></StatusBar>
             <View style={styles.header}>
-              <Button onPress={() => navigation.navigate("Settings")} titleStyle={{color: "black", fontSize: 15}} buttonStyle={styles.settingsButton}
-                 title={<Icon name="settings" color="black" />}/>
+              <Button 
+                onPress={() => navigation.navigate("Settings")} 
+                titleStyle={{color: "black", fontSize: 15}} 
+                buttonStyle={styles.settingsButton}
+                title={<Icon name="settings" color="black" />}/>
               <View>
-                <Text style={{fontWeight: "900", letterSpacing: 1, color: "black"}}>{user.displayName}</Text> 
+                <Text 
+                  style={{
+                    fontWeight: "900", 
+                    letterSpacing: 1, 
+                    color: "black"}}>{user.displayName}</Text> 
               </View>
-              <Button onPress={showLogoutConfirm} titleStyle={{color: "white", fontSize: 15}} buttonStyle={styles.logoutButton} 
-                 title={<Icon name="logout" color="black" />}/> 
+              <Button 
+                onPress={showLogoutConfirm} 
+                titleStyle={{color: "white", fontSize: 15}} 
+                buttonStyle={styles.logoutButton} 
+                title={<Icon name="logout" color="black" />}/> 
             </View>
             <View style={styles.profileTop}>
               <View style={{flexDirection:'column'}}>
@@ -169,10 +170,8 @@ const ProfilePage = ({ navigation }) => {
         </Animated.View>
         </TapGestureHandler>
         <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center', backgroundColor: "#ffffff"  }}>
-          {postIDs.length > 0 ? postIDs.reverse().map((postID, index)=>{
-            // console.log(`postid: ${postID}, index: ${index}`)
-            return <PostComponent key={`${index}`} postID={postID} />}) 
-          :
+          {postIDs.length > 0 ? postIDs.reverse().map((postID, index)=>{ return <PostComponent key={`${index}`} postID={postID} />}) 
+            :
           <Text style={{color:'white',fontSize:20, marginTop:25}}>No Posts</Text>
           }
           <View style={{width:'100%',height:60, justifyContent:'center', alignItems:'center'}}>
