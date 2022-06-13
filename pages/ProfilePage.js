@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { createRef } from 'react'
 import { useEffect, useState, useRef } from 'react'
 import { StatusBar } from 'expo-status-bar'
-import { View, Text, StyleSheet, Alert, useWindowDimensions } from 'react-native'
+import { View, Text, StyleSheet, Alert, useWindowDimensions, Animated } from 'react-native'
 import { Button, Image, Input, TouchableHighlight, Icon } from "react-native-elements"
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -15,6 +15,7 @@ import { TouchableOpacity } from 'react-native'
 import { doc, onSnapshot, getDoc } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import AvatarModal from '../components/AvatarModal'
+import { TapGestureHandler } from 'react-native-gesture-handler'
 
 const ProfilePage = ({ navigation }) => {
 
@@ -22,6 +23,10 @@ const ProfilePage = ({ navigation }) => {
   // TODO: Change avatar resolution to save data usage
 
     const COLOR_PALETTE_1 = ["FEF9A7","FAC213", "F77E21", "D61C4E", "990000", "FF5B00", "D4D925", "FFEE63"]
+
+    const singleTapRef = createRef()
+
+    const expandAnim = React.useRef(new Animated.Value(120)).current
 
     const window = useWindowDimensions()    // hook to get the window dimensions
   
@@ -31,6 +36,7 @@ const ProfilePage = ({ navigation }) => {
     const [postIDs, setPostIDs] = useState([])
     const [isShown, setIsShown] = useState(false)
     const [currentBio, setCurrentBio] = useState("")
+    const [isExpanded, setIsExpanded] = useState(false)
 
     const user = auth.currentUser;
     const storage = getStorage();
@@ -97,14 +103,31 @@ const ProfilePage = ({ navigation }) => {
       }
     }, [])
 
-    //TODO: change some getDoc's to onSnapshot for efficiency and realtime updates
+    function expand(){
+      if (isExpanded == false){
+        setIsExpanded(true)
+        Animated.timing(expandAnim, {
+          toValue: 180,
+          duration: 500,
+          useNativeDriver: false,
+        }).start()
+      } else {
+        setIsExpanded(false)
+        Animated.timing(expandAnim, {
+          toValue: 120,
+          duration: 500,
+          useNativeDriver: false,
+        }).start()
+      }
+    }
 
-    //TODO: avatar show bigger animation etc
+    //TODO: change some getDoc's to onSnapshot for efficiency and realtime updates
 
 
     return (
         <>
-        <View style={[styles.container, {width: window.width-5}]}>
+        <TapGestureHandler onActivated={()=> expand()} numberOfTaps={1} ref={singleTapRef}>
+        <Animated.View style={[styles.container, {width: window.width-5}, {height: expandAnim}]}>
             <StatusBar style="light"></StatusBar>
             <View style={styles.header}>
               <Button onPress={() => navigation.navigate("Settings")} titleStyle={{color: "black", fontSize: 15}} buttonStyle={styles.settingsButton}
@@ -117,8 +140,8 @@ const ProfilePage = ({ navigation }) => {
             </View>
             <View style={styles.profileTop}>
               <View style={{flexDirection:'column'}}>
-                {isShown && <AvatarModal changeModalStatus={setIsShown} />}
-                <TouchableOpacity onPress={()=> setIsShown(!isShown)}>
+                {isShown == true && isExpanded == true ? <AvatarModal changeModalStatus={setIsShown} /> : null}
+                <TouchableOpacity  onPress={()=> setIsShown(!isShown)}>
                   <Image
                   source={{uri: image}}
                   style={{ width: 60, height: 60, borderRadius: 60/2, marginBottom: 15}}
@@ -143,7 +166,8 @@ const ProfilePage = ({ navigation }) => {
                 </View>
             </View>
             
-        </View>
+        </Animated.View>
+        </TapGestureHandler>
         <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center', backgroundColor: "#ffffff"  }}>
           {postIDs.length > 0 ? postIDs.reverse().map((postID, index)=>{
             // console.log(`postid: ${postID}, index: ${index}`)
@@ -190,7 +214,7 @@ const styles = StyleSheet.create({
 
   },
     container: {
-        minHeight: 180,
+        // minHeight: 180,
         backgroundColor: "#fff",  // #222222 for dark 
         overflow: "hidden",
         borderWidth: 2,
