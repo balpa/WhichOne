@@ -34,11 +34,12 @@ export default ChatBalloon
 
 const styles = StyleSheet.create({
   container: {
-
-    width: 100,
+    padding: 10,
+    maxWidth: 150,
     minHeight: 50,
     backgroundColor:'green',
     margin: 10,
+    borderRadius:15,
   },
 
 })
