@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect, useState, useRef } from 'react'
 import { StatusBar } from 'expo-status-bar'
-import { View, Text, StyleSheet, Alert } from 'react-native'
+import { View, Text, StyleSheet, Alert, useWindowDimensions } from 'react-native'
 import { Button, Image, Input, TouchableHighlight, Icon } from "react-native-elements"
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -23,6 +23,7 @@ const ProfilePage = ({ navigation }) => {
 
     const COLOR_PALETTE_1 = ["FEF9A7","FAC213", "F77E21", "D61C4E", "990000", "FF5B00", "D4D925", "FFEE63"]
 
+    const window = useWindowDimensions()    // hook to get the window dimensions
   
     const [followerCount, setFollowerCount] = useState(0)
     const [followingCount, setFollowingCount] = useState(0)
@@ -103,7 +104,7 @@ const ProfilePage = ({ navigation }) => {
 
     return (
         <>
-        <View style={styles.container}>
+        <View style={[styles.container, {width: window.width-5}]}>
             <StatusBar style="light"></StatusBar>
             <View style={styles.header}>
               <Button onPress={() => navigation.navigate("Settings")} titleStyle={{color: "black", fontSize: 15}} buttonStyle={styles.settingsButton}
@@ -190,9 +191,12 @@ const styles = StyleSheet.create({
   },
     container: {
         minHeight: 180,
-        height: 190,
-        backgroundColor: "#ffffff",  // #222222 for dark 
+        backgroundColor: "#fff",  // #222222 for dark 
         overflow: "hidden",
+        borderWidth: 2,
+        borderRadius: 20,
+        alignSelf:'center'
+
     },
     followersInfo: {
       color: "black",
