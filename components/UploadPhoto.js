@@ -1,12 +1,11 @@
 import React, { Component, useMemo } from 'react'
 import { Text, View, StyleSheet, ScrollView, Image, KeyboardAvoidingView, useWindowDimensions, Animated, Easing } from 'react-native'
 import { BackgroundImage } from 'react-native-elements/dist/config'
-import { Button, Icon } from 'react-native-elements'
+import { Button, Icon, Input } from 'react-native-elements'
 import { useState, useEffect } from 'react'
 import { auth } from '../firebase'
 import { db } from '../firebase'
 import firebase from 'firebase/compat/app'
-import { Input } from 'react-native-elements/dist/input/Input'
 import * as ImagePicker from 'expo-image-picker';
 import { ImageBrowser } from 'expo-image-picker-multiple'
 import { TouchableOpacity } from 'react-native-gesture-handler'
@@ -23,6 +22,7 @@ function UploadPhoto({ navigation }) {
     const [image, setImage] = useState([])
     const [postUniqueID, setPostUniqueID] = useState(new Date().getTime()) // unique id for each post. created using date ms
     const [isLoaded, setIsLoaded] = useState(false)
+    const [descriptionText, setDescriptionText] = useState("")
 
     const storage = getStorage()
     // const postRef = ref(storage, `Users/${user.uid}/posts/${postUniqueID}/`) // storage'da postun yerini belirleme
@@ -56,28 +56,27 @@ function UploadPhoto({ navigation }) {
 
     // for selecting multiple images. current library not so good. need to find a better way
     const ImageBrowserComponent = () => {
-      return (
-        <ImageBrowser onChange={(num, onSubmit)  => {}} callback={(callback) => {}}/>
-      )
+      return ( <ImageBrowser onChange={(num, onSubmit)  => {}} callback={(callback) => {}}/> )
     }
+
+    useEffect(() => {         // set description character limit max to 50
+      if (descriptionText.length > 50) {
+        alert("Description cannot be longer than 100 characters")
+        setDescriptionText(descriptionText.substring(0, 50))
+      }
+    }, [descriptionText])
 
 
     // camera permissions
     useEffect(() => {
         (async () => {
-          if (Platform.OS !== 'web') {
-            const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-            if (status !== 'granted') {
-              alert('Sorry, we need camera roll permissions to make this work!');
-            }
-          }
-        })();
+          if (Platform.OS !== 'web') { const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync()
+            if (status !== 'granted') alert('Sorry, we need camera roll permissions to make this work!')
+          }})();
       }, [])
     
     useEffect(() => {
-      if (isLoaded){
-          navigation.navigate('HomePage')
-      }
+      if (isLoaded) navigation.navigate('HomePage')
     } , [isLoaded])
 
     // image picker from library NEED TO ADD MULTIPLE SELECTION (need another library)
@@ -99,19 +98,20 @@ function UploadPhoto({ navigation }) {
     
 
     //upload image blob to firebase storage
-    async function upload(){        // NEED TO MAKE IT WORK PROPERLY
+    async function upload(){       
+
+      // TODO: NEED REFACTORING
 
       let uniqID = new Date().getTime() // unique id for each post. created using date ms
       setPostUniqueID(uniqID)
 
       if (image){
-
-      updateDoc(doc(db, "posts", `${user.uid}`),{
+        updateDoc(doc(db, "posts", `${user.uid}`),{
           postID: arrayUnion(postUniqueID)
       })
-      setDoc(doc(db, "posts", `${user.uid}`, `${postUniqueID}`, "postData" ),{
-        photoCount: image.length,
-        // photoURLs: []
+        setDoc(doc(db, "posts", `${user.uid}`, `${postUniqueID}`, "postData" ),{
+          photoCount: image.length,
+          // photoURLs: []
       })
 
       await getDoc(doc(db, "postInfo", `${postUniqueID}`))    // set post info on postInfo collection
@@ -124,6 +124,7 @@ function UploadPhoto({ navigation }) {
             comments: [],
             photoURLs: [],
             name: user.displayName,
+            description: descriptionText
           })      
       })
     
@@ -190,16 +191,29 @@ function UploadPhoto({ navigation }) {
                   <View style={styles.imageContainer}>
                     <Image source={{uri: img}} style={{width: window.width-2, height: height4posts}} />
                     <Text style={{color:"black"}}>{`${index+1}/${image.length}`}</Text>
-                    <Button onPress={()=> {
-                      console.log("need to add this")
-                      }} title='remove'/>
+                    <Button onPress={()=> { console.log("need to add this")}} title='remove'/>
                   </View>
                 </>
                 )
                 })
                 }
             </ScrollView> 
-
+            <View 
+              style={{
+                position:'absolute',
+                bottom: 150,
+              }}>
+              <Text>Description: {descriptionText}</Text>
+            </View>
+            <View 
+              style={{
+                position:'absolute',
+                width:'100%', 
+                height:50, 
+                bottom: 90,
+                }}>
+              <Input style={styles.textInput} placeholder="Add a description" onChangeText={(text) => setDescriptionText(text)} value={descriptionText} />
+            </View>
             <Animated.View style={styles.uploadIconWrapper}>
                 <Icon name="send" color="black" />
                 <Button title="Upload" onPress={()=> upload()} titleStyle={{color: "black", fontSize: 25}} buttonStyle={styles.createPostButtons} />
@@ -268,6 +282,8 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         alignItems: "center",
       },
-
+      textInput: {
+        
+      }
 
 })
