@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
 import { StatusBar } from 'expo-status-bar'
-import { View, Text, StyleSheet, Alert } from 'react-native'
+import { View, Text, StyleSheet, Alert, useWindowDimensions } from 'react-native'
 import { Button, Image, Input, TouchableHighlight, Icon } from "react-native-elements"
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -17,6 +17,8 @@ import { getStorage, ref, getDownloadURL } from "firebase/storage";
 
 
 const UserProfile = ({ route, navigation }) => {
+  
+    const window = useWindowDimensions()    // hook to get the window dimensions
 
     const [followerCount, setFollowerCount] = useState(0)
     const [followingCount, setFollowingCount] = useState(0)
@@ -96,7 +98,7 @@ const UserProfile = ({ route, navigation }) => {
 
     return (
         <>
-        <View style={styles.container}>
+        <View style={[styles.container, {width: window.width-5}]}>
             <StatusBar style="light"></StatusBar>
             <View style={{justifyContent: "center", alignItems: "center", marginTop: 10}}>
                 <Image 
@@ -162,6 +164,9 @@ const UserProfile = ({ route, navigation }) => {
           <Text style={{color:'white',fontSize:20, marginTop:25}}>No Posts</Text>
           }
         </ScrollView>
+          <View style={{width:'100%',height:60, justifyContent:'center', alignItems:'center'}}>
+            <Image source={require("../assets/w1logocrimson.png")} style={styles.logoBottom}/>
+          </View>
         </>
 
     )
@@ -199,15 +204,25 @@ const styles = StyleSheet.create({
 
   },
     container: {
-        height: 200,
+        alignSelf:'center',
+        height: 210,
         backgroundColor: "#ffffff",
         overflow: "hidden",
+        borderColor:'black',
+        borderWidth:2,
+        borderRadius:20,
     },
     followersInfo: {
       color: "black",
       margin: 5, 
       textAlign:"center"
-    }
+    },
+    logoBottom:{
+      width: 50,
+      height: 50,
+      zIndex: 10,
+      marginBottom:5
+  },
 
 
 })

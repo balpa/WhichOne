@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Animated, Image, Button } from 'react-native'
+import { View, Text, StyleSheet, Animated, Image, Button, useWindowDimensions } from 'react-native'
 import React, { useRef, useEffect } from 'react'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/native';
@@ -7,6 +7,8 @@ import firebase from 'firebase/compat/app'
 
 
 const UserSearchProfile = ({ image, searchUsername, followerCount, followingCount, followSituation, searchedUsersUID, loggedinUser }) => {
+
+    const window = useWindowDimensions()
 
     const navigation = useNavigation()
 
@@ -52,7 +54,7 @@ const UserSearchProfile = ({ image, searchUsername, followerCount, followingCoun
     }
 
     return (
-        <Animated.View style={[styles.component, {transform: [{translateY: springAnim}]}]}>
+        <Animated.View style={[styles.component, {width: window.width-5}, {transform: [{translateY: springAnim}]}]}>
             <View style={styles.imageNameField}>
                 <TouchableOpacity onPress={()=>{navigation.navigate("UserProfile",{ name: `${searchUsername}`, userID: `${searchedUsersUID}`})}}>
                 <Image source={{uri: image}} style={{width: 70, height: 70, borderRadius: 70/2}}/>
@@ -83,7 +85,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     component: {
-        width: "100%",
         height: 250,
         backgroundColor: "rgba(0,0,0,0.1)",
         borderRadius:20,

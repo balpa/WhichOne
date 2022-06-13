@@ -13,6 +13,8 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function SmallProfile({ userID }) {
 
+    const COLOR_PALETTE_1 = ["FAC213", "F77E21", "D61C4E", "990000", "FF5B00"]   // bright yellows cleared 
+
     const navigation = useNavigation()
 
     const loggedinUser = auth.currentUser
@@ -113,7 +115,9 @@ export default function SmallProfile({ userID }) {
             <View>
                 <View style={{flexDirection: "row"}}>
                     {!followSituation && <Button onPress={follow} buttonStyle={styles.followButton} titleStyle={{fontSize: 10, color:'crimson'}} title={"Follow"}/>}
-                    {followSituation && <Button onPress={unfollow} buttonStyle={styles.unfollowButton} titleStyle={{fontSize: 10}} title={"Following"}/>}
+                    {followSituation && <Button onPress={unfollow} buttonStyle={[styles.unfollowButton, {
+                        backgroundColor: `#${COLOR_PALETTE_1[Math.floor(Math.random() * COLOR_PALETTE_1.length)]}`
+                    }]} titleStyle={{fontSize: 10}} title={"Following"}/>}
                 </View>
             </View>
         </View>
@@ -132,7 +136,6 @@ export default function SmallProfile({ userID }) {
     },
     unfollowButton: {
         width: 100,
-        backgroundColor: "crimson",
     }
     })
     
