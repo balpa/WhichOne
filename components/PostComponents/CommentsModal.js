@@ -24,8 +24,7 @@ const CommentsModal = ({ postID, setShowComments, height4postcontainer }) => {
         }).start()
     }, [])
 
-    // TODO: sometimes it doesn't get all data from the db. CHECK
-    // COMMENTS SHOWING ON WRONG POSTS (weird cuz fetching by postid, might be a rendering issue or sorting the postID array)
+    // TODO: GET COMMENTS ON PARENT COMPONENT TO SHOW COUNT NUMBER
     useEffect(()=>{         // get comments from DB
         const os = onSnapshot(doc(db,"postInfo", `${postID}`, "comments","commentsUserID"),(document)=>{
             setCommentsOnDB(document.data())
@@ -34,7 +33,6 @@ const CommentsModal = ({ postID, setShowComments, height4postcontainer }) => {
     },[])
 
     // console.log("comments: ",commentsOnDB)
-
 
     // TODO: use interpolate function for animation value based on percentage
 
@@ -101,7 +99,9 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 20,
         padding: 5,
         borderWidth:2,
-        borderColor:'black'
+        borderColor:'black',
+        borderBottomLeftRadius: 10,
+        borderBottomRightRadius: 10,
     },
     closeButton:{
         width: 300,

@@ -89,7 +89,7 @@ export default function SmallProfile({ userID }) {
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
-            width: window.width-5,
+            width: '100%',
             height: 50,
             backgroundColor: 'rgba(255,255,255,0)',
             paddingLeft: 20,

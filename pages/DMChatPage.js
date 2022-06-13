@@ -54,11 +54,10 @@ const DMChatPage = ({ route, navigation }) => {
 
  function sorter(obj) {       // SORTING NOT WORKING FFS
    let objArr =  Object.values(obj.data)
+   
+   let sortedArr = objArr.sort((a,b) => { return Date.parse(`${a.timestamp}`) - Date.parse(`${b.timestamp}`)})
 
-    let sortedArr = objArr.sort((a,b) => { return Date.parse(`${a.timestamp}`) - Date.parse(`${b.timestamp}`)})
-
-    console.log(sortedArr)
-    return sortedArr
+   return sortedArr
  }
 
 

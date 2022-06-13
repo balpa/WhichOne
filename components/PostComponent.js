@@ -23,7 +23,6 @@ function PostComponent({ postID, userID, name }){
     const [postDate, setPostDate] = useState(null)
     const [showComments, setShowComments] = useState(false)
 
-
     const userIdToPass = userID != undefined ? userID : auth.currentUser.uid 
     const nameToPass = name != undefined ? name : auth.currentUser.displayName
     const storage = getStorage();
@@ -55,6 +54,7 @@ function PostComponent({ postID, userID, name }){
         const date = getDoc(doc(db,"postInfo", `${postID}`))
         .then((document)=> setPostDate(document.data().date))
     },[])
+
 
 
     
