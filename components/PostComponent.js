@@ -22,6 +22,7 @@ function PostComponent({ postID, userID, name }){
     const [showDotSettings, setShowDotSettings] = useState(false)
     const [postDate, setPostDate] = useState(null)
     const [showComments, setShowComments] = useState(false)
+    const [description, setDescription] = useState("")
 
     const userIdToPass = userID != undefined ? userID : auth.currentUser.uid 
     const nameToPass = name != undefined ? name : auth.currentUser.displayName
@@ -45,21 +46,19 @@ function PostComponent({ postID, userID, name }){
         }
     }
 
-
     getDownloadURL(ref(storage, `Users/${userIdToPass}/avatars/avatar_image`))
       .then((url) => { setAvatar(url) })
       .catch((error) => console.log(error))
 
-    useEffect(async()=>{
+    useEffect(async()=>{            // get post date and description
         const date = getDoc(doc(db,"postInfo", `${postID}`))
-        .then((document)=> setPostDate(document.data().date))
+        .then((document)=> {
+            setPostDate(document.data().date)
+            setDescription(document.data().description)
+        })
     },[])
-
-
-
     
-    // getting images from storage. need to add non existing image exceptions and improve this w/o for loop etc
-    useEffect(async() => {
+    useEffect(async() => {          // getting images from storage. need to add non existing image exceptions and improve this w/o for loop etc
         await getDoc(doc(db,"posts",`${userIdToPass}`,`${postID}`,'postData'))
             .then(doc => {
                 if (doc.exists) setImages(doc.data().imageURLs)
@@ -76,7 +75,6 @@ function PostComponent({ postID, userID, name }){
                 justifyContent: "center",
                 alignItems: "center",
                 width: window.width-5,
-                minHeight: height4postcontainer+70,
                 marginTop: 5,
                 marginBottom: 5,
                 padding: 5,
@@ -132,13 +130,8 @@ function PostComponent({ postID, userID, name }){
                         )
                     })}
                 </ScrollView>
-                <View style={{width:'100%'}}>
-                    <Text 
-                        style={{
-                            fontSize:12, 
-                            fontWeight:'800'}}>
-                        todo:post description
-                    </Text>
+                <View style={{textAlign:'left', width:'100%', marginBottom:10}}>
+                    <Text style={{fontSize: 13, fontWeight:'400'}}>{description != undefined ? description : ""}</Text>
                 </View>
                 <View 
                     style={{
@@ -164,14 +157,5 @@ export default PostComponent
 
 const styles = StyleSheet.create({
     component: {
-        justifyContent: "center",
-        alignItems: "center",
-        // width: window.width,
-        // height: 400,
-        backgroundColor: "white",
-        marginTop: 5,
-        marginBottom: 5,
-        padding: 5
-
     }
 })

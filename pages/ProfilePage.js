@@ -95,7 +95,7 @@ const ProfilePage = ({ navigation }) => {
     function expand(){
       if (isExpanded == false){ setIsExpanded(true)
         Animated.timing(expandAnim, {
-          toValue: 180,
+          toValue: 190,
           duration: 500,
           useNativeDriver: false,
         }).start()

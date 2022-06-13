@@ -87,7 +87,7 @@ function PostImage({url, photoNumber, postID, arrayLength}){
         <View 
           style={{
             width: window.width-19, 
-            height: height4posts, 
+            height: height4posts+50, 
             justifyContent:'center', 
             display:'flex', 
             flexDirection:'column'}}>
