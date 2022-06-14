@@ -38,39 +38,39 @@ const DMChatPage = ({ route, navigation }) => {
     onSnapshot(doc(db, "messages",`bw${loggedinUser.uid}and${userID}` ), (document) => {
       if (document.data() != undefined) { 
         setWhichUser('loggedinuser')
-        sorter(document.data())
-        //setMessageData(sorter(document.data()))
+        setMessageData(sorter(document.data()))
       }
       else {
         setWhichUser('otheruser')
         onSnapshot(doc(db, "messages",`bw${userID}and${loggedinUser.uid}` ), (docu) => {
           if (docu.data() != undefined) {
-            // setMessageData(sorter(docu.data()))
+            setMessageData(sorter(docu.data()))
           }
         })
       }
   })
  }, [])
 
- function sorter(obj) {       // SORTING NOT WORKING FFS
-   let objArr =  Object.values(obj.data)
-   
-   let sortedArr = objArr.sort((a,b) => { return Date.parse(`${a.timestamp}`) - Date.parse(`${b.timestamp}`)})
+  function sorter(obj) {       // SORTING NOT WORKING FFS
+    let objArr =  Object.values(obj.data)
+    
+    let sortedArr = objArr.sort((a,b) => {a.time.slice - b.time})
 
-   return sortedArr
- }
+    return sortedArr
+  }
+
 
 
   async function sendMessage(){         // send message to firebase. same logic with the snapshot listener
 
     if (messageText.length > 0 && messageText.length < 150) {
 
-      let date = new Date().toLocaleString()
+      let date = new Date().getTime()
       let data = {[messageText]: {
         message: messageText,
         sender: loggedinUser.uid,
         receiver: userID,
-        timestamp: date, 
+        time: date, 
       }}
 
       if (whichUser == 'loggedinuser') await setDoc(doc(db,'messages', `bw${loggedinUser.uid}and${userID}`), {data},{merge: true})
@@ -85,7 +85,7 @@ const DMChatPage = ({ route, navigation }) => {
       {messageData != null ? 
         <FlatList 
           
-          data={Object.values(messageData.data)} 
+          data={messageData} 
           renderItem={({item}) => (<ChatBalloon item={item} />)} 
           keyExtractor={(item, index) => index.toString()}
           ListEmptyComponent={() => <Text style={styles.emptyText}>No messages yet</Text>}
