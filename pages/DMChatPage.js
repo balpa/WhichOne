@@ -51,11 +51,9 @@ const DMChatPage = ({ route, navigation }) => {
   })
  }, [])
 
-  function sorter(obj) {       // SORTING NOT WORKING FFS
+  function sorter(obj) {       // SORTING SEEMS WORKING! yuppi aq
     let objArr =  Object.values(obj.data)
-    
-    let sortedArr = objArr.sort((a,b) => {a.time.slice - b.time})
-
+    let sortedArr = objArr.sort((a,b) => a.time - b.time)
     return sortedArr
   }
 
