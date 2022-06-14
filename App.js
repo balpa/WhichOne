@@ -11,9 +11,10 @@
 
 import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { Children } from 'react';
 import { useEffect } from 'react';
 import { Button } from 'react-native-elements';
+import { Platform } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StyleSheet, Text, View, Alert, LogBox } from 'react-native';
@@ -39,17 +40,29 @@ import { TransitionSpecs } from '@react-navigation/stack';
 LogBox.ignoreLogs(['Setting a timer for a long period of time']) // to clear the yellow warning on android devices
 
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator()
 
-const globalScreenOptions = {
-  headerStyle: { backgroundColor: 'rgba(255,255,255,1)', height: 75 },
-  headerTitleStyle: { color: "black" },
-  headerTintColor: "black",
-  gestureEnabled: true,
-  headerShown: true,
-  cardStyle: { backgroundColor: 'rgba(255,255,255,1)' },    // to make the background black (transitions, reload etc)
+let globalScreenOptions
 
-}
+if (Platform.OS === 'ios') {
+  globalScreenOptions = {
+    headerStyle: { backgroundColor: 'rgba(255,255,255,1)', height: 75 },
+    headerTitleStyle: { color: "black" },
+    headerTintColor: "black",
+    gestureEnabled: true,
+    headerShown: true,
+    cardStyle: { backgroundColor: 'rgba(255,255,255,1)' },    // to make the background black (transitions, reload etc)
+}}
+
+if (Platform.OS === 'android') {
+  globalScreenOptions = {
+    headerStyle: { backgroundColor: 'rgba(255,255,255,1)', height: 75 },
+    headerTitleStyle: { color: "black" },
+    headerTintColor: "black",
+    gestureEnabled: false,
+    headerShown: true,
+    cardStyle: { backgroundColor: 'rgba(255,255,255,1)' },    // to make the background black (transitions, reload etc) 
+}}
 
 const config = {
   animation: 'spring',
