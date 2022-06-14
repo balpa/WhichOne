@@ -26,6 +26,7 @@ function PostComponent({ postID, userID, name }){
 
     const userIdToPass = userID != undefined ? userID : auth.currentUser.uid 
     const nameToPass = name != undefined ? name : auth.currentUser.displayName
+
     const storage = getStorage();
 
     const navigation = useNavigation()

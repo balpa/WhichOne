@@ -37,7 +37,7 @@ const SearchPage = ({ navigation }) => {
         Animated.timing(searchBarWidthAnim, {
             toValue: windowDim.width,
 
-            duration: 1000,
+            duration: 700,
             useNativeDriver: false
         }).start()
     }, [])

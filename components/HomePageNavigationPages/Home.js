@@ -1,8 +1,10 @@
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, FlatList } from 'react-native'
 import { Button, Icon } from "react-native-elements"
 import React, {useEffect,useState} from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { auth, db } from '../../firebase'
+import { getDoc, doc, onSnapshot } from 'firebase/firestore'
+import PostComponent from '../PostComponent'
 
 const Home = ({navigation}) => {
 
@@ -12,123 +14,64 @@ const Home = ({navigation}) => {
   const [postComponentList, setPostComponentList] = useState({})
   const [components, setComponents] = useState([])
   const [allPostsFromFollowing, setAllPostsFromFollowing] = useState([])
+  const [postIDsThatAlreadyRendered, setPostIDsThatAlreadyRendered] = useState([])
 
   const createPostFunc = () => { setIsShown(!isShown) }
 
   const user = auth.currentUser
 
-  //  console.log("render and following list:  ", followingList)
+  function reloadPage(){ setDummy(!dummy) }
 
-  function reloadPage(){      //page reload dummy func
-    setDummy(!dummy)
- }
+  useEffect(async() => {           // get list of people that logged in user follows
+    await getDoc(doc(db, "useruid", `${user.uid}`)).then((doc) => setFollowingList(doc.data().following))
+    }, [])
 
-  // useEffect(async() => {           // get list of people that logged in user follows for home page post display
-    //     const getFollowingList = await getDoc(doc(db, "useruid", `${user.uid}`))
-    //         .then((doc) => setFollowingList(doc.data().following))
-    // }, [])
+  // useEffect(async () => {
 
-    // useEffect(async () => {
-    //     if (allPostsFromFollowing.length != 0) {
-    //         allPostsFromFollowing.map(async(postID,index) => {
-    //             const getPostData = await getDoc(doc(db,'postInfo',`${postID}`))
-    //             if (getPostData.exists){
-    //                 setComponents(old=> [...old, <PostComponent key={index} postID={postID} userID={getPostData.data().userID} name={getPostData.data().name} />])
-    //             }})}
-    // } , [])
+  //   if (allPostsFromFollowing.length > 0) {
 
-    // useEffect(async()=>{ 
-    //     await getDoc(doc(db, "useruid", `${user.uid}`)).then((document) => {
-    //     setFollowingList(document.data().following)     // DOESN'T SET THE ARRAY. IT PASSES HERE
-    // })
-    // }, [])
+  //     allPostsFromFollowing.map(async(postID, index) => {
 
+  //       await getDoc(doc(db,'postInfo',`${postID}`)).then((docu)=>{
 
-    // ********************
-    // async function setPosts(){
-    //     console.log("setPosts worked 2222222")
+  //         if (docu.data() != undefined){
 
-    //     // console.log("useEffect running: ", allPostsFromFollowing)
-    //     if (allPostsFromFollowing.length == 0 && followingList.length > 0) { 
-    //     // console.log("first if read")
-    //         followingList.map(async(id,index) =>{
-    //             const followingPersonsPostID = await getDoc(doc(db,"posts",`${id}`))
-    //     // console.log("followingpersonspostid read")
+  //           let newComponent = <PostComponent key={postID} postID={postID} userID={docu.data().userID} name={docu.data().name} />
 
-    //         if (followingPersonsPostID.exists){
-    //     // console.log("followingpersonspostid exists read")
-    //             followingPersonsPostID.data().postID.map((item,index) => {
-    //     // console.log("followingpersonspostid.data.postid.map read")
-    //                 if (allPostsFromFollowing.includes(item) === false) setAllPostsFromFollowing(old => [...old, item])
-    //             })}
-    //     })}
-    // }
-    // async function createComponent(){
-    //     console.log("createComponent worked 3333333")
-    //     // console.log("createComponent running: ", components)
-    //     if (allPostsFromFollowing.length != 0) {
-    //         allPostsFromFollowing.map(async(postID,index) => {
-    //         const getPostData = await getDoc(doc(db,'postInfo',`${postID}`))
-    //             if (getPostData.exists){
-    //                 setComponents(old=> [...old, <PostComponent key={index} postID={postID} userID={getPostData.data().userID} name={getPostData.data().name} />])
-    //             }})} 
-    // }
+  //           if (components.length == 0) setComponents(old => [...old, newComponent])
+  //           else if (components.length > 0){
+  //             if (components.some((x) => x.key != postID)) setComponents(old => [...old, newComponent])
+  //           }
 
-    // useEffect(() => {
-    //    setPosts().then(() => createComponent())
-    // }, [])
+  //         }})})
+  //       }} , [allPostsFromFollowing])
 
-    // *****************
-
-    // useEffect(async() => {           // take following list and get all post id's from each user and store in array to fetch them all 
-
-    //     // TODO: at first render, it doesn't run this useEffect. CHECK
-    //     // at second render, it runs 1-2-3 clg's. meaning second if statement not running. CHECK
-
-    //     // followingList and allPostsFromFollowing abre empty at first render.
-
-    //     console.log("useEffect running: ", allPostsFromFollowing)
-    //     if (allPostsFromFollowing.length == 0 && followingList.length > 0) { 
-    //         console.log("first if read")
-    //         followingList.map(async(id,index) =>{
-    //             console.log("followinglist.map read")
-    //         const followingPersonsPostID = await getDoc(doc(db,"posts",`${id}`))
-    //         console.log("followingpersonspostid read")
-
-    //         if (followingPersonsPostID.exists){
-    //             console.log("followingpersonspostid exists read")
-    //             followingPersonsPostID.data().postID.map((item,index) => {
-    //                 console.log("followingpersonspostid.data.postid.map read")
-    //                 if (allPostsFromFollowing.includes(item) === false) setAllPostsFromFollowing(old => [...old, item])
-    //             })
-    //         }
-    //     })}
-    //     if (allPostsFromFollowing.length != 0) {
-    //         allPostsFromFollowing.map(async(postID,index) => {
-    //         const getPostData = await getDoc(doc(db,'postInfo',`${postID}`))
-    //             if (getPostData.exists){
-    //                 setComponents(old=> [...old, <PostComponent key={index} postID={postID} userID={getPostData.data().userID} name={getPostData.data().name} />])
-    //             }})}
-    // },[])
-
-
-    // TODO: needs re-rendering to show posts and after re-rendering again, 
-    // it shows the same posts again. FIX
-
-    // SOLUTION MIGHT BE COLLECTING ALL OF THE useEffect's in one
-
+  function setPosts(){  
+            followingList.map((id,index) =>{
+                onSnapshot(doc(db,"posts",`${id}`), (docu) => {
+                  if (docu.data() != undefined) docu.data().postID.map((item,index) => {
+                      if (allPostsFromFollowing.includes(item) === false) setAllPostsFromFollowing(old => [...old, item])
+                })})})
+    }
     
-    // console.log("allpostsfromfollowing => ",allPostsFromFollowing) // THIS NOT GETTING ON FIRST RENDER
+  useEffect(() => {setPosts()}, [followingList])
 
+  console.log('ALL POSTS FROM FOLLOWING', allPostsFromFollowing)
 
-    // TODO: use FlatList instead of ScrollView
+  // TODO: big improvements done.
 
   return (
     <View style={styles.container}>
-        <Text>home page posts</Text>
-           {/* <ScrollView>
-                {components.reverse()}
-            </ScrollView> */}
+      {/* <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center', backgroundColor: "#ffffff"  }}>
+        {components}
+      </ScrollView> */}
+      {/* {allPostsFromFollowing && 
+        <FlatList 
+          data={allPostsFromFollowing}
+          renderItem={({item}) => (<PostComponent key={item} postID={item}/>)} 
+          keyExtractor={(item, index) => index.toString()}
+          ListEmptyComponent={() => <Text style={styles.emptyText}>No messages yet</Text>}
+          /> } */}
       </View>
 )
 }
@@ -167,8 +110,6 @@ const styles = StyleSheet.create({
 
   },
   container: {
-      flex: 1,
       backgroundColor: "#ffffff",
-      alignItems: "center"
 },
 })

@@ -1,7 +1,7 @@
 import React, { createRef } from 'react'
 import { useEffect, useState, useRef } from 'react'
 import { StatusBar } from 'expo-status-bar'
-import { View, Text, StyleSheet, Alert, useWindowDimensions, Animated } from 'react-native'
+import { View, Text, StyleSheet, Alert, useWindowDimensions, Animated, Platform } from 'react-native'
 import { Button, Image, Input, TouchableHighlight, Icon } from "react-native-elements"
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -38,8 +38,9 @@ const ProfilePage = ({ navigation }) => {
     const [currentBio, setCurrentBio] = useState("")
     const [isExpanded, setIsExpanded] = useState(false)
 
-    const user = auth.currentUser;
-    const storage = getStorage();
+    const user = auth.currentUser
+    const storage = getStorage()
+ 
 
     useEffect(()=>{   // get bio from firebase
       const bio =  onSnapshot(doc(db,'useruid',`${user.uid}`), (doc) => setCurrentBio(doc.data().bio))
@@ -225,6 +226,7 @@ const styles = StyleSheet.create({
       color: "black",
       margin: 5, 
       textAlign:"center",
+      fontWeight: '700'
     },
     profileTop: {
       justifyContent: "flex-start", 
