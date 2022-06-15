@@ -23,9 +23,9 @@ const DMPage = () => {
 
   return (
     <View style={styles.DMContainer}>
-      <View style={styles.messagesTextTop}>
+      {/* <View style={styles.messagesTextTop}>
         <Text style={{fontSize:20,fontWeight:'800', fontStyle:'italic'}}>Messages</Text>
-      </View>
+      </View> */}
       <View style={styles.messagePersonContainer}>
         {following.map((userID, index)=> {
           if (followers.includes(userID) && following.includes(userID)) {

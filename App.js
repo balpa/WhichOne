@@ -97,6 +97,7 @@ export default function App() {
       <Stack.Screen name="Account" options={{headerBackTitle: "Settings", transitionSpec: {open: config, close: config}}} component={AccountSettings} />
       <Stack.Screen name='Upload Avatar' options={{headerBackTitle: "Account", transitionSpec: {open: config, close: config}}} component={UploadAvatar} />
       <Stack.Screen name="Create" options={{headerBackTitle: "Home", transitionSpec: {open: config, close: config}}} component={Create} />
+
      </Stack.Navigator>
     </NavigationContainer>
 

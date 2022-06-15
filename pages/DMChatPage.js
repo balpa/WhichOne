@@ -2,10 +2,11 @@ import { View, Text, StyleSheet, KeyboardAvoidingView, Animated, FlatList } from
 import React, { Children, useEffect } from 'react'
 import {auth,db} from '../firebase'
 import { ScrollView } from 'react-native-gesture-handler'
-import { Input } from 'react-native-elements'
+import { Input, Icon, Button } from 'react-native-elements'
 import { doc, onSnapshot, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import useKeyboardHeight from 'react-native-use-keyboard-height'
 import ChatBalloon from '../components/DMComponents/ChatBalloon'
+import DMSettings from './DMSettings'
 
 const DMChatPage = ({ route, navigation }) => {
 
@@ -19,6 +20,8 @@ const DMChatPage = ({ route, navigation }) => {
   const [messageText, setMessageText] = React.useState('')
   const [messageData, setMessageData] = React.useState(null)
   const [whichUser, setWhichUser] = React.useState('')
+  const [showDMSettings, setShowDMSettings] = React.useState(false)
+  const [chatBalloonColor, setChatBalloonColor] = React.useState("rgb(0,128,0)")
 
   const { userID, name, userData } = route.params
   const loggedinUser = auth.currentUser
@@ -59,8 +62,6 @@ const DMChatPage = ({ route, navigation }) => {
     return sortedArr
   }
 
-
-
   async function sendMessage(){         // send message to firebase. same logic with the snapshot listener
 
     if (messageText.length > 0 && messageText.length < 150) {
@@ -82,11 +83,22 @@ const DMChatPage = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
+      <View style={{
+        borderBottomWidth: 0.2,
+        borderTopWidth: 0.2,
+        borderColor:'black',
+        alignItems:'flex-end'
+      }}>
+        <Button 
+          onPress={() => {setShowDMSettings(true)}} 
+          titleStyle={{color: "black", fontSize: 15}} 
+          buttonStyle={styles.settingsButton}
+          title={<Icon name="settings" color="black" />}/>
+      </View>
       {messageData != null ? 
         <FlatList 
-          
           data={messageData} 
-          renderItem={({item}) => (<ChatBalloon item={item} />)} 
+          renderItem={({item}) => (<ChatBalloon item={item} color={chatBalloonColor} />)} 
           keyExtractor={(item, index) => index.toString()}
           ListEmptyComponent={() => <Text style={styles.emptyText}>No messages yet</Text>}
           /> 
@@ -113,6 +125,13 @@ const DMChatPage = ({ route, navigation }) => {
           }}
           />
       </Animated.View>
+      {showDMSettings && 
+        <DMSettings 
+          setShowDMSettings={setShowDMSettings}
+          setChatBalloonColor={setChatBalloonColor}
+          chatBalloonColor={chatBalloonColor}
+          
+          />}
     </View>
   )
 }
@@ -132,5 +151,11 @@ const styles = StyleSheet.create({
   messageInputContainer: {
     width:'100%',
     alignContent:'center',
-  }
+  },
+  settingsButton: {
+    marginTop: 5,
+    width: 45,
+    borderWidth: 0,
+    backgroundColor: "transparent",
+},
 })
