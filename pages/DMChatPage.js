@@ -13,6 +13,8 @@ const DMChatPage = ({ route, navigation }) => {
 
   // TODO: SORTING MESSAGES BY TIMESTAMP
 
+  const COLOR_PALETTE_1 = ["FAC213", "F77E21", "D61C4E", "990000", "FF5B00"]   // bright yellows cleared 
+
   const [isEmpty, setIsEmpty] = React.useState(false)
   const [messageText, setMessageText] = React.useState('')
   const [messageData, setMessageData] = React.useState(null)
@@ -92,9 +94,23 @@ const DMChatPage = ({ route, navigation }) => {
       <Animated.View style={[styles.messageInputContainer, {bottom: inputAnim}]}>
         <Input  
           ref={ref}
-          placeholder="Type your message here"
+          placeholder='Message...'
           rightIcon={{ type: 'material-community', name: 'send', color: 'black', onPress: () => sendMessage()}} 
           onChangeText={(text) => setMessageText(text)}
+          inputStyle={{
+            backgroundColor: 'white',
+            borderRadius: 15,
+            padding: 5,
+
+          }}
+          containerStyle={{
+            backgroundColor: 'rgb(235,235,235)',
+            height: 60
+          }}
+          inputContainerStyle={{
+            borderBottomWidth: 0,
+
+          }}
           />
       </Animated.View>
     </View>
@@ -115,5 +131,6 @@ const styles = StyleSheet.create({
   },
   messageInputContainer: {
     width:'100%',
+    alignContent:'center',
   }
 })
