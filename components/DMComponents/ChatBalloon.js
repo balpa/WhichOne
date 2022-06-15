@@ -54,11 +54,7 @@ const ChatBalloon = ({ message, sender, item }) => {
         fontSize:15,
         fontWeight:'600'
       }}>{item.message}</Text>
-      <View style={{
-        position:'absolute',
-        bottom: -15,
-        right: 0,
-      }}>
+      <View style={item.sender === loggedinUser.uid ? {position:'absolute', bottom: -15, right: 0} : {position:'absolute', bottom:-15, left: 0}}>
         <TouchableOpacity 
           style={{
             width:'100%',
