@@ -109,7 +109,7 @@ const DMSettings = ({ setShowDMSettings, setChatBalloonColor, chatBalloonColor, 
           <View style={{width:100, height:50, borderRadius:10, backgroundColor:selectedColor, justifyContent:'center'}}>
             <Text style={{
               alignSelf:'center',
-              color: textColor
+              color: selectedTextColor
             }}>Example text</Text>
           </View>
           <Text style={{fontSize:20, fontWeight:'800'}}>^</Text>
