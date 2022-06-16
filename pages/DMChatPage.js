@@ -57,13 +57,12 @@ const DMChatPage = ({ route, navigation }) => {
   })
  }, [])
 
-  useEffect(()=>{
-     async () => {
+  useEffect(async()=>{      // get color data from local storage (cache)
       try {
         const value = await AsyncStorage.getItem('chatBalloonColor')
         if(value !== null) setChatBalloonColor(value)
       } catch(e) {console.log(e)}
-    }
+
   },[])
 
 

@@ -31,13 +31,13 @@ const DMSettings = ({ setShowDMSettings, setChatBalloonColor, chatBalloonColor }
   }, [])}, [])
 
 
-  function applyAndClose(){
+  async function applyAndClose(){
     setShowDMSettings(false) 
     setChatBalloonColor(selectedColor)
-    async (selectedColor) => {
-      try { await AsyncStorage.setItem('chatBalloonColor', selectedColor)} 
-      catch (e) {console.log(e)}
-    }
+
+    try {await AsyncStorage.setItem('chatBalloonColor', selectedColor)} // set color data to cache storage
+    catch (e) {console.log(e)}
+
   }
 
   // COLOR PICKER HARDCODED
