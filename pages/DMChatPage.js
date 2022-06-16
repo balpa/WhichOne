@@ -23,6 +23,7 @@ const DMChatPage = ({ route, navigation }) => {
   const [whichUser, setWhichUser] = React.useState('')
   const [showDMSettings, setShowDMSettings] = React.useState(false)
   const [chatBalloonColor, setChatBalloonColor] = React.useState("#218AFF")
+  const [textColor, setTextColor] = React.useState('white')
 
   const { userID, name, userData } = route.params
   const loggedinUser = auth.currentUser
@@ -57,10 +58,15 @@ const DMChatPage = ({ route, navigation }) => {
   })
  }, [])
 
-  useEffect(async()=>{      // get color data from local storage (cache)
+  useEffect(async()=>{      // get color data from local storage (cache) ***HARDCODED***
       try {
         const value = await AsyncStorage.getItem('chatBalloonColor')
         if(value !== null) setChatBalloonColor(value)
+      } catch(e) {console.log(e)}
+
+      try {
+        const value = await AsyncStorage.getItem('chatBalloonTextColor')
+        if(value !== null) setTextColor(value)
       } catch(e) {console.log(e)}
 
   },[])
@@ -110,7 +116,7 @@ const DMChatPage = ({ route, navigation }) => {
       {messageData != null ? 
         <FlatList 
           data={messageData} 
-          renderItem={({item}) => (<ChatBalloon item={item} color={chatBalloonColor} />)} 
+          renderItem={({item}) => (<ChatBalloon item={item} color={chatBalloonColor} textColor={textColor} />)} 
           keyExtractor={(item, index) => index.toString()}
           ListEmptyComponent={() => <Text style={styles.emptyText}>No messages yet</Text>}
           /> 
@@ -142,6 +148,8 @@ const DMChatPage = ({ route, navigation }) => {
           setShowDMSettings={setShowDMSettings}
           setChatBalloonColor={setChatBalloonColor}
           chatBalloonColor={chatBalloonColor}
+          textColor={textColor}
+          setTextColor={setTextColor}
           
           />}
     </View>

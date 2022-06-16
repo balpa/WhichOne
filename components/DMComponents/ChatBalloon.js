@@ -4,7 +4,7 @@ import { registerVersion } from 'firebase/app'
 import { auth, db } from '../../firebase'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
-const ChatBalloon = ({ message, sender, item, color }) => {
+const ChatBalloon = ({ message, sender, item, color, textColor }) => {
 
   const loggedinUser = auth.currentUser
 
@@ -54,7 +54,7 @@ const ChatBalloon = ({ message, sender, item, color }) => {
       {alignSelf: senderPosition}, 
       {transform: [{translateX: chatBalloonAnimation}]}]}>
       <Text style={{
-        color:'white',
+        color:textColor,
         textAlign:'center',
         fontSize:15,
         fontWeight:'600'
