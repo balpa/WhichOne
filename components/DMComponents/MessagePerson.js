@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, View, Text, KeyboardAvoidingView, Image, useWindowDimensions } from 'react-native'
+import { StyleSheet, View, Text, KeyboardAvoidingView, Image, useWindowDimensions, Animated } from 'react-native'
 import { Button, Input, Icon } from 'react-native-elements/'
 import { auth, db } from "../../firebase";
 import firebase from 'firebase/compat/app'
@@ -14,6 +14,9 @@ export default function MessagePerson({ userID, color }) {
 
   // TODO: create message content page and navigations
 
+    const rightToLeftAnim = React.useRef(new Animated.Value(300)).current
+    const leftToRightAnim = React.useRef(new Animated.Value(-300)).current
+
     const navigation = useNavigation()
 
     const loggedinUser = auth.currentUser
@@ -24,11 +27,24 @@ export default function MessagePerson({ userID, color }) {
     const [userIDData, setUserIDData] = useState({}) // store the user's data 
     const [image, setImage] = useState(null) // store the user's avatar
 
-    const storage = getStorage();
+    const storage = getStorage()
 
     getDownloadURL(ref(storage, `Users/${userID}/avatars/avatar_image`))    // get the user's avatar
       .then((url) => setImage(url))
       .catch((error) => setImage("https://emedia1.nhs.wales/HEIW2/cache/file/F4C33EF0-69EE-4445-94018B01ADCF6FD4.png"))
+
+    useEffect(() => {
+      Animated.timing(rightToLeftAnim, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: false
+      }).start()
+      Animated.timing(leftToRightAnim, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: false
+      }).start()
+    }, [])
 
     // get the user's data. id is passed through component props
     useEffect(() => {
@@ -54,7 +70,7 @@ export default function MessagePerson({ userID, color }) {
             paddingLeft: 10,
             paddingRight: 10,
             }}>
-            <View style={styles.nameAndImage} >
+            <Animated.View style={[styles.nameAndImage, {transform: [{translateX: leftToRightAnim}]}]} >
                     <Image 
                       style={{
                         width: 50, 
@@ -71,8 +87,8 @@ export default function MessagePerson({ userID, color }) {
                             fontWeight:'500'}}
                             >{userIDData.name}</Text>
                     </TouchableOpacity>
-            </View>
-            <View>
+            </Animated.View>
+            <Animated.View style={{transform: [{translateX:rightToLeftAnim}]}}>
                 <View style={{
                   borderTopLeftRadius: 10,
                   borderBottomLeftRadius: 30,
@@ -95,7 +111,7 @@ export default function MessagePerson({ userID, color }) {
                     <Text>Message</Text>
                   </TouchableOpacity>
                 </View>
-            </View>
+            </Animated.View>
         </View>
     )}
 
