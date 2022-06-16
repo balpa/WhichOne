@@ -4,6 +4,7 @@ import {auth,db} from '../firebase'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Input, Icon, Button } from 'react-native-elements'
 import { doc, onSnapshot, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import useKeyboardHeight from 'react-native-use-keyboard-height'
 import ChatBalloon from '../components/DMComponents/ChatBalloon'
 import DMSettings from './DMSettings'
@@ -21,7 +22,7 @@ const DMChatPage = ({ route, navigation }) => {
   const [messageData, setMessageData] = React.useState(null)
   const [whichUser, setWhichUser] = React.useState('')
   const [showDMSettings, setShowDMSettings] = React.useState(false)
-  const [chatBalloonColor, setChatBalloonColor] = React.useState("rgb(0,128,0)")
+  const [chatBalloonColor, setChatBalloonColor] = React.useState("#218AFF")
 
   const { userID, name, userData } = route.params
   const loggedinUser = auth.currentUser
@@ -56,6 +57,17 @@ const DMChatPage = ({ route, navigation }) => {
   })
  }, [])
 
+  useEffect(()=>{
+     async () => {
+      try {
+        const value = await AsyncStorage.getItem('chatBalloonColor')
+        if(value !== null) setChatBalloonColor(value)
+      } catch(e) {console.log(e)}
+    }
+  },[])
+
+
+
   function sorter(obj) {       // SORTING SEEMS WORKING! yuppi aq
     let objArr =  Object.values(obj.data)
     let sortedArr = objArr.sort((a,b) => a.time - b.time)
@@ -79,6 +91,7 @@ const DMChatPage = ({ route, navigation }) => {
 
       } else alert("Message must be between 1 and 150 characters")
     }
+
 
 
   return (

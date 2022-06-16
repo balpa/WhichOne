@@ -1,17 +1,23 @@
-import { View, Text, StyleSheet, Animated, useWindowDimensions } from 'react-native'
+import { View, Text, StyleSheet, Animated, useWindowDimensions, TouchableOpacity } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Button, Icon } from 'react-native-elements'
 import React from 'react'
 
 const DMSettings = ({ setShowDMSettings, setChatBalloonColor, chatBalloonColor }) => {
 
-  // TODO:  a lot to do xd
+  // TODO: store chat setting local or on db to prevent color change to default on refresh
+  // AsyncStorage did not work, do a research
+
+  const COLORS = ['#218AFF','#007400', '#aeb9cc','#FC3158'] // blue, green, gray, fuschia
 
   const heightAnim = React.useRef(new Animated.Value(0)).current
   const opacityAnim = React.useRef(new Animated.Value(0)).current
 
+  const [selectedColor, setSelectedColor] = React.useState(chatBalloonColor)
+
   let windowHeight = useWindowDimensions().height
 
-  React.useEffect(() => {
+  React.useEffect(() => {     // animations
     Animated.timing(heightAnim, {
       toValue: 600,
       duration: 700,
@@ -27,7 +33,14 @@ const DMSettings = ({ setShowDMSettings, setChatBalloonColor, chatBalloonColor }
 
   function applyAndClose(){
     setShowDMSettings(false) 
+    setChatBalloonColor(selectedColor)
+    async (selectedColor) => {
+      try { await AsyncStorage.setItem('chatBalloonColor', selectedColor)} 
+      catch (e) {console.log(e)}
+    }
   }
+
+  // COLOR PICKER HARDCODED
 
   return (
     <Animated.View style={[styles.container, {height: heightAnim}]}>
@@ -35,7 +48,7 @@ const DMSettings = ({ setShowDMSettings, setChatBalloonColor, chatBalloonColor }
         <View style={styles.colorSelectorContainer}>
           <Text
             style={{
-              fontSize: 20,
+              fontSize: 17,
               fontWeight: '800',
             }}>Select message bubble color</Text>
           <View style={{width:50, height:50, borderRadius:50/2, backgroundColor:chatBalloonColor}}></View>
@@ -46,10 +59,70 @@ const DMSettings = ({ setShowDMSettings, setChatBalloonColor, chatBalloonColor }
               width:'80%',
               justifyContent:'space-around',
               }}>
-            <View style={{width:50, height:50, borderRadius:50/2, backgroundColor:'yellow',}}></View>
-            <View style={{width:50, height:50, borderRadius:50/2, backgroundColor:'brown'}}></View>
-            <View style={{width:50, height:50, borderRadius:50/2, backgroundColor:'blue'}}></View>
-            <View style={{width:50, height:50, borderRadius:50/2, backgroundColor:'red'}}></View>
+            <TouchableOpacity onPress={()=> setSelectedColor(COLORS[0])}>
+              <View style={selectedColor == COLORS[0] ? 
+              {width:50, 
+                height:50, 
+                borderRadius:50/2, 
+                backgroundColor:COLORS[0],
+                borderWidth:3
+              }
+              :
+              {width:50, 
+                height:50, 
+                borderRadius:50/2, 
+                backgroundColor:COLORS[0]
+              }
+              }></View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={()=> setSelectedColor(COLORS[1])}>
+              <View style={selectedColor == COLORS[1] ?
+              {width:50, 
+                height:50, 
+                borderRadius:50/2, 
+                backgroundColor:COLORS[1],
+                borderWidth:3
+              }
+              :
+              {width:50, 
+                height:50, 
+                borderRadius:50/2, 
+                backgroundColor:COLORS[1]
+              }
+              }></View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={()=> setSelectedColor(COLORS[2])}>
+              <View style={selectedColor == COLORS[2] ?
+              {width:50, 
+                height:50, 
+                borderRadius:50/2, 
+                backgroundColor:COLORS[2],
+                borderWidth:3
+              }
+              :
+              {width:50, 
+                height:50, 
+                borderRadius:50/2, 
+                backgroundColor:COLORS[2],
+              }
+              }></View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={()=> setSelectedColor(COLORS[3])}>
+              <View style={selectedColor == COLORS[3] ?
+              {width:50, 
+                height:50, 
+                borderRadius:50/2, 
+                backgroundColor:COLORS[3],
+                borderWidth:3
+              }
+              :
+              {width:50, 
+                height:50, 
+                borderRadius:50/2, 
+                backgroundColor:COLORS[3],
+              }
+              }></View>
+            </TouchableOpacity>
           </View>
         </View>
       </Animated.View>
@@ -92,5 +165,6 @@ const styles = StyleSheet.create({
     flexDirection:'column',
     justifyContent:'space-around',
     alignItems:'center'
-  }
+  },
+
 })
