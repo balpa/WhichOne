@@ -12,12 +12,15 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import { getStorage, ref, uploadBytes, getDownloadURL, updateMetadata } from "firebase/storage";
 import { doc, setDoc, collection, updateDoc, collectionGroup, arrayUnion, arrayRemove, getDoc } from "firebase/firestore"; 
 import { NavigationContainer } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native';
 
-function UploadPhoto({ navigation }) {
+function UploadPhoto({ }) {
 
   // TODO: RESTYLING
 
     const user = auth.currentUser
+
+    const navigation = useNavigation()
 
     const [image, setImage] = useState([])
     const [postUniqueID, setPostUniqueID] = useState(new Date().getTime()) // unique id for each post. created using date ms

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { useState , useEffect} from 'react'
-import { Text, View, StyleSheet, ScrollView, Button, Image, Animated, useWindowDimensions } from 'react-native'
+import { Text, View, StyleSheet, ScrollView, Button, Image, Animated, useWindowDimensions, Platform } from 'react-native'
 import { Icon } from 'react-native-elements'
 import { doc, onSnapshot, getDoc } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
@@ -27,7 +27,7 @@ function PostComponent({ postID, userID, name }){
     const userIdToPass = userID != undefined ? userID : auth.currentUser.uid 
     const nameToPass = name != undefined ? name : auth.currentUser.displayName
 
-    const storage = getStorage();
+    const storage = getStorage()
 
     const navigation = useNavigation()
 
@@ -38,12 +38,19 @@ function PostComponent({ postID, userID, name }){
 
     function dateFormatter( postDate ){     // func to return date in a readable format
         let months = {"01": "January", "02": "February", "03": "March", "04": "April", "05": "May", "06": "June", "07": "July", "08": "August", "09": "September", "10": "October", "11": "November", "12": "December"}
-        if (postDate){
+
+        if (postDate && Platform.OS == 'ios'){
             let dateArray = postDate.split(".")
             let day = dateArray[0]
             let month = months[dateArray[1]]
             let year = dateArray[2].slice(0,4)
             return `${day} ${month}, ${year}`
+        } else if (postDate && Platform.OS == 'android') {
+            let dateArray = postDate.split(' ')
+            let day = dateArray[0]
+            let month = dateArray[1]
+            let year = dateArray[2]
+            return `${day}, ${month}, ${year}`
         }
     }
 
