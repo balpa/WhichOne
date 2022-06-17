@@ -34,6 +34,7 @@ import DMChatPage from './pages/DMChatPage';
 import { Icon } from 'react-native-elements';
 import FollowersFollowingPage from './pages/FollowersFollowingPage';
 import { TransitionSpecs } from '@react-navigation/stack';
+import { SafeAreaView,SafeAreaInsetsContext,useSafeAreaInsets,initialWindowMetrics } from 'react-native-safe-area-context';
 
 
 
@@ -74,7 +75,9 @@ const config = {
     restDisplacementThreshold: 0.01,
     restSpeedThreshold: 0.01,
   },
-};
+}
+
+// TODO: SAFE AREA NOT WORKING STILL
 
 
 export default function App() {
@@ -83,6 +86,7 @@ export default function App() {
 
     <NavigationContainer>
      <Stack.Navigator screenOptions={globalScreenOptions} headerMode="screen" >
+
       <Stack.Screen name="Login" options={{transitionSpec: {open: config, close: config}}} component={LoginScreen} />
       <Stack.Screen name="Register" options={{transitionSpec: {open: config, close: config}}} component={RegisterScreen} />
       <Stack.Screen name="Profile" options={{headerBackTitle: "Home", transitionSpec: { open: config, close: config }}} component={ProfilePage} />
@@ -100,6 +104,7 @@ export default function App() {
 
      </Stack.Navigator>
     </NavigationContainer>
+
 
 
   );
