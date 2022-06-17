@@ -1,5 +1,5 @@
 import React, { Component, useMemo } from 'react'
-import { Text, View, StyleSheet, ScrollView, Image, KeyboardAvoidingView, useWindowDimensions, Animated, Easing } from 'react-native'
+import { Text, View, StyleSheet, ScrollView, Image, KeyboardAvoidingView, useWindowDimensions, Animated, Easing, Platform } from 'react-native'
 import { BackgroundImage } from 'react-native-elements/dist/config'
 import { Button, Icon, Input } from 'react-native-elements'
 import { useState, useEffect } from 'react'
@@ -23,6 +23,7 @@ function UploadPhoto({ navigation }) {
     const [postUniqueID, setPostUniqueID] = useState(new Date().getTime()) // unique id for each post. created using date ms
     const [isLoaded, setIsLoaded] = useState(false)
     const [descriptionText, setDescriptionText] = useState("")
+    const [shadowSettings, setShadowSettings] = useState({})
 
     const storage = getStorage()
     // const postRef = ref(storage, `Users/${user.uid}/posts/${postUniqueID}/`) // storage'da postun yerini belirleme
@@ -53,6 +54,16 @@ function UploadPhoto({ navigation }) {
     //     useNativeDriver: true,
     //   }).start() 
     // } , [])
+
+    useEffect(()=>{
+      if (Platform.OS == 'android'){setShadowSettings({elevation: 10})}
+      else if (Platform.OS == 'ios'){setShadowSettings({
+        shadowColor: '#171717',
+        shadowOffset: {width: -1, height: 3},
+        shadowOpacity: 0.5,
+        shadowRadius: 5, 
+      })}
+    },[])
 
     // for selecting multiple images. current library not so good. need to find a better way
     const ImageBrowserComponent = () => {
@@ -180,9 +191,8 @@ function UploadPhoto({ navigation }) {
     return (
         <View style={styles.component}>
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'space-evenly'}}>
-            <Animated.View style={styles.addButtonIconWrapper}>
-                <Icon name="collections" color="black" />
-                <Button title="Add Photos" onPress={pickImage} titleStyle={{color: "black", fontSize: 25}} buttonStyle={styles.createPostButtons} />
+            <Animated.View style={[styles.addButtonIconWrapper, shadowSettings]}>
+                <Button title={<Icon name="collections" color="white" />}onPress={pickImage} titleStyle={{color: "black", fontSize: 25}} buttonStyle={styles.createPostButtons} />
             </Animated.View>
             <ScrollView style={styles.scrollViewStyling} horizontal={true} minimumZoomScale={1} maximumZoomScale={2} pagingEnabled={true} pinchGestureEnabled={true}>
               {image.map((img, index) => {
@@ -214,10 +224,9 @@ function UploadPhoto({ navigation }) {
                 }}>
               <Input style={styles.textInput} placeholder="Add a description" onChangeText={(text) => setDescriptionText(text)} value={descriptionText} />
             </View>
-            <Animated.View style={styles.uploadIconWrapper}>
-                <Icon name="send" color="black" />
-                <Button title="Upload" onPress={()=> upload()} titleStyle={{color: "black", fontSize: 25}} buttonStyle={styles.createPostButtons} />
-                
+            <Animated.View style={[styles.uploadIconWrapper, shadowSettings]}>
+                <Icon name="send" color="white" />
+                <Button title="Upload" onPress={()=> upload()} titleStyle={{color: "white", fontSize: 25}} buttonStyle={styles.createPostButtons} />
             </Animated.View> 
           </View>
         </View>
@@ -239,34 +248,29 @@ const styles = StyleSheet.create({
       uploadIconWrapper: {
         position: "absolute",
         bottom: 0,
-        height: 80,
+        height: 60,
         flexDirection: "row",
-        width: "100%",
-        backgroundColor: "rgba(240,240,240,1)",
+        width: "80%",
+        backgroundColor: "crimson",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        borderTopEndRadius: 25,
-        borderTopStartRadius: 25,
-        borderWidth: 2,
-        borderColor: 'black'
+        borderRadius: 20,
 
     },
       addButtonIconWrapper: {
         position: "absolute",
         top: -1,
-        height: 80,
+        width: 70,
+        height: 70,
         flexDirection: "row",
-        width: "100%",
-        backgroundColor: "rgba(240,240,240,1)",
+        backgroundColor: "crimson",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        borderBottomEndRadius: 25,
-        borderBottomStartRadius: 25,
+        borderRadius: 70/2,
         zIndex: 20,
-        borderWidth: 2,
-        borderColor: 'black'
+
 
     },
 

@@ -86,12 +86,8 @@ const DMSettings = ({ setShowDMSettings, setChatBalloonColor, chatBalloonColor, 
           <Button 
             buttonStyle={{
               backgroundColor:'transparent',
-              borderLeftWidth: 1.5,
-              borderBottomWidth: 1.5,
-              borderColor:'black',
-              borderBottomLeftRadius: 15
             }}
-            title='X' 
+            title={<Icon name='close' color='black'/>}
             titleStyle={{
               color:'black',
               fontSize: 15,
