@@ -23,12 +23,12 @@ const DMSettings = ({ setShowDMSettings, setChatBalloonColor, chatBalloonColor, 
   React.useEffect(() => {     // animations
     Animated.timing(heightAnim, {
       toValue: 600,
-      duration: 700,
+      duration: 400,
       useNativeDriver: false,
     }).start(() => {
       Animated.timing(opacityAnim, {
         toValue: 1,
-        duration: 200,
+        duration: 100,
         useNativeDriver: false,
       }).start()
   }, [])}, [])
@@ -43,7 +43,7 @@ const DMSettings = ({ setShowDMSettings, setChatBalloonColor, chatBalloonColor, 
     }).start(() => {
       Animated.timing(heightAnim, {
         toValue: 0,
-        duration: 500,
+        duration: 400,
         useNativeDriver: false,
       }).start(()=>{
         setShowDMSettings(false)
