@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Animated, useWindowDimensions, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, Animated, useWindowDimensions, TouchableOpacity, Switch } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Button, Icon } from 'react-native-elements'
 import React from 'react'
@@ -17,6 +17,7 @@ const DMSettings = ({ setShowDMSettings, setChatBalloonColor, chatBalloonColor, 
 
   const [selectedColor, setSelectedColor] = React.useState(chatBalloonColor)
   const [selectedTextColor, setSelectedTextColor] = React.useState(textColor)
+  const [isEnabled, setIsEnabled] = React.useState(true)
 
   let windowHeight = useWindowDimensions().height
 
@@ -73,6 +74,8 @@ const DMSettings = ({ setShowDMSettings, setChatBalloonColor, chatBalloonColor, 
   }
 
   // COLOR PICKER HARDCODED
+
+  // TODO: complete switch button with cache
 
   return (
     <Animated.View style={[styles.container, {height: heightAnim}]}>
@@ -198,6 +201,23 @@ const DMSettings = ({ setShowDMSettings, setChatBalloonColor, chatBalloonColor, 
                 onPress={()=>setSelectedTextColor('white')}/>
             </View>
 
+        </View>
+        <View style={{
+          width: '100%',
+          height: 50,
+          justifyContent:'center',
+          alignItems:'center',
+          flexDirection:'row',
+          marginTop: 10
+        }}>
+          <Text
+            style={{fontSize:15,fontWeight:'600'}}>Show names above chat bubble: </Text>
+          <Switch 
+            trackColor={{ false: "#767577", true: "crimson" }}
+            thumbColor={isEnabled ? "white" : "#f4f3f4"}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={()=> setIsEnabled(!isEnabled)}
+            value={isEnabled}/>
         </View>
       </Animated.View>
       <Animated.View style={[{
