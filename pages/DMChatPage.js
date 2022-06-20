@@ -116,7 +116,7 @@ const DMChatPage = ({ route, navigation }) => {
       {messageData != null ? 
         <FlatList 
           data={messageData} 
-          renderItem={({item}) => (<ChatBalloon item={item} color={chatBalloonColor} textColor={textColor} />)} 
+          renderItem={({item}) => (<ChatBalloon item={item} otherUsersName={name} color={chatBalloonColor} textColor={textColor} />)} 
           keyExtractor={(item, index) => index.toString()}
           ListEmptyComponent={() => <Text style={styles.emptyText}>No messages yet</Text>}
           /> 

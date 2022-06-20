@@ -4,11 +4,12 @@ import { registerVersion } from 'firebase/app'
 import { auth, db } from '../../firebase'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
-const ChatBalloon = ({ message, sender, item, color, textColor }) => {
+const ChatBalloon = ({ message, sender, item, color, textColor, otherUsersName }) => {
 
   const loggedinUser = auth.currentUser
 
   const chatBalloonAnimation = item.sender === loggedinUser.uid ?  React.useRef(new Animated.Value(300)).current : React.useRef(new Animated.Value(-300)).current
+  const username = item.sender === loggedinUser.uid ? loggedinUser.displayName : otherUsersName
 
   const [senderPosition, setSenderPosition] = React.useState(null)
   const [borderSettings, setBorderSettings] = React.useState({})
@@ -46,6 +47,8 @@ const ChatBalloon = ({ message, sender, item, color, textColor }) => {
     }
   }, [])
 
+  // NOT SURE ABOUT NAMES ABOVE BUBBLE
+
   return (
     <Animated.View style={[
       styles.container, 
@@ -53,6 +56,25 @@ const ChatBalloon = ({ message, sender, item, color, textColor }) => {
       borderSettings, 
       {alignSelf: senderPosition}, 
       {transform: [{translateX: chatBalloonAnimation}]}]}>
+      <Text
+        style={
+          item.sender === loggedinUser.uid ? 
+          {
+            position:'absolute', 
+            top: -15, 
+            right: 0,
+            fontSize: 7,
+            fontWeight: '700'
+          } 
+        : 
+          {
+            position:'absolute', 
+            top:-15, 
+            left: 0,
+            fontSize: 7,
+            fontWeight: '700'
+          }
+          }>{username}</Text>
       <Text style={{
         color:textColor,
         textAlign:'center',
@@ -82,8 +104,10 @@ const styles = StyleSheet.create({
     padding: 10,
     maxWidth: 150,
     minHeight: 50,
-    margin: 10,
-
+    marginTop: 20,
+    marginBottom: 20,
+    marginLeft: 5,
+    marginRight: 5
   },
 
 })
