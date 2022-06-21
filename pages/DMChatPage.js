@@ -24,6 +24,7 @@ const DMChatPage = ({ route, navigation }) => {
   const [showDMSettings, setShowDMSettings] = React.useState(false)
   const [chatBalloonColor, setChatBalloonColor] = React.useState("#218AFF")
   const [textColor, setTextColor] = React.useState('white')
+  const [isNameAboveBubbleEnabled, setIsNameAboveBubbleEnabled] = React.useState(true)
 
   const { userID, name, userData } = route.params
   const loggedinUser = auth.currentUser
@@ -67,6 +68,12 @@ const DMChatPage = ({ route, navigation }) => {
       try {
         const value = await AsyncStorage.getItem('chatBalloonTextColor')
         if(value !== null) setTextColor(value)
+      } catch(e) {console.log(e)}
+
+      try {
+        const value = await AsyncStorage.getItem('isNameAboveBubbleEnabled')
+        if(value !== null && value == 'true') setIsNameAboveBubbleEnabled(true)
+        else if(value !== null && value == 'false') setIsNameAboveBubbleEnabled(false)
       } catch(e) {console.log(e)}
 
   },[])
@@ -116,7 +123,14 @@ const DMChatPage = ({ route, navigation }) => {
       {messageData != null ? 
         <FlatList 
           data={messageData} 
-          renderItem={({item}) => (<ChatBalloon item={item} otherUsersName={name} color={chatBalloonColor} textColor={textColor} />)} 
+          renderItem={({item}) => (
+            <ChatBalloon 
+              item={item} 
+              isNameAboveBubbleEnabled={isNameAboveBubbleEnabled} 
+              otherUsersName={name} 
+              color={chatBalloonColor} 
+              textColor={textColor} />
+              )} 
           keyExtractor={(item, index) => index.toString()}
           ListEmptyComponent={() => <Text style={styles.emptyText}>No messages yet</Text>}
           /> 
@@ -150,6 +164,7 @@ const DMChatPage = ({ route, navigation }) => {
           chatBalloonColor={chatBalloonColor}
           textColor={textColor}
           setTextColor={setTextColor}
+          setIsNameAboveBubbleEnabled={setIsNameAboveBubbleEnabled}
           
           />}
     </View>

@@ -3,7 +3,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Button, Icon } from 'react-native-elements'
 import React from 'react'
 
-const DMSettings = ({ setShowDMSettings, setChatBalloonColor, chatBalloonColor, setTextColor, textColor }) => {
+const DMSettings = ({ 
+  setShowDMSettings, 
+  setChatBalloonColor, 
+  chatBalloonColor, 
+  setTextColor, 
+  textColor, 
+  isNameAboveBubbleEnabled, 
+  setIsNameAboveBubbleEnabled }) => {
 
   // TODO: store chat setting local or on db to prevent color change to default on refresh
   // AsyncStorage did not work, do a research
@@ -52,11 +59,15 @@ const DMSettings = ({ setShowDMSettings, setChatBalloonColor, chatBalloonColor, 
 
     setChatBalloonColor(selectedColor)
     setTextColor(selectedTextColor)
+    setIsNameAboveBubbleEnabled(isEnabled)
 
     try {await AsyncStorage.setItem('chatBalloonColor', selectedColor)} // set color data to cache storage
     catch (e) {console.log(e)}
 
     try {await AsyncStorage.setItem('chatBalloonTextColor', selectedTextColor)} // set color data to cache storage
+    catch (e) {console.log(e)}
+
+    try {await AsyncStorage.setItem('isNameAboveBubbleEnabled', isEnabled.toString())} // set color data to cache storage
     catch (e) {console.log(e)}
 
   }
@@ -72,6 +83,7 @@ const DMSettings = ({ setShowDMSettings, setChatBalloonColor, chatBalloonColor, 
         useNativeDriver: false,
       }).start(()=>{setShowDMSettings(false)})})
   }
+
 
   // COLOR PICKER HARDCODED
 
