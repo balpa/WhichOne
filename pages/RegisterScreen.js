@@ -21,6 +21,7 @@ const RegisterScreen = ({ navigation }) => {
     const [shadowOptions, setShadowOptions] = useState({})
     const [lockIcon, setLockIcon] = useState("eye-slash")
     const [isPasswordShown, setIsPasswordShown] = useState(false)
+    const [isNameNull, setIsNameNull] = useState(true)
 
     const scaleAnim = useRef(new Animated.Value(0)).current
 
@@ -63,6 +64,9 @@ const RegisterScreen = ({ navigation }) => {
     }, [lockIcon])
 
     const register = () => {        // TODO: PASSWORD MIN CHAR SIZE
+
+        if (name.length > 0) {
+
         auth.createUserWithEmailAndPassword(email, password)
         .then((authUser) => {
             authUser.user.updateProfile({
@@ -111,6 +115,8 @@ const RegisterScreen = ({ navigation }) => {
             "Successfully registered!",
         ))
         .catch((error) => alert(error.message));
+
+        }
     }
 
     const WrongPassword = () => {
@@ -132,6 +138,13 @@ const RegisterScreen = ({ navigation }) => {
     }
     },[confirmpassword]) 
 
+    useEffect(()=>{
+        if (name.length == 0) setIsNameNull(true)
+        else setIsNameNull(false)
+    },[name])
+
+
+    //TODO: mustnt be empty message 
 
     return (
         <View behavior="padding" style={styles.container}>
@@ -148,6 +161,7 @@ const RegisterScreen = ({ navigation }) => {
                     selectionColor="black"  
                     autoFocus placeholder="Jack Smith" 
                     value={name} 
+                    errorMessage={isNameNull ? 'Name must not be empty' : ''}
                     onChangeText={(text) => setName(text)}/>
                 <Input 
                     label="Username"

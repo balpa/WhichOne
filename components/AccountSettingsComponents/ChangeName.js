@@ -42,7 +42,7 @@ function ChangeName({ color, setIsChangeNameShown }) {
             else {
                 Alert.alert("Name must be at least 3 characters long!")
             }
-            setIsShown(false)
+            setIsChangeNameShown(false)
     }
 
     function closeModal(){      // closing the modal with the animation reversed

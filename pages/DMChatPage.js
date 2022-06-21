@@ -41,7 +41,7 @@ const DMChatPage = ({ route, navigation }) => {
     }).start()
   }, [ref, keyboardHeight])
 
-  // USERID IS THE OTHER USER'S ID. karşı kullanıcının idsi
+  // USERID IS THE OTHER USER'S ID. (karşı kullanıcının idsi)
   useEffect(() => {     // check for message. id is converted so check both. ITS A GENIUS SOLUTION THO xd
     onSnapshot(doc(db, "messages",`bw${loggedinUser.uid}and${userID}` ), (document) => {
       if (document.data() != undefined) { 
