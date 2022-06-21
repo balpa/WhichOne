@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, KeyboardAvoidingView, Animated, FlatList } from 'react-native'
+import { View, Text, StyleSheet, KeyboardAvoidingView, Animated, FlatList, Platform } from 'react-native'
 import React, { Children, useEffect } from 'react'
 import {auth,db} from '../firebase'
 import { ScrollView } from 'react-native-gesture-handler'
@@ -168,6 +168,7 @@ const DMChatPage = ({ route, navigation }) => {
           
           />}
     </View>
+
   )
 }
 
@@ -186,6 +187,7 @@ const styles = StyleSheet.create({
   messageInputContainer: {
     width:'100%',
     alignContent:'center',
+
   },
   settingsButton: {
     marginTop: 5,
