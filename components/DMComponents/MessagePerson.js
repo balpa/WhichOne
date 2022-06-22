@@ -34,7 +34,7 @@ export default function MessagePerson({ userID, color }) {
     useEffect(() => {          // platform based shadow options
       if (Platform.OS === "android") {
         setShadowOptions({
-          elevation: 5
+          elevation: 0
         })
      }
        else if (Platform.OS === "ios") {

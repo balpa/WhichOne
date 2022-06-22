@@ -3,6 +3,7 @@ import React from 'react'
 import MessagePerson from '../DMComponents/MessagePerson'
 import { doc, onSnapshot } from "firebase/firestore";
 import { auth, db } from '../../firebase'
+import { ScrollView } from 'react-native-gesture-handler';
 
 const DMPage = () => {
 
@@ -22,10 +23,8 @@ const DMPage = () => {
   }, [])
 
   return (
+    <ScrollView>
     <View style={styles.DMContainer}>
-      {/* <View style={styles.messagesTextTop}>
-        <Text style={{fontSize:20,fontWeight:'800', fontStyle:'italic'}}>Messages</Text>
-      </View> */}
       <View style={styles.messagePersonContainer}>
         {following.map((userID, index)=> {
           if (followers.includes(userID) && following.includes(userID)) {
@@ -34,6 +33,7 @@ const DMPage = () => {
         })}
       </View>
     </View>
+    </ScrollView>
   )
 }
 
