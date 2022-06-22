@@ -47,7 +47,7 @@ let globalScreenOptions
 
 if (Platform.OS === 'ios') {
   globalScreenOptions = {
-    headerStyle: { backgroundColor: 'rgba(255,255,255,1)', height: 75 },
+    headerStyle: { height: 75 },
     headerTitleStyle: { color: "black" },
     headerTintColor: "black",
     gestureEnabled: true,
@@ -57,12 +57,13 @@ if (Platform.OS === 'ios') {
 
 if (Platform.OS === 'android') {
   globalScreenOptions = {
-    headerStyle: { backgroundColor: 'rgba(255,255,255,1)', height: 75 },
+    headerStyle: { height: 75 },
     headerTitleStyle: { color: "black" },
     headerTintColor: "black",
     gestureEnabled: false,
     headerShown: true,
     cardStyle: { backgroundColor: 'rgba(255,255,255,1)' },    // to make the background black (transitions, reload etc) 
+    
 }}
 
 const config = {
