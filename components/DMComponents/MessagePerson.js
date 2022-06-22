@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, View, Text, KeyboardAvoidingView, Image, useWindowDimensions, Animated } from 'react-native'
+import { StyleSheet, View, Text, KeyboardAvoidingView, Image, useWindowDimensions, Animated, Platform } from 'react-native'
 import { Button, Input, Icon } from 'react-native-elements/'
 import { auth, db } from "../../firebase";
 import firebase from 'firebase/compat/app'
@@ -13,6 +13,8 @@ import { useNavigation } from '@react-navigation/native';
 export default function MessagePerson({ userID, color }) {
 
   // TODO: create message content page and navigations
+
+    const [shadowOptions, setShadowOptions] = React.useState({})
 
     const rightToLeftAnim = React.useRef(new Animated.Value(300)).current
     const leftToRightAnim = React.useRef(new Animated.Value(-300)).current
@@ -28,6 +30,22 @@ export default function MessagePerson({ userID, color }) {
     const [image, setImage] = useState(null) // store the user's avatar
 
     const storage = getStorage()
+
+    useEffect(() => {          // platform based shadow options
+      if (Platform.OS === "android") {
+        setShadowOptions({
+          elevation: 5
+        })
+     }
+       else if (Platform.OS === "ios") {
+         setShadowOptions({
+           shadowColor: '#171717',
+           shadowOffset: {width: -1, height: 3},
+           shadowOpacity: 0.4,
+           shadowRadius: 5, 
+         })
+     }}, [])
+
 
     getDownloadURL(ref(storage, `Users/${userID}/avatars/avatar_image`))    // get the user's avatar
       .then((url) => setImage(url))
@@ -70,7 +88,7 @@ export default function MessagePerson({ userID, color }) {
             paddingLeft: 10,
             paddingRight: 10,
             }}>
-            <Animated.View style={[styles.nameAndImage, {transform: [{translateX: leftToRightAnim}]}]} >
+            <Animated.View style={[styles.nameAndImage, shadowOptions, {transform: [{translateX: leftToRightAnim}]}]} >
                     <Image 
                       style={{
                         width: 50, 
@@ -88,7 +106,7 @@ export default function MessagePerson({ userID, color }) {
                             >{userIDData.name}</Text>
                     </TouchableOpacity>
             </Animated.View>
-            <Animated.View style={{transform: [{translateX:rightToLeftAnim}]}}>
+            <Animated.View style={[shadowOptions, {transform: [{translateX:rightToLeftAnim}]}]}>
                 <View style={{
                   borderTopLeftRadius: 10,
                   borderBottomLeftRadius: 30,
