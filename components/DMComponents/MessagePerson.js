@@ -52,14 +52,16 @@ export default function MessagePerson({ userID, color }) {
       .catch((error) => setImage("https://emedia1.nhs.wales/HEIW2/cache/file/F4C33EF0-69EE-4445-94018B01ADCF6FD4.png"))
 
     useEffect(() => {
-      Animated.timing(rightToLeftAnim, {
+      Animated.spring(rightToLeftAnim, {
         toValue: 0,
-        duration: 300,
+        friction: 7,
+        tension: 40,
         useNativeDriver: false
       }).start()
-      Animated.timing(leftToRightAnim, {
+      Animated.spring(leftToRightAnim, {
         toValue: 0,
-        duration: 300,
+        friction: 7,
+        tension: 40,
         useNativeDriver: false
       }).start()
     }, [])
