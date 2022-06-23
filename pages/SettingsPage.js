@@ -132,7 +132,7 @@ const SettingsPage = ({ navigation }) => {
                         {transform: [{translateY: yAnim2FromTop}]},
                         {backgroundColor:`#${COLOR_PALETTE_1[5]}`}
                         ]}>
-                        <TouchableOpacity  style={{
+                        <TouchableOpacity onPress={()=> navigation.navigate('Theme')} style={{
                             width:'100%', height: 50, justifyContent:'center', alignItems:'center', flexDirection:'row'}}>
                             <Icon name='palette' color="black" />
                             <Text 
@@ -185,8 +185,8 @@ const SettingsPage = ({ navigation }) => {
                                 About
                             </Text>
                         </TouchableOpacity>
-                    </Animated.View>
-                </View>
+                </Animated.View>
+            </View>
 
             <View style={styles.logoBottomContainer}>
                 <Image source={require("../assets/w1logocrimson.png")} style={styles.logoBottom}/>

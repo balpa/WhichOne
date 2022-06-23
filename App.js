@@ -31,6 +31,7 @@ import AccountSettings from './pages/AccountSettings';
 import Create from './pages/Create';
 import UploadAvatar from './pages/UploadAvatar';
 import DMChatPage from './pages/DMChatPage';
+import ThemePage from './pages/ThemePage'
 import { Icon } from 'react-native-elements';
 import FollowersFollowingPage from './pages/FollowersFollowingPage';
 import { TransitionSpecs } from '@react-navigation/stack';
@@ -96,6 +97,7 @@ export default function App() {
       <Stack.Screen name="Stats" options={{transitionSpec: {open: config, close: config}}} component={StatsPage} />
       <Stack.Screen name="Settings" options={{transitionSpec: {open: config, close: config}}} component={SettingsPage} />
       <Stack.Screen name="About" options={{transitionSpec: {open: config, close: config}}} component={AboutPage} />
+      <Stack.Screen name="Theme" options={{transitionSpec: {open: config, close: config}}} component={ThemePage} />
       <Stack.Screen name="UserProfile" options={({ route }) => ({ title: route.params.name })} component={UserProfile} />
       <Stack.Screen name="DMChatPage" options={({ route }) => ({ title: route.params.name, headerBackTitle: "Messages" })} component={DMChatPage} />
       <Stack.Screen name="Search" options={{headerBackTitle: "Home", transitionSpec: {open: config, close: config}}} component={SearchPage} />
