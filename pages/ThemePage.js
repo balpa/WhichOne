@@ -1,15 +1,35 @@
-import { View, Text, StyleSheet, Image, Animated } from 'react-native'
+import { View, Text, StyleSheet, Image, Animated, Platform } from 'react-native'
 import { Button, Icon } from 'react-native-elements' 
 import React from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 
 const ThemePage = () => {
 
+  const navigation = useNavigation()
+
   const [selectedTheme, setSelectedTheme] = React.useState('light')
+  const [shadowOptions, setShadowOptions] = React.useState({})
+  const [bgColor, setBgColor] = React.useState('white')
 
   const applyButtonAnim = React.useRef(new Animated.Value(500)).current
-  const themeSectionAnim = React.useRef(new Animated.Value(-300)).current
+  const themeSectionAnim = React.useRef(new Animated.Value(-500)).current
   const arrowAnim = React.useRef(new Animated.Value(27)).current
+
+  React.useEffect(() => {          // platform based shadow options
+    if (Platform.OS === "android") {
+      setShadowOptions({
+        elevation: 0
+      })
+   }
+     else if (Platform.OS === "ios") {
+       setShadowOptions({
+         shadowColor: '#171717',
+         shadowOffset: {width: -1, height: 3},
+         shadowOpacity: 0.4,
+         shadowRadius: 5, 
+       })
+   }}, [])
 
   React.useEffect(()=>{     // apply button animation
     Animated.spring(applyButtonAnim, {
@@ -26,7 +46,7 @@ const ThemePage = () => {
     }).start()
   },[])
 
-  React.useEffect(()=> {
+  React.useEffect(()=> {    // arrow animation for theme selection
     if (selectedTheme == 'dark') {
       Animated.spring(arrowAnim, {
         toValue: 27,
@@ -44,32 +64,66 @@ const ThemePage = () => {
     }
   },[selectedTheme])
 
+  React.useEffect(async()=>{      // get theme data from local storage (cache) ***HARDCODED***
+    try {
+      const value = await AsyncStorage.getItem('GLOBAL_THEME')
+      if(value !== null) setSelectedTheme(value); value == 'light' ? setBgColor('white') : setBgColor('rgb(15,15,15)')
+    } catch(e) {console.log(e)}
+
+},[])
 
   async function applyAndClose(){
+
+    // callback for start func is delayed for navigation so will use settimeout
 
 
     try {await AsyncStorage.setItem('GLOBAL_THEME', selectedTheme)} // set color data to cache storage
     catch (e) {console.log(e)}
 
+    Animated.spring(applyButtonAnim, {
+      toValue: 500, 
+      friction: 8,
+      tension: 30,
+      useNativeDriver: false
+    }).start()
+    Animated.spring(themeSectionAnim,{
+      toValue: -500,
+      friction: 8,
+      tension: 30,
+      useNativeDriver: false
+    }).start()
+
+    setTimeout(()=> { navigation.navigate('Settings') }, 400)
+
   }
+
 
   //TODO: styling (page is too empty)
 
-  // 27 to 85 arrow
+  // i'll need to get theme from cache on every page. is it effective? research
 
   return (
     <>
-    <View style={styles.container}>
+    <Animated.View style={[styles.container, {backgroundColor: bgColor}]}>
       <Animated.View style={{transform: [{translateY: themeSectionAnim}]}}>
         <Text 
-          style={{
+          style={bgColor == 'white' ? 
+          {color:'black',
             fontSize:20,
             fontWeight:'900',
             margin: 10,
             textAlign:'center' 
-            }}>Choose theme</Text>
+          }
+          :
+          {color:'white',
+            fontSize:20,
+            fontWeight:'900',
+            margin: 10,
+            textAlign:'center' 
+          }
+          }>Choose theme</Text>
         <View 
-          style={{
+          style={[{
             flexDirection:'row', 
             alignItems:'center', 
             justifyContent:'center',
@@ -79,7 +133,7 @@ const ThemePage = () => {
             paddingLeft: 70,
             paddingTop:30,
             paddingBottom: 30,
-            borderRadius: 15}}>
+            borderRadius: 15}, shadowOptions]}>
           <Animated.View 
             style={[
               {position:'absolute',
@@ -123,7 +177,8 @@ const ThemePage = () => {
       <Animated.View style={[
         {marginBottom: 25,
         width:'90%',
-        alignSelf:'center'}, 
+        alignSelf:'center'},
+        shadowOptions, 
         {transform: [{translateY: applyButtonAnim}]}]}>
         <Button 
           onPress={() => applyAndClose()} 
@@ -137,7 +192,7 @@ const ThemePage = () => {
           }}
           title="Apply"/>
       </Animated.View>
-    </View>
+    </Animated.View>
       <View style={styles.logoBottomContainer}>
         <Image source={require("../assets/w1logocrimson.png")} style={styles.logoBottom}/>
       </View>
@@ -153,7 +208,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     justifyContent:'space-around',
-    alignItems:'center'
+    alignItems:'center',
   },
   logoBottomContainer:{
     bottom: 10,
