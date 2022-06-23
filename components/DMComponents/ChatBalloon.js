@@ -26,9 +26,10 @@ const ChatBalloon = ({ message, sender, item, color, textColor, otherUsersName, 
   }
 
   useEffect(() => {       // chat balloon animation with conditions
-      Animated.timing(chatBalloonAnimation, {
+      Animated.spring(chatBalloonAnimation, {
         toValue: 0,
-        duration: 400,
+        friction: 7,
+        tension: 40,
         useNativeDriver: false,
       }).start()
   }, [])
