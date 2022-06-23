@@ -1,11 +1,15 @@
 import { View, Text, StyleSheet, Image, Animated } from 'react-native'
-import { Button } from 'react-native-elements' 
+import { Button, Icon } from 'react-native-elements' 
 import React from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ThemePage = () => {
 
+  const [selectedTheme, setSelectedTheme] = React.useState('light')
+
   const applyButtonAnim = React.useRef(new Animated.Value(500)).current
   const themeSectionAnim = React.useRef(new Animated.Value(-300)).current
+  const arrowAnim = React.useRef(new Animated.Value(27)).current
 
   React.useEffect(()=>{     // apply button animation
     Animated.spring(applyButtonAnim, {
@@ -22,13 +26,36 @@ const ThemePage = () => {
     }).start()
   },[])
 
+  React.useEffect(()=> {
+    if (selectedTheme == 'dark') {
+      Animated.spring(arrowAnim, {
+        toValue: 27,
+        friction: 8,
+        tension: 30,
+        useNativeDriver: false
+      }).start()
+    } else if (selectedTheme == 'light') {
+      Animated.spring(arrowAnim, {
+        toValue: 85,
+        friction: 8,
+        tension: 30,
+        useNativeDriver: false
+      }).start() 
+    }
+  },[selectedTheme])
 
-  function applyAndClose(){
 
+  async function applyAndClose(){
+
+
+    try {await AsyncStorage.setItem('GLOBAL_THEME', selectedTheme)} // set color data to cache storage
+    catch (e) {console.log(e)}
 
   }
 
   //TODO: styling (page is too empty)
+
+  // 27 to 85 arrow
 
   return (
     <>
@@ -47,33 +74,50 @@ const ThemePage = () => {
             alignItems:'center', 
             justifyContent:'center',
             backgroundColor:'crimson',
+            marginTop: 20,
             paddingRight: 70,
             paddingLeft: 70,
             paddingTop:30,
             paddingBottom: 30,
             borderRadius: 15}}>
-          <Button 
-          titleStyle={{
-            color: "white", 
-            fontSize: 15, 
-          }} 
-          buttonStyle={{
-            borderRadius:15,
-            backgroundColor:'black',
-            marginRight: 10
-          }}
-          title="Dark"/>
-          <Button 
-          titleStyle={{
-            color: "black", 
-            fontSize: 15, 
-          }} 
-          buttonStyle={{
-            borderRadius:15,
-            backgroundColor:'white',
-            marginLeft:10
-          }}
-          title="Light"/>
+          <Animated.View 
+            style={[
+              {position:'absolute',
+              width: 40, 
+              height: 50,
+              left: 0},
+              {top: arrowAnim}
+              ]}>
+                <Icon name='play-arrow' type='material' color='white' size={40}/>
+          </Animated.View>
+          <View style={{flexDirection:'column'}}>
+            <Button 
+            onPress={()=> setSelectedTheme('dark')}
+            titleStyle={{
+              color: "white", 
+              fontSize: 15, 
+            }} 
+            buttonStyle={{
+              borderRadius:15,
+              backgroundColor:'black',
+              width: 100,
+              marginBottom: 10
+            }}
+            title="Dark"/>
+            <Button 
+            onPress={()=> setSelectedTheme('light')}
+            titleStyle={{
+              color: "black", 
+              fontSize: 15, 
+            }} 
+            buttonStyle={{
+              borderRadius:15,
+              backgroundColor:'white',
+              width: 100,
+              marginTop: 10
+            }}
+            title="Light"/>
+          </View>
         </View>
       </Animated.View>
       <Animated.View style={[
