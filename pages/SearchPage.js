@@ -10,6 +10,7 @@ import firebase from 'firebase/compat/app'
 import { doc, onSnapshot } from "firebase/firestore"
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import UserSearchProfile from '../components/UserSearchProfile'
+import { useSafeAreaFrame } from 'react-native-safe-area-context'
 
 const SearchPage = ({ navigation }) => {
 
@@ -24,6 +25,8 @@ const SearchPage = ({ navigation }) => {
     const [isSearchedMyself, setIsSearchedMyself] = useState(false)
     const [image, setImage] = useState(null)
     const [errorMessage, setErrorMessage] = useState("")
+    const [isSearchedAndNoUser, setIsSearchedAndNoUser] = useState(false)
+
 
     const windowDim = useWindowDimensions()
 
@@ -164,6 +167,7 @@ const SearchPage = ({ navigation }) => {
             .get()
             .then((documentSnapshot) => {
           if (documentSnapshot.exists) {
+                setIsSearchedAndNoUser(false)
                 setExists(true)
                 let userData = documentSnapshot.data()
                 setSearchUsername(userData.name)  // searched user's name
@@ -171,7 +175,8 @@ const SearchPage = ({ navigation }) => {
 
                 console.log(userData)
         } else {
-            Alert.alert("User not found!")
+            console.log('No user')
+            setIsSearchedAndNoUser(true) // searched and no user found
         }});
     } else {
         Alert.alert("Username must be between 3 and 15 characters.")
@@ -196,6 +201,7 @@ const SearchPage = ({ navigation }) => {
                             width: '100%'}}  
                         selectionColor="black"  
                         placeholder="username" 
+                        errorMessage={isSearchedAndNoUser == true ? 'No user' : ''}
                         onChangeText={(text) => setSearchVal(text)} />
                     {/* <Button buttonStyle={{backgroundColor: "transparent", borderRadius: 15, width: "auto", height: "auto"}} titleStyle={{fontSize: 15}} 
                             onPress={search} title={<Icon size={30} name="search" color="black" />}/> */}

@@ -48,7 +48,6 @@ const ChatBalloon = ({ message, sender, item, color, textColor, otherUsersName, 
     }
   }, [])
 
-  // NOT SURE ABOUT NAMES ABOVE BUBBLE
 
   return (
     <Animated.View style={[
