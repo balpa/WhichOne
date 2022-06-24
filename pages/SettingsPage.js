@@ -7,6 +7,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { StackActions } from '@react-navigation/native';
 import { auth } from '../firebase'
 import { ScrollView } from 'react-native-gesture-handler'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SettingsPage = ({ navigation }) => {
 
@@ -14,14 +15,22 @@ const SettingsPage = ({ navigation }) => {
 
     const [platform, setPlatform] = React.useState("")
     const [shadowOptions, setShadowOptions] = React.useState({})
+    const [selectedTheme, setSelectedTheme] = React.useState('')
 
 
-    let yAnim0FromTop = React.useRef(new Animated.Value(1000)).current;
-    let yAnim1FromTop = React.useRef(new Animated.Value(1000)).current;
-    let yAnim2FromTop = React.useRef(new Animated.Value(1000)).current;
-    let yAnim3FromTop = React.useRef(new Animated.Value(1000)).current;
-    let yAnim4FromTop = React.useRef(new Animated.Value(1000)).current;
-    let yAnim5FromTop = React.useRef(new Animated.Value(1000)).current;
+    let yAnim0FromTop = React.useRef(new Animated.Value(1000)).current
+    let yAnim1FromTop = React.useRef(new Animated.Value(1000)).current
+    let yAnim2FromTop = React.useRef(new Animated.Value(1000)).current
+    let yAnim3FromTop = React.useRef(new Animated.Value(1000)).current
+    let yAnim4FromTop = React.useRef(new Animated.Value(1000)).current
+    let yAnim5FromTop = React.useRef(new Animated.Value(1000)).current
+
+    React.useEffect(async()=>{      // get theme data from local storage (cache) ***HARDCODED***
+        try {
+          const value = await AsyncStorage.getItem('GLOBAL_THEME')
+          if(value !== null) setSelectedTheme(value)
+        } catch(e) {console.log(e)}
+    },[])
 
     React.useEffect(() => {       // spesific animation timings for each menu item
         setTimeout(() => {
@@ -93,9 +102,10 @@ const SettingsPage = ({ navigation }) => {
            })
        }}, [])
 
+    console.log(selectedTheme)
     return (
         <>
-            <View style={styles.elevation}>
+            <View style={[styles.elevation, selectedTheme == 'light' ? {} : {backgroundColor:'rgb(15,15,15)'}]}>
                 <Animated.View style={[
                         styles.buttonView, 
                         shadowOptions,

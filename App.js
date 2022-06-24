@@ -36,7 +36,7 @@ import { Icon } from 'react-native-elements';
 import FollowersFollowingPage from './pages/FollowersFollowingPage';
 import { TransitionSpecs } from '@react-navigation/stack';
 import { SafeAreaView,SafeAreaInsetsContext,useSafeAreaInsets,initialWindowMetrics } from 'react-native-safe-area-context';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 LogBox.ignoreLogs(['Setting a timer for a long period of time']) // to clear the yellow warning on android devices
@@ -49,7 +49,7 @@ let globalScreenOptions
 if (Platform.OS === 'ios') {
   globalScreenOptions = {
     headerStyle: { height: 75 },
-    headerTitleStyle: { color: "black" },
+    headerTitleStyle: { color: "black" }, 
     headerTintColor: "black",
     gestureEnabled: true,
     headerShown: true,
@@ -83,6 +83,18 @@ const config = {
 
 
 export default function App() {
+
+  const [selectedTheme, setSelectedTheme] = React.useState('light')
+
+  React.useEffect(async()=>{      // get theme data from local storage (cache) ***HARDCODED***
+    try {
+      const value = await AsyncStorage.getItem('GLOBAL_THEME')
+      if(value !== null) setSelectedTheme(value)
+    } catch(e) {console.log(e)}
+
+  },[])
+
+  // TODO: dark theme
 
   return (
 
