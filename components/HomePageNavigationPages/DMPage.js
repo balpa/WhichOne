@@ -4,6 +4,7 @@ import MessagePerson from '../DMComponents/MessagePerson'
 import { doc, onSnapshot } from "firebase/firestore";
 import { auth, db } from '../../firebase'
 import { ScrollView } from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const DMPage = () => {
 
@@ -13,6 +14,14 @@ const DMPage = () => {
 
   const [following, setFollowing] = React.useState([])
   const [followers, setFollowers] = React.useState([])
+  const [selectedTheme, setSelectedTheme] = React.useState('')
+
+  React.useEffect(async()=>{      // get theme data from local storage (cache) ***HARDCODED***
+    try {
+      const value = await AsyncStorage.getItem('GLOBAL_THEME')
+      if(value !== null) setSelectedTheme(value)
+    } catch(e) {console.log(e)}
+  },[])
 
   React.useEffect(() => {     // get follower and following list
     const getFollowers = onSnapshot(doc(db, "useruid", `${user.uid}`), 
@@ -24,7 +33,7 @@ const DMPage = () => {
 
   return (
     <ScrollView>
-    <View style={styles.DMContainer}>
+    <View style={[styles.DMContainer, selectedTheme == 'dark' ? {backgroundColor:'rgb(15,15,15)'} : {}]}>
       <View style={styles.messagePersonContainer}>
         {following.map((userID, index)=> {
           if (followers.includes(userID) && following.includes(userID)) {
