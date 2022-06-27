@@ -84,12 +84,35 @@ const config = {
 
 export default function App() {
 
+  //TODO: App needs restart after changing the theme. find a solution
+
   const [selectedTheme, setSelectedTheme] = React.useState('light')
+  const [headerStyleDOT, setHeaderStyleDOT] = React.useState({})
+  const [headerTitleStyleDOT, setHeaderTitleStyleDOT] = React.useState({})
+  const [headerTintColorDOT, setHeaderTintColorDOT] = React.useState('')
 
   React.useEffect(async()=>{      // get theme data from local storage (cache) ***HARDCODED***
     try {
       const value = await AsyncStorage.getItem('GLOBAL_THEME')
-      if(value !== null) setSelectedTheme(value)
+      if(value !== null) {
+        if (value == 'dark'){
+          setSelectedTheme(value)
+          setHeaderStyleDOT({
+            backgroundColor:'rgb(15,15,15)',
+            height: 75,
+          })
+          setHeaderTitleStyleDOT({color:'white'})
+          setHeaderTintColorDOT('white')
+        } else {
+          setSelectedTheme(value)
+          setHeaderStyleDOT({
+            backgroundColor:'white',
+            height: 75,
+          })
+          setHeaderTitleStyleDOT({color:'black'})
+          setHeaderTintColorDOT('black')
+        }
+    }
     } catch(e) {console.log(e)}
 
   },[])
@@ -101,21 +124,90 @@ export default function App() {
     <NavigationContainer>
      <Stack.Navigator screenOptions={globalScreenOptions} headerMode="screen" >
 
-      <Stack.Screen name="Login" options={{transitionSpec: {open: config, close: config}}} component={LoginScreen} />
-      <Stack.Screen name="Register" options={{transitionSpec: {open: config, close: config}}} component={RegisterScreen} />
-      <Stack.Screen name="Profile" options={{headerBackTitle: "Home", transitionSpec: { open: config, close: config }}} component={ProfilePage} />
-      <Stack.Screen name="Followers & Following" options={{headerBackTitle: "Profile", transitionSpec: {open: config, close: config}}} component={FollowersFollowingPage}/>
-      <Stack.Screen name="HomePage" options={{title: "WhichOne", transitionSpec: {open: config, close: config}}} component={HomePage} />
-      <Stack.Screen name="Stats" options={{transitionSpec: {open: config, close: config}}} component={StatsPage} />
-      <Stack.Screen name="Settings" options={{transitionSpec: {open: config, close: config}}} component={SettingsPage} />
-      <Stack.Screen name="About" options={{transitionSpec: {open: config, close: config}}} component={AboutPage} />
-      <Stack.Screen name="Theme" options={{transitionSpec: {open: config, close: config}}} component={ThemePage} />
-      <Stack.Screen name="UserProfile" options={({ route }) => ({ title: route.params.name })} component={UserProfile} />
-      <Stack.Screen name="DMChatPage" options={({ route }) => ({ title: route.params.name, headerBackTitle: "Messages" })} component={DMChatPage} />
-      <Stack.Screen name="Search" options={{headerBackTitle: "Home", transitionSpec: {open: config, close: config}}} component={SearchPage} />
-      <Stack.Screen name="Account" options={{headerBackTitle: "Settings", transitionSpec: {open: config, close: config}}} component={AccountSettings} />
-      <Stack.Screen name='Upload Avatar' options={{headerBackTitle: "Account", transitionSpec: {open: config, close: config}}} component={UploadAvatar} />
-      <Stack.Screen name="Create" options={{headerBackTitle: "Home", transitionSpec: {open: config, close: config}}} component={Create} />
+      <Stack.Screen name="Login" options={{
+        headerTitleStyle: headerTitleStyleDOT,
+        headerStyle: headerStyleDOT,
+        headerTintColor: headerTintColorDOT,
+        transitionSpec: {open: config, close: config}}} component={LoginScreen} />
+      <Stack.Screen name="Register" options={{
+        headerTitleStyle: headerTitleStyleDOT,
+        headerStyle: headerStyleDOT,
+        headerTintColor: headerTintColorDOT,
+        transitionSpec: {open: config, close: config}}} component={RegisterScreen} />
+      <Stack.Screen name="Profile" options={{
+        headerTitleStyle: headerTitleStyleDOT,
+        headerStyle: headerStyleDOT,
+        headerTintColor: headerTintColorDOT,
+        headerBackTitle: "Home", 
+        transitionSpec: { open: config, close: config }}} component={ProfilePage} />
+      <Stack.Screen name="Followers & Following" options={{
+        headerTitleStyle: headerTitleStyleDOT,
+        headerStyle: headerStyleDOT,
+        headerTintColor: headerTintColorDOT,
+        headerBackTitle: "Profile", 
+        transitionSpec: {open: config, close: config}}} component={FollowersFollowingPage}/>
+      <Stack.Screen name="HomePage" options={{
+        headerTitleStyle: headerTitleStyleDOT,
+        headerStyle: headerStyleDOT,
+        headerTintColor: headerTintColorDOT,
+        title: "WhichOne", 
+        transitionSpec: {open: config, close: config}}} component={HomePage} />
+      <Stack.Screen name="Stats" options={{
+        headerTitleStyle: headerTitleStyleDOT,
+        headerStyle: headerStyleDOT,
+        headerTintColor: headerTintColorDOT,
+        transitionSpec: {open: config, close: config}}} component={StatsPage} />
+      <Stack.Screen name="Settings" options={{
+        headerTitleStyle: headerTitleStyleDOT,
+        headerStyle: headerStyleDOT,
+        headerTintColor: headerTintColorDOT,
+        transitionSpec: {open: config, close: config}}} component={SettingsPage} />
+      <Stack.Screen name="About" options={{
+        headerTitleStyle: headerTitleStyleDOT,
+        headerStyle: headerStyleDOT,
+        headerTintColor: headerTintColorDOT,
+        transitionSpec: {open: config, close: config}}} component={AboutPage} />
+      <Stack.Screen name="Theme" options={{
+        headerTitleStyle: headerTitleStyleDOT,
+        headerStyle: headerStyleDOT,
+        headerTintColor: headerTintColorDOT,
+        transitionSpec: {open: config, close: config}}} component={ThemePage} />
+      <Stack.Screen name="UserProfile" options={    
+        ({ route }) => ({ 
+          headerTitleStyle: headerTitleStyleDOT,
+          headerStyle: headerStyleDOT,
+          headerTintColor: headerTintColorDOT,
+          title: route.params.name })} component={UserProfile} />
+      <Stack.Screen name="DMChatPage" options={
+        ({ route }) => ({ 
+          headerTitleStyle: headerTitleStyleDOT,
+          headerStyle: headerStyleDOT,
+          headerTintColor: headerTintColorDOT,
+          title: route.params.name, headerBackTitle: "Messages" })} component={DMChatPage} />
+      <Stack.Screen name="Search" options={{
+        headerTitleStyle: headerTitleStyleDOT,
+        headerStyle: headerStyleDOT,
+        headerTintColor: headerTintColorDOT,
+        headerBackTitle: "Home", 
+        transitionSpec: {open: config, close: config}}} component={SearchPage} />
+      <Stack.Screen name="Account" options={{
+        headerTitleStyle: headerTitleStyleDOT,
+        headerStyle: headerStyleDOT,
+        headerTintColor: headerTintColorDOT,
+        headerBackTitle: "Settings", 
+        transitionSpec: {open: config, close: config}}} component={AccountSettings} />
+      <Stack.Screen name='Upload Avatar' options={{
+        headerTitleStyle: headerTitleStyleDOT,
+        headerStyle: headerStyleDOT,
+        headerTintColor: headerTintColorDOT,
+        headerBackTitle: "Account", 
+        transitionSpec: {open: config, close: config}}} component={UploadAvatar} />
+      <Stack.Screen name="Create" options={{
+        headerTitleStyle: headerTitleStyleDOT,
+        headerStyle: headerStyleDOT,
+        headerTintColor: headerTintColorDOT,
+        headerBackTitle: "Home", 
+        transitionSpec: {open: config, close: config}}} component={Create} />
 
      </Stack.Navigator>
     </NavigationContainer>
