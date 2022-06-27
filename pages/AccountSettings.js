@@ -12,6 +12,7 @@ import ChangePassword from '../components/AccountSettingsComponents/ChangePasswo
 import "firebase/firestore";
 import { db, auth } from '../firebase'
 import UploadAvatar from '../components/UploadPhoto'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AccountSettings = ({ navigation }) => {
 
@@ -26,15 +27,27 @@ const AccountSettings = ({ navigation }) => {
     const [changedName, setChangedName] = useState("")     
     const [platform, setPlatform] = useState("")
     const [shadowOptions, setShadowOptions] = useState({})
+    const [selectedTheme, setSelectedTheme] = useState('')
+    const [textColorDependingOnTheme, setTextColorDependingOnTheme] = useState('')
 
-    const user = auth.currentUser;
+    const user = auth.currentUser
 
-    let yAnim0FromTop = React.useRef(new Animated.Value(1000)).current;
-    let yAnim1FromTop = React.useRef(new Animated.Value(1000)).current;
-    let yAnim2FromTop = React.useRef(new Animated.Value(1000)).current;
-    let yAnim3FromTop = React.useRef(new Animated.Value(1000)).current;
-    let yAnim4FromTop = React.useRef(new Animated.Value(1000)).current;
-    let yAnim5FromTop = React.useRef(new Animated.Value(1000)).current;
+    let yAnim0FromTop = React.useRef(new Animated.Value(1000)).current
+    let yAnim1FromTop = React.useRef(new Animated.Value(1000)).current
+    let yAnim2FromTop = React.useRef(new Animated.Value(1000)).current
+    let yAnim3FromTop = React.useRef(new Animated.Value(1000)).current
+    let yAnim4FromTop = React.useRef(new Animated.Value(1000)).current
+    let yAnim5FromTop = React.useRef(new Animated.Value(1000)).current
+
+    useEffect(async()=>{      // get theme data from local storage (cache) ***HARDCODED***
+        try {
+          const value = await AsyncStorage.getItem('GLOBAL_THEME')
+          if(value !== null) {
+            setSelectedTheme(value)
+            if (value == 'light') setTextColorDependingOnTheme('black')
+            else setTextColorDependingOnTheme('white')}
+        } catch(e) {console.log(e)}
+    },[])
 
     useEffect(() => {       // spesific animation timings for each menu item
         setTimeout(() => {
@@ -105,12 +118,13 @@ const AccountSettings = ({ navigation }) => {
     }}, [])
 
 
+    // TODO: dark mode 4 account setting modal (do i need)
    
 
     return (
         <>
 
-            <View style={styles.elevation}>
+            <View style={[styles.elevation, selectedTheme == 'dark' ? {backgroundColor:'rgb(15,15,15)'}: {}]}>
                 <Animated.View style={[
                     styles.buttonView, 
                     shadowOptions,

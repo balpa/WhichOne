@@ -1,18 +1,32 @@
 import { View, Text, StyleSheet, Animated, Image, Button, useWindowDimensions } from 'react-native'
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/native';
 import { db } from '../firebase'
 import firebase from 'firebase/compat/app'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const UserSearchProfile = ({ image, searchUsername, followerCount, followingCount, followSituation, searchedUsersUID, loggedinUser }) => {
+
+    const [selectedTheme, setSelectedTheme] = useState('')
+    const [textColorDependingOnTheme, setTextColorDependingOnTheme] = useState('')
 
     const window = useWindowDimensions()
 
     const navigation = useNavigation()
 
     const springAnim = useRef(new Animated.Value(1000)).current
+
+    useEffect(async()=>{      // get theme data from local storage (cache) ***HARDCODED***
+        try {
+          const value = await AsyncStorage.getItem('GLOBAL_THEME')
+          if(value !== null) {
+            setSelectedTheme(value)
+            if (value == 'light') setTextColorDependingOnTheme('black')
+            else setTextColorDependingOnTheme('white')}
+        } catch(e) {console.log(e)}
+    },[])
 
     useEffect(() => {
         Animated.spring(springAnim, {
@@ -54,7 +68,10 @@ const UserSearchProfile = ({ image, searchUsername, followerCount, followingCoun
     }
 
     return (
-        <Animated.View style={[styles.component, {width: window.width-5}, {transform: [{translateY: springAnim}]}]}>
+        <Animated.View style={[
+            styles.component,
+            selectedTheme == 'dark' ? {backgroundColor:'rgb(150,150,150)'} : {},
+            {width: window.width-5}, {transform: [{translateY: springAnim}]}]}>
             <View style={styles.imageNameField}>
                 <TouchableOpacity onPress={()=>{navigation.navigate("UserProfile",{ name: `${searchUsername}`, userID: `${searchedUsersUID}`})}}>
                 <Image source={{uri: image}} style={{width: 70, height: 70, borderRadius: 70/2}}/>

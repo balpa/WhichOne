@@ -11,6 +11,7 @@ import { doc, onSnapshot } from "firebase/firestore"
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import UserSearchProfile from '../components/UserSearchProfile'
 import { useSafeAreaFrame } from 'react-native-safe-area-context'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SearchPage = ({ navigation }) => {
 
@@ -26,6 +27,8 @@ const SearchPage = ({ navigation }) => {
     const [image, setImage] = useState(null)
     const [errorMessage, setErrorMessage] = useState("")
     const [isSearchedAndNoUser, setIsSearchedAndNoUser] = useState(false)
+    const [selectedTheme, setSelectedTheme] = useState('')
+    const [textColorDependingOnTheme, setTextColorDependingOnTheme] = useState('')
 
 
     const windowDim = useWindowDimensions()
@@ -34,7 +37,18 @@ const SearchPage = ({ navigation }) => {
 
     const loggedinUser = auth.currentUser
 
-    const storage = getStorage();
+    const storage = getStorage()
+
+    React.useEffect(async()=>{      // get theme data from local storage (cache) ***HARDCODED***
+        try {
+          const value = await AsyncStorage.getItem('GLOBAL_THEME')
+          if(value !== null) {
+            setSelectedTheme(value)
+            if (value == 'light') setTextColorDependingOnTheme('black')
+            else setTextColorDependingOnTheme('white')}
+        } catch(e) {console.log(e)}
+    },[])
+
 
     useEffect(() => {
         Animated.timing(searchBarWidthAnim, {
@@ -186,20 +200,20 @@ const SearchPage = ({ navigation }) => {
     return (
         <View behavior="padding" style={styles.container}>
         <StatusBar style="light"/>
-            <View style={styles.elevation}>
+            <View style={[styles.elevation, selectedTheme == 'dark' ? {backgroundColor:'rgb(15,15,15)'} : {}]}>
                 <Animated.View style={[styles.searchBar, {width: searchBarWidthAnim}]}>
                     <Input 
                         label="Search by username"
-                        labelStyle={{color: "black", fontSize: 15}}
-                        leftIcon={{ type: 'font-awesome', name: 'search', color: 'black', onPress: () => search() }}
+                        labelStyle={{color: textColorDependingOnTheme, fontSize: 15}}
+                        leftIcon={{ type: 'font-awesome', name: 'search', color: textColorDependingOnTheme, onPress: () => search() }}
                         onKeyPress={({ nativeEvent }) => {
                             if (nativeEvent.key === 'Enter') search()
                         }}
                         autoCapitalize="none" 
                         style={{
-                            color: "black", 
+                            color: textColorDependingOnTheme, 
                             width: '100%'}}  
-                        selectionColor="black"  
+                        selectionColor={textColorDependingOnTheme}
                         placeholder="username" 
                         errorMessage={isSearchedAndNoUser == true ? 'No user' : ''}
                         onChangeText={(text) => setSearchVal(text)} />
