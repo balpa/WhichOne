@@ -8,8 +8,9 @@ import { auth } from '../../firebase'
 import { db } from '../../firebase'
 import { TouchableOpacity, TapGestureHandler } from 'react-native-gesture-handler';
 import LikesModal from './LikesModal';
+import { color } from 'react-native-reanimated';
 
-function PostImage({url, photoNumber, postID, arrayLength}){
+function PostImage({url, photoNumber, postID, arrayLength, theme, textColor}){
 
     const doubleTapRef = React.createRef()
 
@@ -95,8 +96,8 @@ function PostImage({url, photoNumber, postID, arrayLength}){
               style={{
                 fontSize: 12,
                 fontWeight:'800',
-                textAlign:'right'
-
+                textAlign:'right',
+                color: textColor
               }}>{`${photoNumber}/${arrayLength}`}</Text>
           <TapGestureHandler onActivated={()=> doubleTapLike()} numberOfTaps={2} ref={doubleTapRef}>
             <Image 
@@ -123,11 +124,11 @@ function PostImage({url, photoNumber, postID, arrayLength}){
             <TouchableOpacity onPress={()=> likeFunc()}>
               <Icon 
                 name={userLikedThePhoto ? "favorite" : "favorite-border"} 
-                color={userLikedThePhoto ? "red" : "black"}></Icon>
+                color={userLikedThePhoto ? "red" : textColor}></Icon>
             </TouchableOpacity>
             
             <TouchableOpacity onPress={()=> setShowLikes(true)}>
-              <Text style={{color:'black'}}>{likes.length == 1 ? `${likes.length} like` : `${likes.length} likes`}</Text>
+              <Text style={{color:textColor}}>{likes.length == 1 ? `${likes.length} like` : `${likes.length} likes`}</Text>
             </TouchableOpacity>
           </View>
           {showLikes && <LikesModal height4postcontainer={height4postcontainer} setShowLikes={setShowLikes} likes={likes} />} 

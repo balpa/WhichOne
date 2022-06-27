@@ -11,6 +11,7 @@ import PostComponentDotSettings from './PostComponentDotSettings'
 import { useNavigation } from '@react-navigation/native';
 import CommentsModal from './PostComponents/CommentsModal'
 import PostImage from './PostComponents/PostImage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 function PostComponent({ postID, userID, name }){
@@ -23,6 +24,8 @@ function PostComponent({ postID, userID, name }){
     const [postDate, setPostDate] = useState(null)
     const [showComments, setShowComments] = useState(false)
     const [description, setDescription] = useState("")
+    const [selectedTheme, setSelectedTheme] = useState('')
+    const [textColorDependingOnTheme, setTextColorDependingOnTheme] = useState('')
 
     const userIdToPass = userID != undefined ? userID : auth.currentUser.uid 
     const nameToPass = name != undefined ? name : auth.currentUser.displayName
@@ -35,6 +38,17 @@ function PostComponent({ postID, userID, name }){
 
     let height4posts = (window.width*3)/4    // height of the post calculated by the width of the screen
     let height4postcontainer = ((window.width*3)/4)+70   // height of the post container calculated by the width of the screen plus the gap needed for likes comments etc. section
+
+    useEffect(async()=>{      // get theme data from local storage (cache) ***HARDCODED***
+        try {
+          const value = await AsyncStorage.getItem('GLOBAL_THEME')
+          if(value !== null) {
+            setSelectedTheme(value)
+            if (value == 'light') setTextColorDependingOnTheme('black')
+            else setTextColorDependingOnTheme('white')}
+        } catch(e) {console.log(e)}
+      },[])
+   
 
     function dateFormatter( postDate ){     // func to return date in a readable format
         let months = {"01": "January", "02": "February", "03": "March", "04": "April", "05": "May", "06": "June", "07": "July", "08": "August", "09": "September", "10": "October", "11": "November", "12": "December"}
@@ -79,7 +93,9 @@ function PostComponent({ postID, userID, name }){
     // ****************
 
         return (
-            <View style={{    // width & height set to window w/h vars. used styles w that
+            <View style={
+                selectedTheme == 'white' ? 
+            {    // width & height set to window w/h vars. used styles w that
                 justifyContent: "center",
                 alignItems: "center",
                 width: window.width-5,
@@ -89,8 +105,21 @@ function PostComponent({ postID, userID, name }){
                 borderRadius: 20,
                 borderWidth: 2,
                 borderColor: '#000',
-
-            }}>
+            }
+            :
+            {
+                justifyContent: "center",
+                alignItems: "center",
+                width: window.width-5,
+                marginTop: 5,
+                marginBottom: 5,
+                padding: 5,
+                borderRadius: 20,
+                borderWidth: 2,
+                borderColor: 'white',
+                backgroundColor:'rgb(15,15,15)'
+            }
+            }>
                 <View 
                     style={{
                         width: '100%', 
@@ -116,13 +145,13 @@ function PostComponent({ postID, userID, name }){
                         </TouchableOpacity>
                       <Text 
                         style={{
-                            color:"black", 
+                            color: textColorDependingOnTheme, 
                             textAlign:'center'}}>{nameToPass}</Text>
                     </View>
                     <TouchableOpacity 
                         onPress={()=> {setShowDotSettings(true)}} 
                         style={{marginBottom:10}}>
-                        {userIdToPass == auth.currentUser.uid ?  <Icon name='more-vert' color='black' /> : null}
+                        {userIdToPass == auth.currentUser.uid ?  <Icon name='more-vert' color={textColorDependingOnTheme} /> : null}
                     </TouchableOpacity>
                 </View>
                 <ScrollView 
@@ -134,12 +163,19 @@ function PostComponent({ postID, userID, name }){
                     pinchGestureEnabled={true}>
                     {images.length > 0 && images.map((url,index) => {
                         return (
-                            <PostImage key={index} arrayLength={images.length} photoNumber={index+1} url={url} postID={postID} />
+                            <PostImage 
+                                key={index} 
+                                theme={selectedTheme} 
+                                textColor={textColorDependingOnTheme}
+                                arrayLength={images.length} 
+                                photoNumber={index+1} 
+                                url={url} 
+                                postID={postID} />
                         )
                     })}
                 </ScrollView>
                 <View style={{textAlign:'left', width:'100%', marginBottom:10}}>
-                    <Text style={{fontSize: 13, fontWeight:'400'}}>{description != undefined ? description : ""}</Text>
+                    <Text style={{fontSize: 13, fontWeight:'400', color: textColorDependingOnTheme}}>{description != undefined ? description : ""}</Text>
                 </View>
                 <View 
                     style={{
@@ -150,9 +186,9 @@ function PostComponent({ postID, userID, name }){
                         marginLeft: 10, 
                         marginRight: 10}}>
                     <TouchableOpacity onPress={()=>{setShowComments(true)}}>
-                        <Text style={{color:'black'}}>Comments</Text>
+                        <Text style={{color:textColorDependingOnTheme}}>Comments</Text>
                     </TouchableOpacity>
-                    <Text style={{color:'black'}}>{dateFormatter(postDate)}</Text>
+                    <Text style={{color: textColorDependingOnTheme}}>{dateFormatter(postDate)}</Text>
                 </View>
                 {showDotSettings && <PostComponentDotSettings userID={userIdToPass} postID={postID} setShowDotSettings={setShowDotSettings} />}
                 {showComments && <CommentsModal height4postcontainer={height4postcontainer} postID={postID} setShowComments={setShowComments}/>}

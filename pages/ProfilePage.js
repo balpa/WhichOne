@@ -12,10 +12,11 @@ import { db } from '../firebase'
 import { ScrollView } from 'react-native-gesture-handler'
 import PostComponent from '../components/PostComponent'
 import { TouchableOpacity } from 'react-native'
-import { doc, onSnapshot, getDoc } from "firebase/firestore";
+import { doc, onSnapshot, getDoc, collection } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import AvatarModal from '../components/AvatarModal'
 import { TapGestureHandler } from 'react-native-gesture-handler'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ProfilePage = ({ navigation }) => {
 
@@ -37,9 +38,22 @@ const ProfilePage = ({ navigation }) => {
     const [isShown, setIsShown] = useState(false)
     const [currentBio, setCurrentBio] = useState("")
     const [isExpanded, setIsExpanded] = useState(false)
+    const [selectedTheme, setSelectedTheme] = useState('')
+    const [textColorDependingOnTheme, setTextColorDependingOnTheme] = useState('')
 
     const user = auth.currentUser
     const storage = getStorage()
+
+
+    useEffect(async()=>{      // get theme data from local storage (cache) ***HARDCODED***
+      try {
+        const value = await AsyncStorage.getItem('GLOBAL_THEME')
+        if(value !== null) {
+          setSelectedTheme(value)
+          if (value == 'light') setTextColorDependingOnTheme('black')
+          else setTextColorDependingOnTheme('white')}
+      } catch(e) {console.log(e)}
+    },[])
  
 
     useEffect(()=>{   // get bio from firebase
@@ -110,6 +124,7 @@ const ProfilePage = ({ navigation }) => {
     }
 
     //TODO: change some getDoc's to onSnapshot for efficiency and realtime updates
+    // CHANGE SCROLLVIEW TO FLATLIST
 
 
     return (
@@ -119,26 +134,30 @@ const ProfilePage = ({ navigation }) => {
           numberOfTaps={1} 
           ref={singleTapRef}>
         <Animated.View 
-          style={[styles.container, {width: window.width-5}, {height: expandAnim}]}>
+          style={[
+            styles.container, 
+            selectedTheme == 'dark' ? {backgroundColor:'rgb(15,15,15)', borderColor:'white'} : {},
+            {width: window.width-5}, 
+            {height: expandAnim}]}>
             <StatusBar style="light"></StatusBar>
             <View style={styles.header}>
               <Button 
                 onPress={() => navigation.navigate("Settings")} 
-                titleStyle={{color: "black", fontSize: 15}} 
+                titleStyle={{color: textColorDependingOnTheme, fontSize: 15}} 
                 buttonStyle={styles.settingsButton}
-                title={<Icon name="settings" color="black" />}/>
+                title={<Icon name="settings" color={textColorDependingOnTheme} />}/>
               <View>
                 <Text 
                   style={{
                     fontWeight: "900", 
                     letterSpacing: 1, 
-                    color: "black"}}>{user.displayName}</Text> 
+                    color: textColorDependingOnTheme}}>{user.displayName}</Text> 
               </View>
               <Button 
                 onPress={showLogoutConfirm} 
-                titleStyle={{color: "white", fontSize: 15}} 
+                titleStyle={{color: textColorDependingOnTheme, fontSize: 15}} 
                 buttonStyle={styles.logoutButton} 
-                title={<Icon name="logout" color="black" />}/> 
+                title={<Icon name="logout" color={textColorDependingOnTheme} />}/> 
             </View>
             <View style={styles.profileTop}>
               <View style={{flexDirection:'column'}}>
@@ -151,7 +170,7 @@ const ProfilePage = ({ navigation }) => {
                 </TouchableOpacity>
               </View>
               <Text style={{
-                color:'black',
+                color:textColorDependingOnTheme,
                 fontSize:15,
                 marginRight: 15,
                 marginLeft: 15,
@@ -159,18 +178,21 @@ const ProfilePage = ({ navigation }) => {
                 }}>{currentBio}</Text>
                 <View style={{flexDirection: "row", marginTop:10}}>
                   <TouchableOpacity onPress={() => navigation.navigate("Followers & Following")}> 
-                    <Text style={styles.followersInfo}>{followerCount}{" "}Followers</Text>
+                    <Text style={[styles.followersInfo, {color:textColorDependingOnTheme}]}>{followerCount}{" "}Followers</Text>
                   </TouchableOpacity>
                   <TouchableOpacity onPress={() => navigation.navigate("Followers & Following")}>
-                    <Text style={styles.followersInfo}>{followingCount}{" "}Following</Text>
+                    <Text style={[styles.followersInfo, {color:textColorDependingOnTheme}]}>{followingCount}{" "}Following</Text>
                   </TouchableOpacity>
-                  <Text style={styles.followersInfo}>{postIDs.length}{" "}Posts</Text>
+                  <Text style={[styles.followersInfo, {color:textColorDependingOnTheme}]}>{postIDs.length}{" "}Posts</Text>
                 </View>
             </View>
             
         </Animated.View>
         </TapGestureHandler>
-        <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center', backgroundColor: "#ffffff"  }}>
+        <ScrollView contentContainerStyle={[
+          {flexGrow: 1, alignItems: 'center'}, 
+          selectedTheme == 'dark' ? {backgroundColor:'rgb(15,15,15)'} : {}
+          ]}>
           {postIDs.length > 0 ? postIDs.reverse().map((postID, index)=>{ return <PostComponent key={`${index}`} postID={postID} />}) 
             :
           <Text style={{color:'white',fontSize:20, marginTop:25}}>No Posts</Text>
