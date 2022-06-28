@@ -8,7 +8,7 @@ import SmallProfile from '../components/SmallProfile';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import FollowingSection from '../components/FollowersFollowing/FollowingSection';
 import FollowerSection from '../components/FollowersFollowing/FollowerSection'
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function FollowersFollowingPage() {
 
@@ -20,12 +20,23 @@ export default function FollowersFollowingPage() {
     const [followingCount, setFollowingCount] = useState(0)
     const [followers, setFollowers] = useState([])
     const [following, setFollowing] = useState([])
+    const [selectedTheme, setSelectedTheme] = useState('')
+    const [textColorDependingOnTheme, setTextColorDependingOnTheme] = useState('')
 
     const window = useWindowDimensions()    // hook to get the window dimensions
 
     let height4posts = (window.width*3)/4    // height of the post calculated by the width of the screen
     let height4postcontainer = ((window.width*3)/4)+50   // height of the post container calculated by the width of the screen plus the gap needed for likes comments etc. section
 
+    useEffect(async()=>{      // get theme data from local storage (cache) ***HARDCODED***
+      try {
+        const value = await AsyncStorage.getItem('GLOBAL_THEME')
+        if(value !== null) {
+          setSelectedTheme(value)
+          if (value == 'light') setTextColorDependingOnTheme('black')
+          else setTextColorDependingOnTheme('white')}
+      } catch(e) {console.log(e)}
+    },[])
 
     // get followers and following and store in array
     useEffect(() => {
@@ -47,18 +58,21 @@ export default function FollowersFollowingPage() {
 
     const globalOptions = {
       tabBarStyle: {
-        backgroundColor:'white',
+        backgroundColor: selectedTheme == 'dark' ? 'rgb(15,15,15)' : 'white',
       },
       tabBarIndicatorStyle :{
         backgroundColor:'crimson'
-      }
+      },
+
     }
+
+    //TODO: ŞU APTAL TAB NAVIGATORDA TEXT COLOR DEĞİŞTİRMEYİ BUL
 
   return (
 
     <Tab.Navigator screenOptions={globalOptions} >
-      <Tab.Screen  style={{backgroundColor:'black'}}  name='followers' children={()=> <FollowerSection followers={followers}/>} />
-      <Tab.Screen name='following' children={()=> <FollowingSection following={following}/>} />
+      <Tab.Screen style={{backgroundColor:'black'}}  name='followers' children={()=> <FollowerSection textColor={textColorDependingOnTheme} theme={selectedTheme} followers={followers}/>} />
+      <Tab.Screen name='following' children={()=> <FollowingSection textColor={textColorDependingOnTheme} theme={selectedTheme} following={following}/>} />
     </Tab.Navigator>
   )
 }

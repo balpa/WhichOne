@@ -11,7 +11,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 
 
-export default function SmallProfile({ userID }) {
+export default function SmallProfile({ userID, theme, textColor }) {
 
     const COLOR_PALETTE_1 = ["FAC213", "F77E21", "D61C4E", "990000", "FF5B00"]   // bright yellows cleared 
 
@@ -91,7 +91,7 @@ export default function SmallProfile({ userID }) {
             alignItems: "center",
             width: '100%',
             height: 50,
-            backgroundColor: 'rgba(255,255,255,0)',
+            backgroundColor: theme == 'dark' ? 'rgb(15,15,15)' : 'white',
             paddingLeft: 20,
             paddingRight: 20,
             }}>
@@ -108,7 +108,7 @@ export default function SmallProfile({ userID }) {
                         <Text 
                             style={{
                                 fontSize: 17, 
-                                color:'black'}}
+                                color:textColor}}
                         >{userIDData.name}</Text>
                     </TouchableOpacity>
             </View>

@@ -114,7 +114,7 @@ const ProfilePage = ({ navigation }) => {
           duration: 500,
           useNativeDriver: false,
         }).start()
-      } else { setIsExpanded(false)
+      } else { setIsExpanded(false); setIsShown(false)
         Animated.timing(expandAnim, {
           toValue: 120,
           duration: 500,
