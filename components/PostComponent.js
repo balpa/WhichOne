@@ -102,20 +102,20 @@ function PostComponent({ postID, userID, name }){
                 marginTop: 5,
                 marginBottom: 5,
                 padding: 5,
-                borderRadius: 20,
-                borderWidth: 2,
+                borderTopWidth: 1,
+                borderBottomWidth: 1,
                 borderColor: '#000',
             }
             :
             {
                 justifyContent: "center",
                 alignItems: "center",
-                width: window.width-5,
+                width: window.width-9, // idk why xd
                 marginTop: 5,
                 marginBottom: 5,
                 padding: 5,
-                borderRadius: 20,
-                borderWidth: 2,
+                borderTopWidth: 1,
+                borderBottomWidth: 1,
                 borderColor: 'white',
                 backgroundColor:'rgb(15,15,15)'
             }

@@ -105,7 +105,7 @@ export default function MessagePerson({ userID, color }) {
             }}>
             <Animated.View style={[
               styles.nameAndImage,
-              {borderColor:textColorDependingOnTheme}, 
+              //{borderColor:textColorDependingOnTheme}, 
               shadowOptions, 
               {transform: [{translateX: leftToRightAnim}]}]} >
                     <Image 
@@ -158,9 +158,9 @@ export default function MessagePerson({ userID, color }) {
         flexDirection: "row",
         justifyContent: 'center',
         alignItems: 'center',
-        borderWidth: 1,
-        borderBottomRightRadius: 30,
-        borderTopRightRadius: 10,
+        //borderWidth: 0.5,
+        //borderBottomRightRadius: 30,
+        //borderTopRightRadius: 10,
         paddingRight: 20,
         paddingLeft: 10,
         paddingTop: 3,

@@ -239,8 +239,8 @@ const styles = StyleSheet.create({
         // minHeight: 180,
         backgroundColor: "#fff",  // #222222 for dark 
         overflow: "hidden",
-        borderWidth: 2,
-        borderRadius: 20,
+        //borderWidth: 1,
+        //borderRadius: 20,
         alignSelf:'center'
 
     },
