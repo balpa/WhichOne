@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, Animated } from 'react-native'
 import React, { useRef, useState, useEffect } from 'react'
 
-const SmallComment = ({ comment, name }) => {
+const SmallComment = ({ comment, name, theme, textColorDependingOnTheme }) => {
 
   const xAnim = useRef(new Animated.Value(600)).current
 
@@ -18,8 +18,8 @@ const SmallComment = ({ comment, name }) => {
   //TODO: might add profile visit, avatar needed etc.
   return (
     <Animated.View style={[styles.container, {transform: [{translateX: xAnim}]}]}>
-      <Text style={{fontWeight: "bold"}}>{name}{'  '}</Text>
-      <Text>{comment}</Text>
+      <Text style={{fontWeight: "bold", color: textColorDependingOnTheme}}>{name}{'  '}</Text>
+      <Text style={{color: textColorDependingOnTheme}}>{comment}</Text>
     </Animated.View>
   )
 }

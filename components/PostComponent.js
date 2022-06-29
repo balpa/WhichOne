@@ -191,7 +191,13 @@ function PostComponent({ postID, userID, name }){
                     <Text style={{color: textColorDependingOnTheme}}>{dateFormatter(postDate)}</Text>
                 </View>
                 {showDotSettings && <PostComponentDotSettings userID={userIdToPass} postID={postID} setShowDotSettings={setShowDotSettings} />}
-                {showComments && <CommentsModal height4postcontainer={height4postcontainer} postID={postID} setShowComments={setShowComments}/>}
+                {showComments && 
+                <CommentsModal 
+                    postID={postID} 
+                    theme={selectedTheme} 
+                    height4postcontainer={height4postcontainer} 
+                    textColorDependingOnTheme={textColorDependingOnTheme} 
+                    setShowComments={setShowComments}/>}
             </View>
             
         )

@@ -7,7 +7,7 @@ import { auth } from '../../firebase'
 import { db } from '../../firebase' 
 import { setDoc, doc, getDoc, getDocs, arrayUnion, onSnapshot, query } from 'firebase/firestore'
 
-const CommentsModal = ({ postID, setShowComments, height4postcontainer }) => {
+const CommentsModal = ({ postID, setShowComments, height4postcontainer, theme, textColorDependingOnTheme }) => {
 
     const user = auth.currentUser
 
@@ -59,11 +59,21 @@ const CommentsModal = ({ postID, setShowComments, height4postcontainer }) => {
         setCommentText("")          // TODO: doesnt clear the input field
     }
 
+    //TODO: input text color etc
+
   return (
-    <Animated.View style={[styles.container, {height: yAnim}]}>
+    <Animated.View style={[
+        styles.container, 
+        theme == 'dark' ? {backgroundColor:'rgb(40,40,40)'} : {backgroundColor:'rgb(240,240,240)'},
+        {height: yAnim}]}>
       <ScrollView style={styles.commentsSection}>
         {commentsOnDB && Object.keys(commentsOnDB).map((key, index) => {
-            return <SmallComment comment={commentsOnDB[key]} name={key} key={index} />
+            return <SmallComment 
+                        theme={theme} 
+                        textColorDependingOnTheme={textColorDependingOnTheme} 
+                        comment={commentsOnDB[key]} 
+                        name={key} 
+                        key={index} />
         })}
       </ScrollView>
       <View style={styles.inputSection}>
@@ -73,12 +83,12 @@ const CommentsModal = ({ postID, setShowComments, height4postcontainer }) => {
           onChangeText={(text) => setCommentText(text)}>
         </Input>
         <TouchableOpacity onPress={() => sendComment()}>
-            <Icon size={22} name="send" color="black" />
+            <Icon size={22} name="send" color={textColorDependingOnTheme} />
         </TouchableOpacity>
       </View>
       <View style={styles.closeButtonSection}>
       <TouchableOpacity onPress={()=> closeComments()} style={styles.closeButton}>
-          <Text style={{color:'black'}}>Close</Text>
+          <Text style={{color:textColorDependingOnTheme}}>Close</Text>
       </TouchableOpacity>
       </View>      
     </Animated.View>
@@ -93,7 +103,6 @@ const styles = StyleSheet.create({
         position:'absolute',
         width: "100%",
         // height: "100%",
-        backgroundColor:'rgba(240,240,240,1)',
         bottom: 0,
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
