@@ -40,6 +40,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 LogBox.ignoreLogs(['Setting a timer for a long period of time']) // to clear the yellow warning on android devices
+LogBox.ignoreLogs(['color'])
 
 
 const Stack = createStackNavigator()

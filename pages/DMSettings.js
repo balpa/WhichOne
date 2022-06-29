@@ -10,7 +10,9 @@ const DMSettings = ({
   setTextColor, 
   textColor, 
   isNameAboveBubbleEnabled, 
-  setIsNameAboveBubbleEnabled }) => {
+  setIsNameAboveBubbleEnabled,
+  theme,
+  textColorDependingOnTheme }) => {
 
   // TODO: store chat setting local or on db to prevent color change to default on refresh
   // AsyncStorage did not work, do a research
@@ -90,7 +92,10 @@ const DMSettings = ({
   // TODO: complete switch button with cache
 
   return (
-    <Animated.View style={[styles.container, {height: heightAnim}]}>
+    <Animated.View style={[
+      styles.container, 
+      theme == 'dark' ? {backgroundColor:'rgb(40,40,40)', borderBottomColor: 'rgb(240,240,240)'} : {backgroundColor:'white'},
+      {height: heightAnim}]}>
       <Animated.View style={{opacity: opacityAnim}}>
         <View style={{
           position:'absolute',
@@ -115,7 +120,8 @@ const DMSettings = ({
             style={{
               fontSize: 17,
               fontWeight: '800',
-              margin: 5
+              margin: 5,
+              color:textColorDependingOnTheme
             }}>Select message bubble color</Text>
           <View style={{width:100, height:50, borderRadius:10, backgroundColor:selectedColor, justifyContent:'center'}}>
             <Text style={{
@@ -198,7 +204,8 @@ const DMSettings = ({
             <Text style={{
               fontSize: 15,
               fontWeight:'800',
-              margin: 10
+              margin: 10,
+              color: textColorDependingOnTheme
             }}>Select text color</Text>
             <View style={{flexDirection:'row', width:'50%', justifyContent:'space-evenly'}}>
               <Button 
@@ -223,7 +230,10 @@ const DMSettings = ({
           marginTop: 10
         }}>
           <Text
-            style={{fontSize:15,fontWeight:'600'}}>Show names above chat bubble: </Text>
+            style={{
+              fontSize:15,
+              fontWeight:'600',
+              color: textColorDependingOnTheme}}>Show names above chat bubble: </Text>
           <Switch 
             trackColor={{ false: "#767577", true: "crimson" }}
             thumbColor={isEnabled ? "white" : "#f4f3f4"}
@@ -260,7 +270,6 @@ const styles = StyleSheet.create({
   container: {
     position:'absolute',
     width:'100%',
-    backgroundColor:'white',
     justifyContent:'space-between',
     borderBottomWidth:2,
     borderTopWidth:2,

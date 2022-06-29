@@ -15,7 +15,7 @@ const LoginScreen = ({ navigation }) => {
     const [lockIcon, setLockIcon] = useState("eye-slash")
     const [isPasswordShown, setIsPasswordShown] = useState(false)
     const [selectedTheme, setSelectedTheme] = useState('')
-    const [textColorDependingOnTheme, setTextColorDependingOnTheme] = useState('')
+    const [textColorDependingOnTheme, setTextColorDependingOnTheme] = useState('rgba(0,0,0,0)')
 
     const scaleAnim = useRef(new Animated.Value(0)).current
 

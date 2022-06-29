@@ -4,10 +4,10 @@ import {auth,db} from '../firebase'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Input, Icon, Button } from 'react-native-elements'
 import { doc, onSnapshot, getDoc, setDoc, updateDoc } from "firebase/firestore";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import useKeyboardHeight from 'react-native-use-keyboard-height'
 import ChatBalloon from '../components/DMComponents/ChatBalloon'
 import DMSettings from './DMSettings'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const DMChatPage = ({ route, navigation }) => {
 
@@ -25,6 +25,8 @@ const DMChatPage = ({ route, navigation }) => {
   const [chatBalloonColor, setChatBalloonColor] = React.useState("#218AFF")
   const [textColor, setTextColor] = React.useState('white')
   const [isNameAboveBubbleEnabled, setIsNameAboveBubbleEnabled] = React.useState(true)
+  const [selectedTheme, setSelectedTheme] = React.useState('')
+  const [textColorDependingOnTheme, setTextColorDependingOnTheme] = React.useState('')
 
   const { userID, name, userData } = route.params
   const loggedinUser = auth.currentUser
@@ -32,6 +34,16 @@ const DMChatPage = ({ route, navigation }) => {
   const ref = React.useRef(null)    // try to implement this to remove delay on animation
   let keyboardHeight = useKeyboardHeight()
   let inputAnim = React.useRef(new Animated.Value(0)).current  
+
+  useEffect(async()=>{      // get theme data from local storage (cache) ***HARDCODED***
+    try {
+      const value = await AsyncStorage.getItem('GLOBAL_THEME')
+      if(value !== null) {
+        setSelectedTheme(value)
+        if (value == 'light') setTextColorDependingOnTheme('black')
+        else setTextColorDependingOnTheme('white')}
+    } catch(e) {console.log(e)}
+  },[])
 
   useEffect(() => {          // input animation for keyboard. TODO: animations starts after keyboard fully opened. Another solution might be using keyboardavoidingview
     Animated.timing(inputAnim, {
@@ -116,9 +128,9 @@ const DMChatPage = ({ route, navigation }) => {
       }}>
         <Button 
           onPress={() => {setShowDMSettings(true)}} 
-          titleStyle={{color: "black", fontSize: 15}} 
+          titleStyle={{color: textColorDependingOnTheme, fontSize: 15}} 
           buttonStyle={styles.settingsButton}
-          title={<Icon name="settings" color="black" />}/>
+          title={<Icon name="settings" color={textColorDependingOnTheme} />}/>
       </View>
       {messageData != null ? 
         <FlatList 
@@ -129,7 +141,9 @@ const DMChatPage = ({ route, navigation }) => {
               isNameAboveBubbleEnabled={isNameAboveBubbleEnabled} 
               otherUsersName={name} 
               color={chatBalloonColor} 
-              textColor={textColor} />
+              textColor={textColor}
+              textColorDependingOnTheme={textColorDependingOnTheme}
+              theme={selectedTheme} />
               )} 
           keyExtractor={(item, index) => index.toString()}
           ListEmptyComponent={() => <Text style={styles.emptyText}>No messages yet</Text>}
@@ -139,16 +153,16 @@ const DMChatPage = ({ route, navigation }) => {
         <Input  
           ref={ref}
           placeholder='Message...'
-          rightIcon={{ type: 'material-community', name: 'send', color: 'black', onPress: () => sendMessage()}} 
+          rightIcon={{ type: 'material-community', name: 'send', color: textColorDependingOnTheme, onPress: () => sendMessage()}} 
           onChangeText={(text) => setMessageText(text)}
           inputStyle={{
-            backgroundColor: 'white',
+            backgroundColor: selectedTheme == 'dark' ? 'rgb(40,40,40)' : 'white',
             borderRadius: 15,
             padding: 5,
 
           }}
           containerStyle={{
-            backgroundColor: 'rgb(235,235,235)',
+            backgroundColor: selectedTheme == 'dark' ? 'rgb(15,15,15)' : 'rgb(240,240,240)',
             height: 60
           }}
           inputContainerStyle={{
@@ -165,7 +179,8 @@ const DMChatPage = ({ route, navigation }) => {
           textColor={textColor}
           setTextColor={setTextColor}
           setIsNameAboveBubbleEnabled={setIsNameAboveBubbleEnabled}
-          
+          theme={selectedTheme}
+          textColorDependingOnTheme={textColorDependingOnTheme}
           />}
     </View>
 
@@ -187,6 +202,7 @@ const styles = StyleSheet.create({
   messageInputContainer: {
     width:'100%',
     alignContent:'center',
+    marginLeft:5,
 
   },
   settingsButton: {

@@ -4,7 +4,16 @@ import { registerVersion } from 'firebase/app'
 import { auth, db } from '../../firebase'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
-const ChatBalloon = ({ message, sender, item, color, textColor, otherUsersName, isNameAboveBubbleEnabled }) => {
+const ChatBalloon = ({ 
+  message, 
+  sender, 
+  item, 
+  color, 
+  textColor, 
+  otherUsersName, 
+  isNameAboveBubbleEnabled,
+  theme,
+  textColorDependingOnTheme }) => {
 
   const loggedinUser = auth.currentUser
 
@@ -64,7 +73,8 @@ const ChatBalloon = ({ message, sender, item, color, textColor, otherUsersName, 
             top: -15, 
             right: 0,
             fontSize: 7,
-            fontWeight: '700'
+            fontWeight: '700',
+            color: textColorDependingOnTheme
           } 
         : 
           {
@@ -72,7 +82,8 @@ const ChatBalloon = ({ message, sender, item, color, textColor, otherUsersName, 
             top:-15, 
             left: 0,
             fontSize: 7,
-            fontWeight: '700'
+            fontWeight: '700',
+            color:textColorDependingOnTheme
           }
           }>{isNameAboveBubbleEnabled ? username : null}</Text>
       <Text style={{
@@ -89,7 +100,11 @@ const ChatBalloon = ({ message, sender, item, color, textColor, otherUsersName, 
           }}
           onPress={() => setShowDetailedDate(!showDetailedDate)}
           >
-          <Text style={{fontSize: 8, fontWeight:'700'}}>{showDetailedDate == false ? timeForChatBalloon : detailedTimeForChatBalloon}</Text>
+          <Text style={{
+            fontSize: 8, 
+            fontWeight:'700', 
+            color:textColorDependingOnTheme
+            }}>{showDetailedDate == false ? timeForChatBalloon : detailedTimeForChatBalloon}</Text>
         </TouchableOpacity>
       </View>
     </Animated.View>

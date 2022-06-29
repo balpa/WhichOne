@@ -24,7 +24,7 @@ const RegisterScreen = ({ navigation }) => {
     const [isPasswordShown, setIsPasswordShown] = useState(false)
     const [isNameNull, setIsNameNull] = useState(true)
     const [selectedTheme, setSelectedTheme] = useState('')
-    const [textColorDependingOnTheme, setTextColorDependingOnTheme] = useState('')
+    const [textColorDependingOnTheme, setTextColorDependingOnTheme] = useState('rgba(0,0,0,0)')
 
     const scaleAnim = useRef(new Animated.Value(0)).current
 
