@@ -9,7 +9,7 @@ import { Input } from 'react-native-elements/dist/input/Input'
 import { doc, getDoc, updateDoc} from 'firebase/firestore'
 import { Icon } from 'react-native-elements'
 
-function EditBio({ color, setIsEditBioShown }) {
+function EditBio({ color, setIsEditBioShown, theme, textColorDependingOnTheme }) {
 
     const [bioText, setBioText] = useState("") 
     const [currentBio, setCurrentBio] = useState('')
@@ -60,12 +60,23 @@ function EditBio({ color, setIsEditBioShown }) {
 
 
     return (
-        <Animated.View style={[styles.component, {transform: [{translateY: springAnim}]}]}>
-            <Text style={{marginBottom: 20, textAlign:'center', fontSize:20}}>Current bio:{'\n'} {currentBio}</Text>
+        <Animated.View style={[
+            styles.component, 
+            theme == 'dark' ? {backgroundColor:'rgb(40,40,40)', borderColor:'white'} : {backgroundColor:'rgb(240,240,240)'},
+            {transform: [{translateY: springAnim}]}]}>
+            <Text style={{
+                marginBottom: 20, 
+                textAlign:'center', 
+                color:textColorDependingOnTheme,
+                fontSize:20}}>Current bio:{'\n'} {currentBio}</Text>
             <Input 
                 placeholder="..." 
+                placeholderTextColor={textColorDependingOnTheme}
+                labelStyle={{color:textColorDependingOnTheme}}
+                style={{color:textColorDependingOnTheme}}
                 label='Add bio'
-                leftIcon={{ type: 'font-awesome', name: 'pencil' }}
+                leftIcon={{ type: 'font-awesome', name: 'pencil', color:textColorDependingOnTheme }}
+                selectionColor={textColorDependingOnTheme}
                 value={bioText} 
                 onChangeText={(text) => setBioText(text)} />
             <View style={{flexDirection:'row',justifyContent:'space-between',width:'100%', bottom: -15, }}>

@@ -184,17 +184,32 @@ const AccountSettings = ({ navigation }) => {
             </View>
             {isChangeNameShown ? 
                 <View style={{width:'100%',height:'100%',justifyContent:'center', alignItems:'center'}} >
-                    <ChangeName color={`#${COLOR_PALETTE_1[3]}`} setIsChangeNameShown={setIsChangeNameShown} />
+                    <ChangeName 
+                        color={`#${COLOR_PALETTE_1[3]}`} 
+                        setIsChangeNameShown={setIsChangeNameShown}
+                        theme={selectedTheme}
+                        textColorDependingOnTheme={textColorDependingOnTheme}
+                        />
                 </View> : null}
 
                 {isEditBioShown ? 
                 <View style={{width:'100%',height:'100%',justifyContent:'center', alignItems:'center'}}>
-                    <EditBio color={`#${COLOR_PALETTE_1[3]}`} setIsEditBioShown={setIsEditBioShown} /> 
+                    <EditBio 
+                        color={`#${COLOR_PALETTE_1[3]}`} 
+                        setIsEditBioShown={setIsEditBioShown}
+                        theme={selectedTheme}
+                        textColorDependingOnTheme={textColorDependingOnTheme}
+                         /> 
                 </View> : null}
 
                 {isChangePasswordShown ? 
                 <View style={{width:'100%',height:'100%',justifyContent:'center', alignItems:'center'}}>
-                    <ChangePassword color={`#${COLOR_PALETTE_1[6]}`} setIsChangePasswordShown={setIsChangePasswordShown} /> 
+                    <ChangePassword 
+                        color={`#${COLOR_PALETTE_1[6]}`} 
+                        setIsChangePasswordShown={setIsChangePasswordShown} 
+                        theme={selectedTheme}
+                        textColorDependingOnTheme={textColorDependingOnTheme}
+                        /> 
                 </View> : null}
         </>
 

@@ -7,7 +7,7 @@ import { auth } from '../../firebase'
 import { Input } from 'react-native-elements/dist/input/Input'
 import { Icon } from 'react-native-elements'
 
-function ChangeName({ color, setIsChangeNameShown }) {
+function ChangeName({ color, setIsChangeNameShown, theme, textColorDependingOnTheme }) {
 
     const [changedName, setChangedName] = useState("") 
     
@@ -57,13 +57,24 @@ function ChangeName({ color, setIsChangeNameShown }) {
 
 
     return (
-        <Animated.View style={[styles.component,{transform: [{translateY: springAnim}]}]}>
-            <Text style={{marginBottom: 20, textAlign:'center', fontSize:20}}>Your name:{'\n'} {user.displayName}</Text>
+        <Animated.View style={[
+          styles.component,
+          theme == 'dark' ? {backgroundColor:'rgb(40,40,40)', borderColor:'white'} : {backgroundColor:'rgb(240,240,240)'},
+          {transform: [{translateY: springAnim}]}]}>
+            <Text style={{
+              marginBottom: 20, 
+              textAlign:'center', 
+              color:textColorDependingOnTheme,
+              fontSize:20}}>Your name:{'\n'} {user.displayName}</Text>
             <Input 
               placeholder="Change your name" 
+              placeholderTextColor={textColorDependingOnTheme}
               label='New name'
-              leftIcon={{ type: 'font-awesome', name: 'id-card' }}
+              labelStyle={{color:textColorDependingOnTheme}}
+              selectionColor={textColorDependingOnTheme}
+              leftIcon={{ type: 'font-awesome', name: 'id-card', color:textColorDependingOnTheme }}
               value={changedName} 
+              style={{color:textColorDependingOnTheme}}
               onChangeText={(text) => setChangedName(text)} />
             <View style={{flexDirection:'row', justifyContent:'space-between', width:'100%', bottom: -15 }}>
               <Button title='Submit' onPress={submitFunction}  buttonStyle={[styles.leftButton,{backgroundColor: color}]} />
