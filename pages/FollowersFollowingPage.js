@@ -60,10 +60,11 @@ export default function FollowersFollowingPage() {
       tabBarStyle: {
         backgroundColor: selectedTheme == 'dark' ? 'rgb(15,15,15)' : 'white',
       },
-      tabBarIndicatorStyle :{
+      tabBarIndicatorStyle: {
         backgroundColor:'crimson'
       },
-
+      tabBarActiveTintColor: 'crimson',
+      tabBarInactiveTintColor: selectedTheme == 'dark' ? 'rgba(240,240,240,0.3)' : 'rgba(15,15,15,0.3)'
     }
 
     //TODO: ŞU APTAL TAB NAVIGATORDA TEXT COLOR DEĞİŞTİRMEYİ BUL
@@ -71,7 +72,7 @@ export default function FollowersFollowingPage() {
   return (
 
     <Tab.Navigator screenOptions={globalOptions} >
-      <Tab.Screen style={{backgroundColor:'black'}}  name='followers' children={()=> <FollowerSection textColor={textColorDependingOnTheme} theme={selectedTheme} followers={followers}/>} />
+      <Tab.Screen style={{backgroundColor:'red'}}  name='followers' children={()=> <FollowerSection textColor={textColorDependingOnTheme} theme={selectedTheme} followers={followers}/>} />
       <Tab.Screen name='following' children={()=> <FollowingSection textColor={textColorDependingOnTheme} theme={selectedTheme} following={following}/>} />
     </Tab.Navigator>
   )

@@ -118,7 +118,7 @@ const AccountSettings = ({ navigation }) => {
     }}, [])
 
 
-    // TODO: dark mode 4 account setting modal (do i need)
+    // TODO: w1 logo does not show 
    
 
     return (
@@ -192,7 +192,7 @@ const AccountSettings = ({ navigation }) => {
                         />
                 </View> : null}
 
-                {isEditBioShown ? 
+            {isEditBioShown ? 
                 <View style={{width:'100%',height:'100%',justifyContent:'center', alignItems:'center'}}>
                     <EditBio 
                         color={`#${COLOR_PALETTE_1[3]}`} 
@@ -202,7 +202,7 @@ const AccountSettings = ({ navigation }) => {
                          /> 
                 </View> : null}
 
-                {isChangePasswordShown ? 
+            {isChangePasswordShown ? 
                 <View style={{width:'100%',height:'100%',justifyContent:'center', alignItems:'center'}}>
                     <ChangePassword 
                         color={`#${COLOR_PALETTE_1[6]}`} 
@@ -211,6 +211,10 @@ const AccountSettings = ({ navigation }) => {
                         textColorDependingOnTheme={textColorDependingOnTheme}
                         /> 
                 </View> : null}
+    
+            <View style={styles.logoBottomContainer}>
+                <Image source={require("../assets/w1logocrimson.png")} style={styles.logoBottom}/>
+            </View>
         </>
 
     )
@@ -236,7 +240,7 @@ const styles = StyleSheet.create({
     elevation:{
         position:'absolute',
         width: "100%",
-        height: "100%",
+        height: "90%",
         alignItems: "center",
     },
     buttonView: {
@@ -246,6 +250,22 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         borderRadius:10
+    },
+    logoBottom:{
+        position: 'absolute',
+        width: 50,
+        height: 50,
+        bottom: 0,
+        zIndex: 10
+    },
+    logoBottomContainer:{
+        position:'absolute',
+        backgroundColor:'red',
+        bottom: 10,
+        width: "100%",
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex:5
     },
 
 })
