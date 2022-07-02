@@ -10,7 +10,7 @@ import { TouchableOpacity, TapGestureHandler } from 'react-native-gesture-handle
 import LikesModal from './LikesModal';
 import { color } from 'react-native-reanimated';
 
-function PostImage({url, photoNumber, postID, arrayLength, theme, textColor}){
+function PostImage({url, photoNumber, postID, arrayLength, textColor, theme}){
 
     const doubleTapRef = React.createRef()
 
@@ -131,7 +131,12 @@ function PostImage({url, photoNumber, postID, arrayLength, theme, textColor}){
               <Text style={{color:textColor}}>{likes.length == 1 ? `${likes.length} like` : `${likes.length} likes`}</Text>
             </TouchableOpacity>
           </View>
-          {showLikes && <LikesModal height4postcontainer={height4postcontainer} setShowLikes={setShowLikes} likes={likes} />} 
+          {showLikes && <LikesModal 
+            height4postcontainer={height4postcontainer} 
+            setShowLikes={setShowLikes} 
+            theme={theme}
+            textColor={textColor}
+            likes={likes} />} 
         </View>
       </> 
     )

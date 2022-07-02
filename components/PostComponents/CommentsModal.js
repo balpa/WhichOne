@@ -80,6 +80,8 @@ const CommentsModal = ({ postID, setShowComments, height4postcontainer, theme, t
         <Input
           autoCapitalize='none'
           placeholder='Write a comment...'
+          style={{color: textColorDependingOnTheme}}
+          selectionColor={textColorDependingOnTheme} 
           onChangeText={(text) => setCommentText(text)}>
         </Input>
         <TouchableOpacity onPress={() => sendComment()}>

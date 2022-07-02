@@ -6,7 +6,7 @@ import { db } from '../../firebase'
 import { setDoc, doc, getDoc, getDocs, arrayUnion, onSnapshot, query } from 'firebase/firestore'
 import SmallProfile from '../SmallProfile'
 
-function LikesModal({ setShowLikes, likes, height4postcontainer }){
+function LikesModal({ setShowLikes, likes, height4postcontainer, theme, textColor }){
 
   const yAnim = useRef(new Animated.Value(0)).current
   const xAnim = useRef(new Animated.Value(0)).current
@@ -43,19 +43,23 @@ function LikesModal({ setShowLikes, likes, height4postcontainer }){
     setTimeout(() => {setShowLikes(false)},500)
   }
   
+  //TODO: check small profiles coloring on likes modal
    
   return (
-    <Animated.View style={[styles.container, {height: yAnim}]}>
+    <Animated.View style={[
+      styles.container, 
+      theme == 'dark' ? {backgroundColor:'rgb(40,40,40)'} : {backgroundColor:'rgb(240,240,240)'},
+      {height: yAnim}]}>
       <ScrollView>
         {likes && likes.map((userID, index) => {
           return (
-            <SmallProfile key={index} userID={userID}/>
+            <SmallProfile theme={theme} textColor={textColor} key={index} userID={userID}/>
           )
         })}
       </ScrollView>
       <View style={styles.closeButton}>
         <TouchableOpacity onPress={()=> closeLikesModal()}>
-          <Text style={{color:'black'}}>close</Text>
+          <Text style={{color:textColor}}>close</Text>
         </TouchableOpacity>
       </View> 
       
@@ -73,7 +77,6 @@ const styles = StyleSheet.create({
       bottom: 10,
       width: "100%",
       height: 300,
-      backgroundColor: 'rgba(240,240,240,1)',
       borderTopLeftRadius: 25,
       borderTopRightRadius: 25,
       padding: 10,
