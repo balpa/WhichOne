@@ -14,6 +14,7 @@ import PostComponent from '../components/PostComponent'
 import { TouchableOpacity } from 'react-native'
 import { doc, onSnapshot, getDoc } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const UserProfile = ({ route, navigation }) => {
@@ -25,6 +26,8 @@ const UserProfile = ({ route, navigation }) => {
     const [image,setImage] = useState(null)
     const [postIDs, setPostIDs] = useState([])
     const [followSituation, setFollowSituation] = useState(false)
+    const [selectedTheme, setSelectedTheme] = useState('')
+    const [textColorDependingOnTheme, setTextColorDependingOnTheme] = useState('')
 
     const loggedinUser = auth.currentUser;
     const storage = getStorage();
@@ -38,6 +41,16 @@ const UserProfile = ({ route, navigation }) => {
       .catch((error) => {
         console.log(error)
     });
+
+    useEffect(async()=>{      // get theme data from local storage (cache) ***HARDCODED***
+      try {
+        const value = await AsyncStorage.getItem('GLOBAL_THEME')
+        if(value !== null) {
+          setSelectedTheme(value)
+          if (value == 'light') setTextColorDependingOnTheme('black')
+          else setTextColorDependingOnTheme('white')}
+      } catch(e) {console.log(e)}
+    },[])
 
     // get total follower count
     const getTotalFollowerCount = onSnapshot(doc(db, "useruid", `${userID}`), (doc) => {
@@ -98,18 +111,30 @@ const UserProfile = ({ route, navigation }) => {
 
     return (
         <>
-        <View style={[styles.container, {width: window.width-5}]}>
+        <View style={[
+          styles.container, 
+          selectedTheme == 'dark' ? {backgroundColor:'rgb(15,15,15)'} : {},
+          {width: window.width-5}]}>
             <StatusBar style="light"></StatusBar>
             <View style={{justifyContent: "center", alignItems: "center", marginTop: 10}}>
                 <Image 
                 source={{uri: image}}
                 style={{ width: 60, height: 60, borderRadius: 60/2, marginBottom: 15}}
                 />
-                <Text style={{fontWeight: "900", letterSpacing: 1, color: "black"}}>{name}</Text>
+                <Text style={{fontWeight: "900", letterSpacing: 1, color: textColorDependingOnTheme}}>{name}</Text>
                 <View style={{flexDirection: "row"}}>
-                    <Text style={styles.followersInfo}>{followerCount}{"\n"}Followers</Text>
-                    <Text style={styles.followersInfo}>{followingCount}{"\n"}Following</Text>
-                    <Text style={styles.followersInfo}>{postIDs.length}{"\n"}Posts</Text>
+                    <Text style={[
+                      styles.followersInfo,
+                      selectedTheme == 'dark' ? {color:'white'} : {color:'black'}
+                      ]}>{followerCount}{"\n"}Followers</Text>
+                    <Text style={[
+                      styles.followersInfo,
+                      selectedTheme == 'dark' ? {color:'white'} : {color:'black'}
+                    ]}>{followingCount}{"\n"}Following</Text>
+                    <Text style={[
+                      styles.followersInfo,
+                      selectedTheme == 'dark' ? {color:'white'} : {color:'black'}
+                      ]}>{postIDs.length}{"\n"}Posts</Text>
                 </View>
                 {followSituation == true ? 
                 <View 
@@ -157,7 +182,7 @@ const UserProfile = ({ route, navigation }) => {
             </View>
             
         </View>
-        <ScrollView contentContainerStyle={{ flexGrow: 1, alignItems: 'center', backgroundColor: "#ffffff"  }}>
+        <ScrollView contentContainerStyle={{flexGrow: 1, alignItems: 'center'}}>
           {postIDs.length > 0 ? postIDs.reverse().map((postID, index)=>{
             return <PostComponent key={index} postID={postID} userID={userID} name={name} />}) 
           :
@@ -176,10 +201,10 @@ export default UserProfile
 
 const styles = StyleSheet.create({
     logoutButton: {
-        marginTop: 5,
-        width: 45,
-        borderWidth: 0,
-        backgroundColor: "transparent",
+      marginTop: 5,
+      width: 45,
+      borderWidth: 0,
+      backgroundColor: "transparent",
     },
     settingsButton: {
       marginTop: 5,
@@ -188,11 +213,11 @@ const styles = StyleSheet.create({
       backgroundColor: "transparent",
   },
     topLogout: {
-        position: "absolute",
-        alignItems: "flex-end",
-        width: 100,
-        right: 0,
-        zIndex: 10,
+      position: "absolute",
+      alignItems: "flex-end",
+      width: 100,
+      right: 0,
+      zIndex: 10,
 
     },
     topSettings: {
@@ -204,13 +229,10 @@ const styles = StyleSheet.create({
 
   },
     container: {
-        alignSelf:'center',
-        height: 210,
-        backgroundColor: "#ffffff",
-        overflow: "hidden",
-        borderColor:'black',
-        borderWidth:2,
-        borderRadius:20,
+      alignSelf:'center',
+      height: 210,
+      backgroundColor: "#ffffff",
+      overflow: "hidden",
     },
     followersInfo: {
       color: "black",
