@@ -98,7 +98,7 @@ const LoginScreen = ({ navigation }) => {
             <Animated.View style={[
                 styles.elevation, 
                 shadowOptions,
-                selectedTheme == 'dark' ? {backgroundColor:'rgb(40,40,40)'} : {backgroundColor:'rgb(240,240,240)'}, 
+                selectedTheme == 'dark' ? {backgroundColor:'rgb(40,40,40)', borderColor:'rgba(255,255,255,0.2)'} : {backgroundColor:'rgb(240,240,240)'}, 
                 {transform: [{scale: scaleAnim}]}]}>
             <StatusBar style="light" ></StatusBar>
             <Image 
