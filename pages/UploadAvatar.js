@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet, ScrollView, Image, KeyboardAvoidingView } from 'react-native'
+import { Text, View, StyleSheet, ScrollView, Image, KeyboardAvoidingView, Animated } from 'react-native'
 import { BackgroundImage } from 'react-native-elements/dist/config'
 import { Button, Icon } from 'react-native-elements'
 import { useState, useEffect } from 'react'
@@ -7,7 +7,8 @@ import { auth } from '../firebase'
 import firebase from 'firebase/compat/app'
 import { Input } from 'react-native-elements/dist/input/Input'
 import * as ImagePicker from 'expo-image-picker';
-import { getStorage, ref, uploadBytes } from "firebase/storage";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function UploadAvatar() {
 
@@ -15,7 +16,24 @@ function UploadAvatar() {
     const storage = getStorage()
     const avatarRef = ref(storage, `Users/${currentUser.uid}/avatars/avatar_image`) // storage'da avatarın yerini belirleme
 
-    const [image, setImage] = useState(null);
+    const [image, setImage] = useState(null)
+    const [selectedTheme, setSelectedTheme] = useState('')
+    const [textColorDependingOnTheme, setTextColorDependingOnTheme] = useState('')
+    const [currentAvatar, setCurrentAvatar] = useState(null)
+
+    getDownloadURL(ref(storage, `Users/${currentUser.uid}/avatars/avatar_image`))  // get avatar
+      .then((url) => setCurrentAvatar(url))
+      .catch((error) => console.log(error))
+
+    useEffect(async()=>{      // get theme data from local storage (cache) ***HARDCODED***
+      try {
+        const value = await AsyncStorage.getItem('GLOBAL_THEME')
+        if(value !== null) {
+          setSelectedTheme(value)
+          if (value == 'light') setTextColorDependingOnTheme('black')
+          else setTextColorDependingOnTheme('white')}
+      } catch(e) {console.log(e)}
+    },[])
 
     useEffect(() => {
         (async () => {
@@ -55,17 +73,33 @@ function UploadAvatar() {
 
 
     return (
-        <View style={styles.component}>
+        <View style={[
+          styles.component,
+          selectedTheme == 'dark' ? {backgroundColor:'rgb(15,15,15)'} : {},
+          ]}>
+          <View style={{width:'100%',height:110, justifyContent:'center', alignItems:'center'}}>
+            <Text style={selectedTheme == 'dark' 
+            ? {
+              color:'white',
+              fontSize:17,
+              fontWeight:'900'
+            } 
+            : {
+              color:'black',
+              fontSize:17,
+              fontWeight:'900'
+            }}>Current Avatar</Text>
+            <Image source={{uri: currentAvatar}} style={{ width: 60, height: 60, borderRadius: 60/2, marginBottom: 15}}/>
+          </View>
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'space-evenly'}}>
-            <View style={styles.addButtonIconWrapper}>
-                <Icon name="collections" color="black" />
-                <Button title="Add Photos" onPress={pickImage} titleStyle={{color: "black", fontSize: 25}} buttonStyle={styles.createPostButtons} />
-            </View>
-                {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
-            <View style={styles.uploadIconWrapper}>
-                <Icon name="send" color="black" />
-                <Button title="Upload" onPress={upload} titleStyle={{color: "black", fontSize: 25}} buttonStyle={styles.createPostButtons} />
-            </View> 
+            <Animated.View style={styles.addButtonIconWrapper}>
+                <Button title={<Icon name="collections" color="white" />}onPress={pickImage} titleStyle={{color: "black", fontSize: 25}} buttonStyle={styles.createPostButtons} />
+            </Animated.View>
+              {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+            <Animated.View style={styles.uploadIconWrapper}>
+                <Icon name="send" color="white" />
+                <Button title="Upload" onPress={()=> upload()} titleStyle={{color: "white", fontSize: 25}} buttonStyle={styles.createPostButtons} />
+            </Animated.View> 
           </View>
         </View>
     )
@@ -81,38 +115,37 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     backgroundColor: "#ffffff",
-    zIndex: 10
+    zIndex: 10,
+    paddingBottom: 50,
+    paddingTop: 25
 },
   uploadIconWrapper: {
     position: "absolute",
     bottom: 0,
-    height: 80,
+    marginBottom: 5,
+    height: 60,
     flexDirection: "row",
-    width: "100%",
-    backgroundColor: "rgba(240,240,240,1)",
+    width: "80%",
+    backgroundColor: "crimson",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    borderTopEndRadius: 25,
-    borderTopStartRadius: 25,
-    borderWidth:2,
-    borderColor:'black'
+    borderRadius: 20,
 
 },
   addButtonIconWrapper: {
     position: "absolute",
-    top: 0,
-    height: 80,
+    top: -1,
+    marginTop: 5,
+    width: 70,
+    height: 70,
     flexDirection: "row",
-    width: "100%",
-    backgroundColor: "rgba(240,240,240,1)",
+    backgroundColor: "crimson",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    borderBottomEndRadius: 25,
-    borderBottomStartRadius: 25,
-    borderWidth:2,
-    borderColor:'black'
+    borderRadius: 70/2,
+    zIndex: 20,
 
 },
 
