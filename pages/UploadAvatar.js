@@ -7,6 +7,7 @@ import {
   Image,
   KeyboardAvoidingView,
   Animated,
+  ActivityIndicator,
 } from "react-native";
 import { BackgroundImage } from "react-native-elements/dist/config";
 import { Button, Icon } from "react-native-elements";
@@ -121,15 +122,19 @@ function UploadAvatar() {
         >
           Current Avatar
         </Text>
-        <Image
-          source={{ uri: currentAvatar }}
-          style={{
-            width: 60,
-            height: 60,
-            borderRadius: 60 / 2,
-            marginBottom: 15,
-          }}
-        />
+        {currentAvatar == null ? (
+          <ActivityIndicator size="large" color="crimson" />
+        ) : (
+          <Image
+            source={{ uri: currentAvatar }}
+            style={{
+              width: 60,
+              height: 60,
+              borderRadius: 60 / 2,
+              marginBottom: 15,
+            }}
+          />
+        )}
       </View>
       <View
         style={{
