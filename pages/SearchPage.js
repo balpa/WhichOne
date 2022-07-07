@@ -38,6 +38,7 @@ const SearchPage = ({ navigation }) => {
   const [selectedTheme, setSelectedTheme] = useState("");
   const [textColorDependingOnTheme, setTextColorDependingOnTheme] = useState("");
   const [showActivityIndicator, setShowActivityIndicator] = useState(false);
+  const [searchButtonPressed, setSearchButtonPressed] = useState(false)
 
   const windowDim = useWindowDimensions();
 
@@ -82,7 +83,7 @@ const SearchPage = ({ navigation }) => {
         setImage(null);
         console.log(error);
       });
-  }, [searchedUsersUID]);
+  }, [searchedUsersUID])
 
   // FOLLOW-UNFOLLOW WORKS BUT NEED TO ADD STATE CHECK BY QUERYING THE USER'S UID
 

@@ -7,7 +7,7 @@ import { auth } from '../firebase'
 import { db } from '../firebase'
 import EditPost from './PostComponents/EditPost';
 
-function PostComponentDotSettings ({userID, setShowDotSettings, postID }){
+function PostComponentDotSettings ({userID, setShowDotSettings, postID, theme, textColorDependingOnTheme }){
 
     // INFO: deleting is not actually deleting sub-collections etc. need to do it manually if needed. security issues etc.
 
@@ -93,15 +93,18 @@ function PostComponentDotSettings ({userID, setShowDotSettings, postID }){
 
   return (
     <>
-    <Animated.View style={[styles.container,{height: scaleYanimation, width: scaleXanimation}]}>
+    <Animated.View style={[
+        styles.container,
+        theme == 'dark' ? {backgroundColor: 'rgb(40,40,40)', borderColor:'rgba(255,255,255,0.3)'} : {backgroundColor: 'rgb(240,240,240)'},
+        {height: scaleYanimation, width: scaleXanimation}]}>
         <TouchableOpacity onPress={()=> showEditPost()}>
-          <Text style={{fontSize: 15}}>Edit</Text>
+          <Text style={{fontSize: 15, color:textColorDependingOnTheme}}>Edit</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={()=> showDeleteConfirm()}>
-          <Text style={{fontSize: 15}}>Delete</Text>
+          <Text style={{fontSize: 15, color: textColorDependingOnTheme}}>Delete</Text>
         </TouchableOpacity>
         <TouchableOpacity>
-            <Text style={{fontSize: 15}}>Copy Link</Text>
+            <Text style={{fontSize: 15, color: textColorDependingOnTheme}}>Copy Link?</Text>
         </TouchableOpacity>
       <Button onPress={()=> closeModal()} title='close'/>
     </Animated.View>

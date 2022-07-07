@@ -190,7 +190,13 @@ function PostComponent({ postID, userID, name }){
                     </TouchableOpacity>
                     <Text style={{color: textColorDependingOnTheme}}>{dateFormatter(postDate)}</Text>
                 </View>
-                {showDotSettings && <PostComponentDotSettings userID={userIdToPass} postID={postID} setShowDotSettings={setShowDotSettings} />}
+                {showDotSettings && 
+                    <PostComponentDotSettings 
+                        userID={userIdToPass} 
+                        postID={postID} 
+                        setShowDotSettings={setShowDotSettings} 
+                        theme={selectedTheme}
+                        textColorDependingOnTheme={textColorDependingOnTheme}/>}
                 {showComments && 
                 <CommentsModal 
                     postID={postID} 
