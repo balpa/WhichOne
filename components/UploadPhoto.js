@@ -204,7 +204,10 @@ function UploadPhoto({ }) {
       }}
 
     return (
-        <View style={[styles.component, selectedTheme == 'dark' ? {backgroundColor:'rgb(15,15,15)'} : {}]}>
+        <View style={[
+          styles.component, 
+          selectedTheme == 'dark' ? {backgroundColor:'rgb(15,15,15)'} : {backgroundColor:'white'}
+          ]}>
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'space-evenly'}}>
             <Animated.View style={[styles.addButtonIconWrapper, shadowSettings]}>
                 <Button title={<Icon name="collections" color="white" />}onPress={pickImage} titleStyle={{color: "black", fontSize: 25}} buttonStyle={styles.createPostButtons} />

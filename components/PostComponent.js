@@ -94,11 +94,11 @@ function PostComponent({ postID, userID, name }){
 
         return (
             <View style={
-                selectedTheme == 'white' ? 
+                selectedTheme == 'light' ? 
             {    // width & height set to window w/h vars. used styles w that
                 justifyContent: "center",
                 alignItems: "center",
-                width: window.width-5,
+                width: window.width-9,
                 marginTop: 5,
                 marginBottom: 5,
                 padding: 5,
