@@ -252,7 +252,6 @@ const styles = StyleSheet.create({
         borderRadius:10
     },
     logoBottom:{
-        position: 'absolute',
         width: 50,
         height: 50,
         bottom: 0,
@@ -260,7 +259,6 @@ const styles = StyleSheet.create({
     },
     logoBottomContainer:{
         position:'absolute',
-        backgroundColor:'red',
         bottom: 10,
         width: "100%",
         justifyContent: 'center',

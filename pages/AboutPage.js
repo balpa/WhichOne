@@ -35,7 +35,9 @@ const AboutPage = ({ navigation }) => {
                 asbout
             </Text>
         </View>
-    
+        <View style={styles.logoBottomContainer}>
+                <Image source={require("../assets/w1logocrimson.png")} style={styles.logoBottom}/>
+        </View>
         </>
 
     )
@@ -44,24 +46,26 @@ const AboutPage = ({ navigation }) => {
 export default AboutPage
 
 const styles = StyleSheet.create({
-    logoutButton: {
-        width: 170,
-        borderWidth: 0,
-        backgroundColor: "transparent",
-    },
-    top: {
-        alignItems: "flex-end"
-    },
     container: {
-        flex: 1,
+        width:'100%',
+        height:'100%',
         alignItems:"center",
         justifyContent: "center",
         backgroundColor: "rgba(15,15,15,1)",
-        borderBottomLeftRadius: 25,
-        borderBottomRightRadius: 25 
     },
-   
-    profileBody: {
-    }
+    logoBottom:{
+        width: 50,
+        height: 50,
+        bottom: 0,
+        zIndex: 2
+    },
+    logoBottomContainer:{
+        width: "100%",
+        position: 'absolute',
+        bottom: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 1
+    },
 
 })

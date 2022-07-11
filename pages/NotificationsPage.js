@@ -26,6 +26,8 @@ const NotificationsPage = ({ navigation }) => {
         } catch(e) {console.log(e)}
       },[])
 
+    // TODO: styling and cache storing the choices
+
     return (
         <>
         <View 
@@ -72,7 +74,9 @@ const NotificationsPage = ({ navigation }) => {
           </View>
           
         </View>
-    
+        <View style={styles.logoBottomContainer}>
+                <Image source={require("../assets/w1logocrimson.png")} style={styles.logoBottom}/>
+        </View>
         </>
 
     )
@@ -82,23 +86,17 @@ export default NotificationsPage
 
 const styles = StyleSheet.create({
     logoutButton: {
-        width: 170,
-        borderWidth: 0,
-        backgroundColor: "transparent",
-    },
-    top: {
-        alignItems: "flex-end"
+      width: 170,
+      borderWidth: 0,
+      backgroundColor: "transparent",
     },
     container: {
-        flex: 1,
-        alignItems:"center",
-        justifyContent: "center",
-        backgroundColor: "rgba(15,15,15,1)",
-        borderBottomLeftRadius: 25,
-        borderBottomRightRadius: 25 
-    },
-   
-    profileBody: {
+      flex: 1,
+      alignItems:"center",
+      justifyContent: "center",
+      backgroundColor: "rgba(15,15,15,1)",
+      borderBottomLeftRadius: 25,
+      borderBottomRightRadius: 25 
     },
     switchLineStyle: {
       flexDirection:'row',
@@ -106,7 +104,20 @@ const styles = StyleSheet.create({
       justifyContent:'center',
       alignItems:'center',
       margin: 20
-
-    }
+    },
+    logoBottom:{
+      width: 50,
+      height: 50,
+      bottom: 0,
+      zIndex: 10
+    },
+    logoBottomContainer:{
+      position:'absolute',
+      bottom: 10,
+      width: "100%",
+      justifyContent: 'center',
+      alignItems: 'center',
+      zIndex:5
+    },
 
 })
