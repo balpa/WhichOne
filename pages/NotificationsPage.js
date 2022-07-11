@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
 import { StatusBar } from 'expo-status-bar'
-import { View, Text, StyleSheet, Alert } from 'react-native'
+import { View, Text, StyleSheet, Alert, Switch } from 'react-native'
 import { Button, Image, Input } from "react-native-elements"
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -14,6 +14,7 @@ const NotificationsPage = ({ navigation }) => {
 
     const [selectedTheme, setSelectedTheme] = useState('')
     const [textColorDependingOnTheme, setTextColorDependingOnTheme] = useState('')
+    const [isEnabled, setIsEnabled] = useState(false)
 
     useEffect(async()=>{      // get theme data from local storage (cache) ***HARDCODED***
         try {
@@ -27,13 +28,49 @@ const NotificationsPage = ({ navigation }) => {
 
     return (
         <>
-        <View style={[
+        <View 
+          style={[
             styles.container,
             selectedTheme == 'dark' ? {backgroundColor:'rgb(15,15,15)'} : {backgroundColor:'white'}
             ]}>
+          
+          <View style={styles.switchLineStyle}>
             <Text>
-                asbout
+                Show message notifications
             </Text>
+            <Switch
+              trackColor={{ false: "#767577", true: "crimson" }}
+              thumbColor={isEnabled ? "white" : "#f4f3f4"}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={()=>setIsEnabled(!isEnabled)}
+              value={isEnabled}
+            />
+          </View>
+          <View style={styles.switchLineStyle}>
+            <Text>
+                Show post notifications
+            </Text>
+            <Switch
+              trackColor={{ false: "#767577", true: "crimson" }}
+              thumbColor={isEnabled ? "white" : "#f4f3f4"}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={()=>setIsEnabled(!isEnabled)}
+              value={isEnabled}
+            />
+          </View>
+          <View style={styles.switchLineStyle}>
+            <Text>
+                Show bişiy notifications
+            </Text>
+            <Switch
+              trackColor={{ false: "#767577", true: "crimson" }}
+              thumbColor={isEnabled ? "white" : "#f4f3f4"}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={()=>setIsEnabled(!isEnabled)}
+              value={isEnabled}
+            />
+          </View>
+          
         </View>
     
         </>
@@ -62,6 +99,14 @@ const styles = StyleSheet.create({
     },
    
     profileBody: {
+    },
+    switchLineStyle: {
+      flexDirection:'row',
+      width:'100%',
+      justifyContent:'center',
+      alignItems:'center',
+      margin: 20
+
     }
 
 })
