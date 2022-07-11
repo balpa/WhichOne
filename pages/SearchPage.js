@@ -259,7 +259,7 @@ const SearchPage = ({ navigation }) => {
               width: "100%",
             }}
             selectionColor={textColorDependingOnTheme}
-            placeholder="username"
+            placeholder="Jackqt"
             errorMessage={isSearchedAndNoUser == true ? "No user" : ""}
             onChangeText={(text) => setSearchVal(text)}
           />
@@ -308,7 +308,7 @@ const styles = StyleSheet.create({
   },
   searchBar: {
     width: "100%",
-    height: 40,
+    height: 100,
     left: 0,
     position: "absolute",
     top: "1%",

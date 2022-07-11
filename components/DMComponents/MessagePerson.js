@@ -54,7 +54,7 @@ export default function MessagePerson({ userID, color }) {
          setShadowOptions({
            shadowColor: '#171717',
            shadowOffset: {width: -1, height: 3},
-           shadowOpacity: 0.4,
+           shadowOpacity: 0.2,
            shadowRadius: 5, 
          })
      }}, [])
