@@ -37,7 +37,7 @@ const NotificationsPage = ({ navigation }) => {
             ]}>
           
           <View style={styles.switchLineStyle}>
-            <Text>
+            <Text style={styles.notificationTextStyle}>
                 Show message notifications
             </Text>
             <Switch
@@ -49,7 +49,7 @@ const NotificationsPage = ({ navigation }) => {
             />
           </View>
           <View style={styles.switchLineStyle}>
-            <Text>
+            <Text style={styles.notificationTextStyle}>
                 Show post notifications
             </Text>
             <Switch
@@ -61,7 +61,7 @@ const NotificationsPage = ({ navigation }) => {
             />
           </View>
           <View style={styles.switchLineStyle}>
-            <Text>
+            <Text style={styles.notificationTextStyle}>
                 Show bişiy notifications
             </Text>
             <Switch
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       alignItems:"center",
-      justifyContent: "center",
+      //justifyContent: "center",
       backgroundColor: "rgba(15,15,15,1)",
       borderBottomLeftRadius: 25,
       borderBottomRightRadius: 25 
@@ -101,9 +101,10 @@ const styles = StyleSheet.create({
     switchLineStyle: {
       flexDirection:'row',
       width:'100%',
-      justifyContent:'center',
+      justifyContent:'space-between',
       alignItems:'center',
-      margin: 20
+      margin: 10,
+      padding: 10
     },
     logoBottom:{
       width: 50,
@@ -119,5 +120,9 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       zIndex:5
     },
+    notificationTextStyle: {
+      fontSize: 17,
+      fontWeight:'700'
+    }
 
 })
