@@ -127,7 +127,7 @@ const SettingsPage = ({ navigation }) => {
                         {transform: [{translateY: yAnim1FromTop}]}, 
                         {backgroundColor:`#${COLOR_PALETTE_1[3]}`}
                         ]}>
-                        <TouchableOpacity style={{
+                        <TouchableOpacity onPress={()=> navigation.navigate('Notifications')} style={{
                             width:'100%', height:50, justifyContent:'center', alignItems:'center',flexDirection:'row'}}>
                             <Icon name='notifications' color="black" />
                             <Text 

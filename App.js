@@ -32,6 +32,7 @@ import Create from "./pages/Create";
 import UploadAvatar from "./pages/UploadAvatar";
 import DMChatPage from "./pages/DMChatPage";
 import ThemePage from "./pages/ThemePage";
+import NotificationsPage from "./pages/NotificationsPage";
 import { Icon } from "react-native-elements";
 import FollowersFollowingPage from "./pages/FollowersFollowingPage";
 import { TransitionSpecs } from "@react-navigation/stack";
@@ -209,6 +210,17 @@ export default function App() {
             transitionSpec: { open: config, close: config },
           }}
           component={SettingsPage}
+        />
+        <Stack.Screen
+          name="Notifications"
+          options={{
+            headerTitleStyle: headerTitleStyleDOT,
+            headerStyle: headerStyleDOT,
+            headerTintColor: headerTintColorDOT,
+            cardStyle: cardColor,
+            transitionSpec: { open: config, close: config },
+          }}
+          component={NotificationsPage}
         />
         <Stack.Screen
           name="About"
