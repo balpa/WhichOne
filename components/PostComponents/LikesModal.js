@@ -48,7 +48,7 @@ function LikesModal({ setShowLikes, likes, height4postcontainer, theme, textColo
   return (
     <Animated.View style={[
       styles.container, 
-      theme == 'dark' ? {backgroundColor:'rgb(15,15,15)'} : {backgroundColor:'rgb(240,240,240)'},
+      theme == 'dark' ? {backgroundColor:'rgb(15,15,15)'} : {backgroundColor:'white', borderColor:'#0007'},
       {height: yAnim}]}>
       <ScrollView>
         {likes && likes.map((userID, index) => {
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
       borderTopRightRadius: 25,
       padding: 10,
       borderWidth:2,
-      borderBottomWidth: 1,
+      borderBottomWidth: 2,
       borderColor:'rgba(255,255,255,0.3)'
     },
     closeButton: {
