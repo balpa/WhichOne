@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, Animated } from 'react-native'
 import React, {useRef, useEffect,useState} from 'react'
 import { Input, Icon } from 'react-native-elements'
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
+import { ScrollView, TouchableOpacity, PanGestureHandler, GestureHandlerRootView } from 'react-native-gesture-handler'
 import SmallComment from './SmallComment'
 import { auth } from '../../firebase'
 import { db } from '../../firebase' 
@@ -59,7 +59,8 @@ const CommentsModal = ({ postID, setShowComments, height4postcontainer, theme, t
         setCommentText("")          // TODO: doesnt clear the input field
     }
 
-    //TODO: 
+
+    //TODO: swipe close modal 
 
   return (
     <Animated.View style={[

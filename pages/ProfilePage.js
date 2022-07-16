@@ -163,7 +163,8 @@ const ProfilePage = ({ navigation }) => {
   }
 
   //TODO: change some getDoc's to onSnapshot for efficiency and realtime updates
-  // CHANGE SCROLLVIEW TO FLATLIST
+  //CHANGE SCROLLVIEW TO FLATLIST
+  //Logout alert is not good. change yes no to confirm cancel etc 
 
   return (
     <>

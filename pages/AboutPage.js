@@ -32,7 +32,7 @@ const AboutPage = ({ navigation }) => {
             selectedTheme == 'dark' ? {backgroundColor:'rgb(15,15,15)'} : {backgroundColor:'white'}
             ]}>
             <Text>
-                asbout
+                WhichOne
             </Text>
         </View>
         <View style={styles.logoBottomContainer}>
