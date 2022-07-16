@@ -194,8 +194,8 @@ const ProfilePage = ({ navigation }) => {
             <View>
               <Text
                 style={{
-                  fontWeight: "900",
-                  letterSpacing: 1,
+                  fontWeight: "800",
+                  letterSpacing: 0.5,
                   color: textColorDependingOnTheme,
                 }}
               >
