@@ -5,7 +5,6 @@ import { Button, Input } from 'react-native-elements/'
 import {useState, useLayoutEffect, useEffect, useRef} from "react"
 import { auth } from "../firebase";
 import { db } from '../firebase'
-import { set } from 'react-native-reanimated'
 import { setDoc, doc } from 'firebase/firestore'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -29,18 +28,13 @@ const RegisterScreen = ({ navigation }) => {
     const scaleAnim = useRef(new Animated.Value(0)).current
 
     useEffect(async()=>{      // get theme data from local storage (cache) ***HARDCODED***
-        try {
-          const value = await AsyncStorage.getItem('GLOBAL_THEME')
-          if(value !== null) {
-            setSelectedTheme(value)
+        try {const value = await AsyncStorage.getItem('GLOBAL_THEME')
+          if(value !== null) {setSelectedTheme(value)
             if (value == 'light') setTextColorDependingOnTheme('black')
             else setTextColorDependingOnTheme('white')
           }
         } 
-        catch(e) {
-            console.log(e)
-        }
-
+        catch(e) {console.log(e)}
     },[])
 
     useEffect(() => {          // platform based shadow options
@@ -62,7 +56,7 @@ const RegisterScreen = ({ navigation }) => {
     
       }, [])
 
-    useEffect(() => {
+    useEffect(() => {       //scale animation
         Animated.spring(scaleAnim, {
             toValue: 1,
             duration: 2000,
@@ -70,7 +64,7 @@ const RegisterScreen = ({ navigation }) => {
           }).start()
     }, [])
 
-    useLayoutEffect(() => {
+    useLayoutEffect(() => {     //navigation options
         navigation.setOptions({
             headerBackTitle:"Login",
         })
@@ -82,20 +76,17 @@ const RegisterScreen = ({ navigation }) => {
     }, [lockIcon])
 
     const register = () => {        // TODO: PASSWORD MIN CHAR SIZE
-
         if (name.length > 0) {
-
-        auth.createUserWithEmailAndPassword(email, password)
-        .then((authUser) => {
+          auth.createUserWithEmailAndPassword(email, password)
+          .then((authUser) => {
             authUser.user.updateProfile({
                 displayName: name,
             })
         })
-
         .then(async () => {
-            let loggedinUser = await auth.currentUser
-            db.collection('usernames').doc(`${username}`)
-            .set({
+          let loggedinUser = await auth.currentUser
+          db.collection('usernames').doc(`${username}`)
+          .set({
             name: `${name}`,
             username: `${username}`,
             email: `${email}`,
@@ -105,11 +96,11 @@ const RegisterScreen = ({ navigation }) => {
             postCount: 0,
             bio: ""
             })
-        } )
+        })
         .then(async () => {
-            let loggedinUser = await auth.currentUser
-            db.collection('useruid').doc(`${loggedinUser.uid}`)
-            .set({
+          let loggedinUser = await auth.currentUser
+          db.collection('useruid').doc(`${loggedinUser.uid}`)
+          .set({
             name: `${name}`,
             username: `${username}`,
             email: `${email}`,
@@ -121,19 +112,14 @@ const RegisterScreen = ({ navigation }) => {
             })
         } )
         .then(async ()=>{           // set postID to posts/useruid/postID for fetching posts
-            let loggedinUser = await auth.currentUser
-            db.collection('posts').doc(`${loggedinUser.uid}`)
-            .set({
+          let loggedinUser = await auth.currentUser
+          db.collection('posts').doc(`${loggedinUser.uid}`)
+          .set({
                 postID: [],
             })
         })
-
-        
-        .then(Alert.alert(
-            "Successfully registered!",
-        ))
-        .catch((error) => alert(error.message));
-
+        .then(Alert.alert("Successfully registered!"))
+        .catch((error) => alert(error.message))
         }
     }
 
@@ -146,14 +132,9 @@ const RegisterScreen = ({ navigation }) => {
 
     useEffect(() => {
         if (confirmpassword.length > 0){
-            if (confirmpassword === password){
-                setIsRight(true)
-            } else {
-                setIsRight(false)
-            }
-    } else {
-        null
-    }
+            if (confirmpassword === password)setIsRight(true)
+            else setIsRight(false)
+        } else null
     },[confirmpassword]) 
 
     useEffect(()=>{

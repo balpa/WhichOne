@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -12,7 +12,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { Button, Input, Icon } from "react-native-elements/";
-import { useState, useLayoutEffect } from "react";
+import { useState } from "react";
 import { auth } from "../firebase";
 import { db } from "../firebase";
 import { Alert } from "react-native";
@@ -20,47 +20,43 @@ import firebase from "firebase/compat/app";
 import { doc, onSnapshot } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import UserSearchProfile from "../components/UserSearchProfile";
-import { useSafeAreaFrame } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const SearchPage = ({ navigation }) => {
-  const [searchUsername, setSearchUsername] = useState("");
-  const [isFollowing, setIsFollowing] = useState(false);
-  const [exists, setExists] = useState(false);
-  const [searchedUsersUID, setSearchedUsersUID] = useState("");
-  const [followSituation, setFollowSituation] = useState(false);
-  const [followerCount, setFollowerCount] = useState(0);
-  const [followingCount, setFollowingCount] = useState(0);
-  const [isSearchedMyself, setIsSearchedMyself] = useState(false);
-  const [image, setImage] = useState(null);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [isSearchedAndNoUser, setIsSearchedAndNoUser] = useState(false);
-  const [selectedTheme, setSelectedTheme] = useState("");
-  const [textColorDependingOnTheme, setTextColorDependingOnTheme] = useState("");
-  const [showActivityIndicator, setShowActivityIndicator] = useState(false);
+  const [searchUsername, setSearchUsername] = useState("")
+  const [isFollowing, setIsFollowing] = useState(false)
+  const [exists, setExists] = useState(false)
+  const [searchedUsersUID, setSearchedUsersUID] = useState("")
+  const [followSituation, setFollowSituation] = useState(false)
+  const [followerCount, setFollowerCount] = useState(0)
+  const [followingCount, setFollowingCount] = useState(0)
+  const [isSearchedMyself, setIsSearchedMyself] = useState(false)
+  const [image, setImage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState("")
+  const [isSearchedAndNoUser, setIsSearchedAndNoUser] = useState(false)
+  const [selectedTheme, setSelectedTheme] = useState("")
+  const [textColorDependingOnTheme, setTextColorDependingOnTheme] = useState("")
+  const [showActivityIndicator, setShowActivityIndicator] = useState(false)
   const [searchButtonPressed, setSearchButtonPressed] = useState(false)
+  const [searchVal, setSearchVal] = useState("")
+  
+  const windowDim = useWindowDimensions()
 
-  const windowDim = useWindowDimensions();
+  const searchBarWidthAnim = React.useRef(new Animated.Value(0)).current
 
-  const searchBarWidthAnim = React.useRef(new Animated.Value(0)).current;
+  const loggedinUser = auth.currentUser
 
-  const loggedinUser = auth.currentUser;
-
-  const storage = getStorage();
+  const storage = getStorage()
 
   React.useEffect(async () => {
     // get theme data from local storage (cache) ***HARDCODED***
-    try {
-      const value = await AsyncStorage.getItem("GLOBAL_THEME");
-      if (value !== null) {
-        setSelectedTheme(value);
-        if (value == "light") setTextColorDependingOnTheme("black");
-        else setTextColorDependingOnTheme("white");
+    try {const value = await AsyncStorage.getItem("GLOBAL_THEME")
+      if (value !== null) {setSelectedTheme(value)
+        if (value == "light") setTextColorDependingOnTheme("black")
+        else setTextColorDependingOnTheme("white")
       }
-    } catch (e) {
-      console.log(e);
-    }
-  }, []);
+    } catch (e) {console.log(e)}
+  }, [])
 
   useEffect(() => {
     Animated.timing(searchBarWidthAnim, {
@@ -68,8 +64,8 @@ const SearchPage = ({ navigation }) => {
 
       duration: 700,
       useNativeDriver: false,
-    }).start();
-  }, []);
+    }).start()
+  }, [])
 
   // get searched user's avatar
   useEffect(() => {
@@ -111,9 +107,8 @@ const SearchPage = ({ navigation }) => {
         .collection("useruid")
         .doc(`${loggedinUser.uid}`)
         .update({
-          following:
-            firebase.firestore.FieldValue.arrayRemove(searchedUsersUID),
-        });
+          following: firebase.firestore.FieldValue.arrayRemove(searchedUsersUID),
+        })
       const removeFromFollowersForSearchedUser = db
         .collection("useruid")
         .doc(`${searchedUsersUID}`)
@@ -121,7 +116,7 @@ const SearchPage = ({ navigation }) => {
           followers: firebase.firestore.FieldValue.arrayRemove(
             loggedinUser.uid
           ),
-        });
+        })
     }
   }
 
@@ -131,25 +126,21 @@ const SearchPage = ({ navigation }) => {
       // get total follower count
       const getTotalFollowerCount = onSnapshot(
         doc(db, "useruid", `${searchedUsersUID}`),
-        (doc) => {
-          setFollowerCount(doc.data().followers.length);
-        }
-      );
+        (doc) => {setFollowerCount(doc.data().followers.length)}
+      )
       // get total following count
       const getTotalFollowingCount = onSnapshot(
         doc(db, "useruid", `${searchedUsersUID}`),
-        (doc) => {
-          setFollowingCount(doc.data().following.length);
-        }
-      );
+        (doc) => {setFollowingCount(doc.data().following.length)}
+      )
     }
-  }, [searchedUsersUID]);
+  }, [searchedUsersUID])
 
   // search for if the user searched for themselves
   useEffect(() => {
-    if (loggedinUser.uid === searchedUsersUID) setIsSearchedMyself(true);
-    else setIsSearchedMyself(false);
-  }, [searchedUsersUID]);
+    if (loggedinUser.uid === searchedUsersUID) setIsSearchedMyself(true)
+    else setIsSearchedMyself(false)
+  }, [searchedUsersUID])
 
   // check if the user is following the searched user
   useEffect(() => {
@@ -157,13 +148,12 @@ const SearchPage = ({ navigation }) => {
       const isFollowingSearchedUser = onSnapshot(
         doc(db, "useruid", `${searchedUsersUID}`),
         (doc) => {
-          if (searchedUsersUID === loggedinUser.uid) setFollowSituation(true);
-          else
-            setFollowSituation(doc.data().followers.includes(loggedinUser.uid));
+          if (searchedUsersUID === loggedinUser.uid) setFollowSituation(true)
+          else setFollowSituation(doc.data().followers.includes(loggedinUser.uid))
         }
-      );
+      )
     }
-  }, [searchedUsersUID]);
+  }, [searchedUsersUID])
 
   // searched user's component
   // const UserSearchProfile = React.memo(() => {
@@ -198,7 +188,6 @@ const SearchPage = ({ navigation }) => {
   //     )})
 
   // searching for a user
-  const [searchVal, setSearchVal] = useState("");
 
   const search = () => {
     if (searchVal.length > 3 && searchVal.length < 15) {
@@ -207,22 +196,16 @@ const SearchPage = ({ navigation }) => {
         .get()
         .then((documentSnapshot) => {
           if (documentSnapshot.exists) {
-            setIsSearchedAndNoUser(false);
-            setExists(true);
-            let userData = documentSnapshot.data();
-            setSearchUsername(userData.name); // searched user's name
-            setSearchedUsersUID(userData.UID); // searched user's UID
+            setIsSearchedAndNoUser(false)
+            setExists(true)
+            let userData = documentSnapshot.data()
+            setSearchUsername(userData.name) // searched user's name
+            setSearchedUsersUID(userData.UID) // searched user's UID
 
-            console.log(userData);
-          } else {
-            console.log("No user");
-            setIsSearchedAndNoUser(true); // searched and no user found
-          }
-        });
-    } else {
-      Alert.alert("Username must be between 3 and 15 characters.");
-    }
-  };
+          } else {console.log("No user"); setIsSearchedAndNoUser(true)} // searched and no user found
+        })
+    } else {Alert.alert("Username must be between 3 and 15 characters.")}
+  }
 
   // TODO: activity icon fix
 

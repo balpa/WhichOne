@@ -36,10 +36,8 @@ const DMChatPage = ({ route, navigation }) => {
   let inputAnim = React.useRef(new Animated.Value(0)).current  
 
   useEffect(async()=>{      // get theme data from local storage (cache) ***HARDCODED***
-    try {
-      const value = await AsyncStorage.getItem('GLOBAL_THEME')
-      if(value !== null) {
-        setSelectedTheme(value)
+    try {const value = await AsyncStorage.getItem('GLOBAL_THEME')
+      if(value !== null) {setSelectedTheme(value)
         if (value == 'light') setTextColorDependingOnTheme('black')
         else setTextColorDependingOnTheme('white')}
     } catch(e) {console.log(e)}
@@ -63,27 +61,22 @@ const DMChatPage = ({ route, navigation }) => {
       else {
         setWhichUser('otheruser')
         onSnapshot(doc(db, "messages",`bw${userID}and${loggedinUser.uid}` ), (docu) => {
-          if (docu.data() != undefined) {
-            setMessageData(sorter(docu.data()))
-          }
+          if (docu.data() != undefined) {setMessageData(sorter(docu.data()))}
         })
       }
   })
  }, [])
 
   useEffect(async()=>{      // get color data from local storage (cache) ***HARDCODED***
-      try {
-        const value = await AsyncStorage.getItem('chatBalloonColor')
+      try {const value = await AsyncStorage.getItem('chatBalloonColor')
         if(value !== null) setChatBalloonColor(value)
       } catch(e) {console.log(e)}
 
-      try {
-        const value = await AsyncStorage.getItem('chatBalloonTextColor')
+      try {const value = await AsyncStorage.getItem('chatBalloonTextColor')
         if(value !== null) setTextColor(value)
       } catch(e) {console.log(e)}
 
-      try {
-        const value = await AsyncStorage.getItem('isNameAboveBubbleEnabled')
+      try {const value = await AsyncStorage.getItem('isNameAboveBubbleEnabled')
         if(value !== null && value == 'true') setIsNameAboveBubbleEnabled(true)
         else if(value !== null && value == 'false') setIsNameAboveBubbleEnabled(false)
       } catch(e) {console.log(e)}

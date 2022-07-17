@@ -20,20 +20,13 @@ const LoginScreen = ({ navigation }) => {
     const scaleAnim = useRef(new Animated.Value(0)).current
 
     useEffect(async()=>{      // get theme data from local storage (cache) ***HARDCODED***
-        try {
-          const value = await AsyncStorage.getItem('GLOBAL_THEME')
-          if(value !== null) {
-            setSelectedTheme(value)
+        try {const value = await AsyncStorage.getItem('GLOBAL_THEME')
+          if(value !== null) {setSelectedTheme(value)
             if (value == 'light') setTextColorDependingOnTheme('black')
             else setTextColorDependingOnTheme('white')
           }
         } 
-        catch(e) {
-            console.log(e)
-        }
-        
-
-
+        catch(e) {console.log(e)}
     },[])
 
     useEffect(() => {          // platform based shadow options
@@ -70,27 +63,17 @@ const LoginScreen = ({ navigation }) => {
 
     useEffect(() => {           // go to homepage if sign in successful of already logged in
         const unsubscribe = auth.onAuthStateChanged((authUser) => {
-            if (authUser) {
-                navigation.replace("HomePage");
-            }
-        });
+            if (authUser) {navigation.replace("HomePage")}
+        })
         return unsubscribe;
     }, [])
 
     const signIn = () => {         // sign in function
-
         if (email.length > 0 && password.length > 0) {
-
-        auth.signInWithEmailAndPassword(email,password)
-        .then(() => {
-            navigation.replace("HomePage");
-        })
-        .catch((error) => alert(error.message))
-
-    } else {
-        alert("Please enter email and password")
-    }
-
+          auth.signInWithEmailAndPassword(email,password)
+          .then(() => {navigation.replace("HomePage")})
+          .catch((error) => alert(error.message))
+    } else {alert("Please enter email and password")}
     }
 
     return (

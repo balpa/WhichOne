@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Button, Icon } from 'react-native-elements'
 import React from 'react'
 
-const DMSettings = ({ 
+function DMSettings({ 
   setShowDMSettings, 
   setChatBalloonColor, 
   chatBalloonColor, 
@@ -12,10 +12,7 @@ const DMSettings = ({
   isNameAboveBubbleEnabled, 
   setIsNameAboveBubbleEnabled,
   theme,
-  textColorDependingOnTheme }) => {
-
-  // TODO: store chat setting local or on db to prevent color change to default on refresh
-  // AsyncStorage did not work, do a research
+  textColorDependingOnTheme }){
 
   // spaghetti code inc
 

@@ -1,5 +1,5 @@
 import React, { createRef } from "react";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   View,
@@ -17,9 +17,6 @@ import {
   TouchableHighlight,
   Icon,
 } from "react-native-elements";
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import { StackActions } from "@react-navigation/native";
 import firebase from "firebase/app";
 import { auth } from "../firebase";
 import { db } from "../firebase";
@@ -60,32 +57,27 @@ const ProfilePage = ({ navigation }) => {
   const [currentBio, setCurrentBio] = useState("");
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedTheme, setSelectedTheme] = useState("");
-  const [textColorDependingOnTheme, setTextColorDependingOnTheme] =
-    useState("");
+  const [textColorDependingOnTheme, setTextColorDependingOnTheme] = useState("");
 
   const user = auth.currentUser;
   const storage = getStorage();
 
   useEffect(async () => {
     // get theme data from local storage (cache) ***HARDCODED***
-    try {
-      const value = await AsyncStorage.getItem("GLOBAL_THEME");
-      if (value !== null) {
-        setSelectedTheme(value);
-        if (value == "light") setTextColorDependingOnTheme("black");
-        else setTextColorDependingOnTheme("white");
+    try {const value = await AsyncStorage.getItem("GLOBAL_THEME")
+      if (value !== null) {setSelectedTheme(value)
+        if (value == "light") setTextColorDependingOnTheme("black")
+        else setTextColorDependingOnTheme("white")
       }
-    } catch (e) {
-      console.log(e);
-    }
-  }, []);
+    } catch (e) {console.log(e)}
+  }, [])
 
   useEffect(() => {
     // get bio from firebase
     const bio = onSnapshot(doc(db, "useruid", `${user.uid}`), (doc) =>
       setCurrentBio(doc.data().bio)
-    );
-  }, []);
+    )
+  }, [])
 
   getDownloadURL(ref(storage, `Users/${user.uid}/avatars/avatar_image`)) // get avatar
     .then((url) => setImage(url))
@@ -95,12 +87,12 @@ const ProfilePage = ({ navigation }) => {
   const getTotalFollowerCount = onSnapshot(
     doc(db, "useruid", `${user.uid}`),
     (doc) => setFollowerCount(doc.data().followers.length)
-  );
+  )
   // get total following count
   const getTotalFollowingCount = onSnapshot(
     doc(db, "useruid", `${user.uid}`),
     (doc) => setFollowingCount(doc.data().following.length)
-  );
+  )
 
   const showLogoutConfirm = () => {
     return Alert.alert(
@@ -118,12 +110,10 @@ const ProfilePage = ({ navigation }) => {
           text: "No",
         },
       ]
-    );
-  };
+    )
+  }
 
-  const logout = async () => {
-    await auth.signOut();
-  };
+  const logout = async () => {await auth.signOut()}
 
   useEffect(() => {
     // if logout, go back to login page
@@ -132,33 +122,33 @@ const ProfilePage = ({ navigation }) => {
         navigation.reset({
           index: 0,
           routes: [{ name: "Login" }],
-        });
+        })
       }
-    });
-  }, []);
+    })
+  }, [])
 
   // get post ids from firebase and store in array
   useEffect(async () => {
-    const toPostIDs = await getDoc(doc(db, "posts", `${user.uid}`));
-    if (toPostIDs != undefined) setPostIDs(toPostIDs.data().postID);
-  }, []);
+    const toPostIDs = await getDoc(doc(db, "posts", `${user.uid}`))
+    if (toPostIDs != undefined) setPostIDs(toPostIDs.data().postID)
+  }, [])
 
   function expand() {
     if (isExpanded == false) {
-      setIsExpanded(true);
+      setIsExpanded(true)
       Animated.timing(expandAnim, {
         toValue: 190,
         duration: 500,
         useNativeDriver: false,
-      }).start();
-    } else {
-      setIsExpanded(false);
-      setIsShown(false);
+      }).start()
+    } else { 
+      setIsExpanded(false)
+      setIsShown(false)
       Animated.timing(expandAnim, {
         toValue: 120,
         duration: 500,
         useNativeDriver: false,
-      }).start();
+      }).start()
     }
   }
 

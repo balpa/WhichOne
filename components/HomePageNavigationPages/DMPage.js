@@ -6,7 +6,7 @@ import { auth, db } from '../../firebase'
 import { ScrollView } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const DMPage = () => {
+function DMPage(){
 
   const COLOR_PALETTE_1 = ["FEF9A7","FAC213", "F77E21", "D61C4E", "990000", "FF5B00", "D4D925", "FFEE63"]
 
@@ -17,8 +17,7 @@ const DMPage = () => {
   const [selectedTheme, setSelectedTheme] = React.useState('')
 
   React.useEffect(async()=>{      // get theme data from local storage (cache) ***HARDCODED***
-    try {
-      const value = await AsyncStorage.getItem('GLOBAL_THEME')
+    try {const value = await AsyncStorage.getItem('GLOBAL_THEME')
       if(value !== null) setSelectedTheme(value)
     } catch(e) {console.log(e)}
   },[])

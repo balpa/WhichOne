@@ -1,10 +1,8 @@
 import { View, Text, StyleSheet, useWindowDimensions } from 'react-native'
 import React, {useEffect, useState} from 'react'
-import { ScrollView } from 'react-native-gesture-handler'
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from '../firebase'
 import { auth } from '../firebase'
-import SmallProfile from '../components/SmallProfile';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import FollowingSection from '../components/FollowersFollowing/FollowingSection';
 import FollowerSection from '../components/FollowersFollowing/FollowerSection'
@@ -29,10 +27,8 @@ export default function FollowersFollowingPage() {
     let height4postcontainer = ((window.width*3)/4)+50   // height of the post container calculated by the width of the screen plus the gap needed for likes comments etc. section
 
     useEffect(async()=>{      // get theme data from local storage (cache) ***HARDCODED***
-      try {
-        const value = await AsyncStorage.getItem('GLOBAL_THEME')
-        if(value !== null) {
-          setSelectedTheme(value)
+      try {const value = await AsyncStorage.getItem('GLOBAL_THEME')
+        if(value !== null) {setSelectedTheme(value)
           if (value == 'light') setTextColorDependingOnTheme('black')
           else setTextColorDependingOnTheme('white')}
       } catch(e) {console.log(e)}
@@ -72,8 +68,23 @@ export default function FollowersFollowingPage() {
   return (
 
     <Tab.Navigator screenOptions={globalOptions} >
-      <Tab.Screen style={{backgroundColor:'red'}}  name='followers' children={()=> <FollowerSection textColor={textColorDependingOnTheme} theme={selectedTheme} followers={followers}/>} />
-      <Tab.Screen name='following' children={()=> <FollowingSection textColor={textColorDependingOnTheme} theme={selectedTheme} following={following}/>} />
+      <Tab.Screen 
+        name='followers' 
+        style={{backgroundColor:'red'}}  
+        children={()=> 
+          <FollowerSection 
+            textColor={textColorDependingOnTheme} 
+            theme={selectedTheme} 
+            followers={followers}/>} 
+      />
+      <Tab.Screen 
+        name='following' 
+        children={()=> 
+          <FollowingSection 
+            textColor={textColorDependingOnTheme} 
+            theme={selectedTheme} 
+            following={following}/>}
+      />
     </Tab.Navigator>
   )
 }
