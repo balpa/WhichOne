@@ -22,20 +22,68 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 function UploadAvatar() {
   const currentUser = auth.currentUser;
   const storage = getStorage();
-  const avatarRef = ref(
-    storage,
-    `Users/${currentUser.uid}/avatars/avatar_image`
-  ); // storage'da avatarın yerini belirleme
+  const avatarRef = ref(storage, `Users/${currentUser.uid}/avatars/avatar_image`) // storage'da avatarın yerini belirleme
 
-  const [image, setImage] = useState(null);
-  const [selectedTheme, setSelectedTheme] = useState("");
-  const [textColorDependingOnTheme, setTextColorDependingOnTheme] =
-    useState("");
-  const [currentAvatar, setCurrentAvatar] = useState(null);
+  const [image, setImage] = useState(null)
+  const [selectedTheme, setSelectedTheme] = useState("")
+  const [textColorDependingOnTheme, setTextColorDependingOnTheme] = useState("")
+  const [currentAvatar, setCurrentAvatar] = useState(null)
+
+
+  const uploadButtonAnim = React.useRef(new Animated.Value(300)).current
+  const addButtonAnim = React.useRef(new Animated.Value(-400)).current
+  const currentAvatarAnim = React.useRef(new Animated.Value(-400)).current
+  const currentAvatarTextAnim = React.useRef(new Animated.Value(-400)).current
+  const imageAnim = React.useRef(new Animated.Value(0)).current
+
+  useEffect(()=>{
+    setTimeout(()=>{    //animations for buttons (gonna be earlier)
+      Animated.spring(uploadButtonAnim,{
+        toValue: 0,
+        friction: 8,
+        tension: 40,
+        useNativeDriver: true,
+      }).start()
+
+      Animated.spring(addButtonAnim,{
+        toValue: 0,
+        friction: 8,
+        tension: 40,
+        useNativeDriver: true, 
+      }).start()
+    },300)
+
+    setTimeout(()=>{    // animations for current avatar section
+      Animated.spring(currentAvatarAnim,{
+        toValue: 0,
+        friction: 8,
+        tension: 40,
+        useNativeDriver: true, 
+      }).start()
+
+      Animated.spring(currentAvatarTextAnim,{
+        toValue: 0,
+        friction: 8,
+        tension: 40,
+        useNativeDriver: true, 
+      }).start()
+    },400)
+
+  },[])
+
+  useEffect(()=>{
+    if(image){
+     Animated.timing(imageAnim,{
+      toValue: 1,
+      duration: 700,
+      useNativeDriver: false
+     }).start()
+    }
+  },[image])
 
   getDownloadURL(ref(storage, `Users/${currentUser.uid}/avatars/avatar_image`)) // get avatar
     .then((url) => setCurrentAvatar(url))
-    .catch((error) => console.log(error));
+    .catch((error) => console.log(error))
 
   useEffect(async () => {
     // get theme data from local storage (cache) ***HARDCODED***
@@ -95,46 +143,31 @@ function UploadAvatar() {
       style={[
         styles.component,
         selectedTheme == "dark" ? { backgroundColor: "rgb(15,15,15)" } : {},
-      ]}
-    >
+      ]}>
       <View
         style={{
           width: "100%",
           height: 110,
           justifyContent: "center",
           alignItems: "center",
-        }}
-      >
-        <Text
-          style={
+        }}>
+        <Animated.Text
+          style={[
             selectedTheme == "dark"
-              ? {
-                  color: "white",
-                  fontSize: 17,
-                  fontWeight: "900",
-                }
-              : {
-                  color: "black",
-                  fontSize: 17,
-                  fontWeight: "900",
-                }
+            ? {color: "white",fontSize: 17,fontWeight: "900"}
+            : {color: "black",fontSize: 17,fontWeight: "900"},
+              {transform: [{translateY: currentAvatarTextAnim}]}
+          ]
           }
         >
           Current Avatar
-        </Text>
-        {currentAvatar == null ? (
-          <ActivityIndicator size="large" color="crimson" />
-        ) : (
-          <Image
+        </Animated.Text>
+        {currentAvatar == null ? <ActivityIndicator size="large" color="crimson" /> : 
+          <Animated.Image
             source={{ uri: currentAvatar }}
-            style={{
-              width: 60,
-              height: 60,
-              borderRadius: 60 / 2,
-              marginBottom: 15,
-            }}
+            style={[{width: 60,height: 60,borderRadius: 60 / 2,marginBottom: 15},{transform:[{translateY: currentAvatarAnim}]}]}
           />
-        )}
+        }
       </View>
       <View
         style={{
@@ -143,7 +176,7 @@ function UploadAvatar() {
           justifyContent: "space-evenly",
         }}
       >
-        <Animated.View style={styles.addButtonIconWrapper}>
+        <Animated.View style={[styles.addButtonIconWrapper, {transform: [{translateY: addButtonAnim}]}]}>
           <Button
             title={<Icon name="collections" color="white" />}
             onPress={pickImage}
@@ -152,9 +185,9 @@ function UploadAvatar() {
           />
         </Animated.View>
         {image && (
-          <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+          <Animated.Image source={{ uri: image }} style={[{ width: 200, height: 200 }, {transform:[{scale: imageAnim}]}]} />
         )}
-        <Animated.View style={styles.uploadIconWrapper}>
+        <Animated.View style={[styles.uploadIconWrapper, {transform: [{translateY: uploadButtonAnim}]}]}>
           <Icon name="send" color="white" />
           <Button
             title="Upload"
