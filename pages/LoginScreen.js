@@ -29,24 +29,6 @@ const LoginScreen = ({ navigation }) => {
         catch(e) {console.log(e)}
     },[])
 
-    useEffect(() => {          // platform based shadow options
-        if (Platform.OS === "android") {
-          setPlatform("android")
-          setShadowOptions({
-            elevation: 20
-          })
-      }
-        else if (Platform.OS === "ios") {
-          setPlatform("ios")
-          setShadowOptions({
-            shadowColor: '#171717',
-            shadowOffset: {width: -1, height: 3},
-            shadowOpacity: 0.4,
-            shadowRadius: 5, 
-          })
-        }
-    
-      }, [])
 
     useEffect(() => {
         if (lockIcon === "eye"){ setIsPasswordShown(true) }

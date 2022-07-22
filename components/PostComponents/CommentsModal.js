@@ -65,7 +65,7 @@ const CommentsModal = ({ postID, setShowComments, height4postcontainer, theme, t
   return (
     <Animated.View style={[
         styles.container, 
-        theme == 'dark' ? {backgroundColor:'rgb(40,40,40)'} : {backgroundColor:'rgb(240,240,240)', borderColor:'#0007'},
+        theme == 'dark' ? {backgroundColor:'rgb(40,40,40)'} : {backgroundColor:'white', borderColor:'#0007'},
         {height: yAnim}]}>
       <ScrollView style={styles.commentsSection}>
         {commentsOnDB && Object.keys(commentsOnDB).map((key, index) => {
