@@ -18,8 +18,7 @@ const AboutPage = ({ navigation }) => {
     useEffect(async()=>{      // get theme data from local storage (cache) ***HARDCODED***
         try {
           const value = await AsyncStorage.getItem('GLOBAL_THEME')
-          if(value !== null) {
-            setSelectedTheme(value)
+          if(value !== null) {setSelectedTheme(value)
             if (value == 'light') setTextColorDependingOnTheme('black')
             else setTextColorDependingOnTheme('white')}
         } catch(e) {console.log(e)}
@@ -31,9 +30,7 @@ const AboutPage = ({ navigation }) => {
             styles.container,
             selectedTheme == 'dark' ? {backgroundColor:'rgb(15,15,15)'} : {backgroundColor:'white'}
             ]}>
-            <Text>
-                WhichOne
-            </Text>
+            <Text>WhichOne</Text>
         </View>
         <View style={styles.logoBottomContainer}>
                 <Image source={require("../assets/w1logocrimson.png")} style={styles.logoBottom}/>

@@ -17,7 +17,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const AccountSettings = ({ navigation }) => {
 
     // TODO: styling bad & add shadow platform based
-    // need problems with styling. need refactoring probably
+    // need problems with styling. 
 
     const COLOR_PALETTE_1 = ["FEF9A7","FAC213", "F77E21", "D61C4E", "990000", "FF5B00", "D4D925", "FFEE63"]
 
@@ -42,8 +42,7 @@ const AccountSettings = ({ navigation }) => {
     useEffect(async()=>{      // get theme data from local storage (cache) ***HARDCODED***
         try {
           const value = await AsyncStorage.getItem('GLOBAL_THEME')
-          if(value !== null) {
-            setSelectedTheme(value)
+          if(value !== null) {setSelectedTheme(value)
             if (value == 'light') setTextColorDependingOnTheme('black')
             else setTextColorDependingOnTheme('white')}
         } catch(e) {console.log(e)}
@@ -116,10 +115,6 @@ const AccountSettings = ({ navigation }) => {
           shadowRadius: 5, 
         })
     }}, [])
-
-
-    // TODO: w1 logo does not show 
-   
 
     return (
         <>

@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, Animated, useWindowDimensions, TouchableOpacity, Switch } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Button, Icon } from 'react-native-elements'
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 
 function DMSettings({ 
   setShowDMSettings, 
@@ -21,13 +21,13 @@ function DMSettings({
   const heightAnim = React.useRef(new Animated.Value(0)).current
   const opacityAnim = React.useRef(new Animated.Value(0)).current
 
-  const [selectedColor, setSelectedColor] = React.useState(chatBalloonColor)
-  const [selectedTextColor, setSelectedTextColor] = React.useState(textColor)
-  const [isEnabled, setIsEnabled] = React.useState(true)
+  const [selectedColor, setSelectedColor] = useState(chatBalloonColor)
+  const [selectedTextColor, setSelectedTextColor] = useState(textColor)
+  const [isEnabled, setIsEnabled] = useState(true)
 
   let windowHeight = useWindowDimensions().height
 
-  React.useEffect(() => {     // animations
+  useEffect(() => {     // animations
     Animated.timing(heightAnim, {
       toValue: 600,
       duration: 400,
@@ -39,7 +39,6 @@ function DMSettings({
         useNativeDriver: false,
       }).start()
   }, [])}, [])
-
 
   async function applyAndClose(){
 
@@ -82,9 +81,6 @@ function DMSettings({
         useNativeDriver: false,
       }).start(()=>{setShowDMSettings(false)})})
   }
-
-
-  // COLOR PICKER HARDCODED
 
   // TODO: complete switch button with cache
 

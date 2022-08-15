@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, KeyboardAvoidingView, Animated, FlatList, Platform } from 'react-native'
-import React, { Children, useEffect } from 'react'
+import React, { Children, useEffect, useState } from 'react'
 import {auth,db} from '../firebase'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Input, Icon, Button } from 'react-native-elements'
@@ -17,16 +17,16 @@ const DMChatPage = ({ route, navigation }) => {
 
   const COLOR_PALETTE_1 = ["FAC213", "F77E21", "D61C4E", "990000", "FF5B00"]   // bright yellows cleared 
 
-  const [isEmpty, setIsEmpty] = React.useState(false)
-  const [messageText, setMessageText] = React.useState('')
-  const [messageData, setMessageData] = React.useState(null)
-  const [whichUser, setWhichUser] = React.useState('')
-  const [showDMSettings, setShowDMSettings] = React.useState(false)
-  const [chatBalloonColor, setChatBalloonColor] = React.useState("#218AFF")
-  const [textColor, setTextColor] = React.useState('white')
-  const [isNameAboveBubbleEnabled, setIsNameAboveBubbleEnabled] = React.useState(true)
-  const [selectedTheme, setSelectedTheme] = React.useState('')
-  const [textColorDependingOnTheme, setTextColorDependingOnTheme] = React.useState('')
+  const [isEmpty, setIsEmpty] = useState(false)
+  const [messageText, setMessageText] = useState('')
+  const [messageData, setMessageData] = useState(null)
+  const [whichUser, setWhichUser] = useState('')
+  const [showDMSettings, setShowDMSettings] = useState(false)
+  const [chatBalloonColor, setChatBalloonColor] = useState("#218AFF")
+  const [textColor, setTextColor] = useState('white')
+  const [isNameAboveBubbleEnabled, setIsNameAboveBubbleEnabled] = useState(true)
+  const [selectedTheme, setSelectedTheme] = useState('')
+  const [textColorDependingOnTheme, setTextColorDependingOnTheme] = useState('')
 
   const { userID, name, userData } = route.params
   const loggedinUser = auth.currentUser
@@ -83,8 +83,6 @@ const DMChatPage = ({ route, navigation }) => {
 
   },[])
 
-
-
   function sorter(obj) {       // SORTING SEEMS WORKING! yuppi aq
     let objArr =  Object.values(obj.data)
     let sortedArr = objArr.sort((a,b) => a.time - b.time)
@@ -92,9 +90,7 @@ const DMChatPage = ({ route, navigation }) => {
   }
 
   async function sendMessage(){         // send message to firebase. same logic with the snapshot listener
-
     if (messageText.length > 0 && messageText.length < 150) {
-
       let date = new Date().getTime()
       let data = {[messageText]: {
         message: messageText,
@@ -102,14 +98,11 @@ const DMChatPage = ({ route, navigation }) => {
         receiver: userID,
         time: date, 
       }}
-
       if (whichUser == 'loggedinuser') await setDoc(doc(db,'messages', `bw${loggedinUser.uid}and${userID}`), {data},{merge: true})
       else if (whichUser == 'otheruser') await setDoc(doc(db,'messages', `bw${userID}and${loggedinUser.uid}`), {data},{merge: true})
 
       } else alert("Message must be between 1 and 150 characters")
     }
-
-
 
   return (
     <View style={styles.container}>

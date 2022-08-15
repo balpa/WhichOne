@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { View, Text, StyleSheet, Alert, KeyboardAvoidingView, Image, Animated, Platform, TouchableOpacity } from 'react-native'
 import { Button, Input, Icon } from "react-native-elements"
@@ -13,9 +13,9 @@ const SettingsPage = ({ navigation }) => {
 
     const COLOR_PALETTE_1 = ["FEF9A7","FAC213", "F77E21", "D61C4E", "990000", "FF5B00", "D4D925", "FFEE63"]
 
-    const [platform, setPlatform] = React.useState("")
-    const [shadowOptions, setShadowOptions] = React.useState({})
-    const [selectedTheme, setSelectedTheme] = React.useState('')
+    const [platform, setPlatform] = useState("")
+    const [shadowOptions, setShadowOptions] = useState({})
+    const [selectedTheme, setSelectedTheme] = useState('')
 
 
     let yAnim0FromTop = React.useRef(new Animated.Value(1000)).current
@@ -25,14 +25,14 @@ const SettingsPage = ({ navigation }) => {
     let yAnim4FromTop = React.useRef(new Animated.Value(1000)).current
     let yAnim5FromTop = React.useRef(new Animated.Value(1000)).current
 
-    React.useEffect(async()=>{      // get theme data from local storage (cache) ***HARDCODED***
+    useEffect(async()=>{      // get theme data from local storage (cache) ***HARDCODED***
         try {
           const value = await AsyncStorage.getItem('GLOBAL_THEME')
           if(value !== null) setSelectedTheme(value)
         } catch(e) {console.log(e)}
     },[])
 
-    React.useEffect(() => {       // spesific animation timings for each menu item
+    useEffect(() => {       // spesific animation timings for each menu item
         setTimeout(() => {
             Animated.spring(yAnim0FromTop, {
                 toValue: 0,
@@ -85,7 +85,7 @@ const SettingsPage = ({ navigation }) => {
 
     // TODO: check container and elevation box styling
 
-    React.useEffect(() => {          // platform based shadow options
+    useEffect(() => {          // platform based shadow options
         if (Platform.OS === "android") {
           setPlatform("android")
           setShadowOptions({

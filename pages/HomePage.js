@@ -14,20 +14,19 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const HomePage = ({navigation}) => {
 
-    const [activePage, setActivePage] = React.useState('Home')
-    const [homeIcon, setHomeIcon] = React.useState("home-outline")
-    const [createIcon, setCreateIcon] = React.useState("plus-outline")
-    const [dmIcon, setDmIcon] = React.useState("message-outline")
-    const [selectedTheme, setSelectedTheme] = React.useState('')
-    const [textColorDependingOnTheme, setTextColorDependingOnTheme] = React.useState('')
+    const [activePage, setActivePage] = useState('Home')
+    const [homeIcon, setHomeIcon] = useState("home-outline")
+    const [createIcon, setCreateIcon] = useState("plus-outline")
+    const [dmIcon, setDmIcon] = useState("message-outline")
+    const [selectedTheme, setSelectedTheme] = useState('')
+    const [textColorDependingOnTheme, setTextColorDependingOnTheme] = useState('')
 
     const Tab = createMaterialBottomTabNavigator()
 
     React.useEffect(async()=>{      // get theme data from local storage (cache) ***HARDCODED***
         try {
           const value = await AsyncStorage.getItem('GLOBAL_THEME')
-          if(value !== null) {
-            setSelectedTheme(value)
+          if(value !== null) {setSelectedTheme(value)
             if (value == 'light') setTextColorDependingOnTheme('black')
             else setTextColorDependingOnTheme('white')}
         } catch(e) {console.log(e)}
@@ -49,9 +48,7 @@ const HomePage = ({navigation}) => {
             setHomeIcon("home-outline")
             setCreateIcon("plus-outline")
         }
-        else {
-            console.log("what's happening bro")
-        }
+        else {console.log("what's happening bro")}
     }, [activePage])
 
     //TODO: hide label not working somehow. find a solution (found by creating the nav bar manually)
@@ -61,18 +58,25 @@ const HomePage = ({navigation}) => {
         <View style={[styles.top, selectedTheme == 'dark' ? {backgroundColor:'rgb(15,15,15)'} : {}]}>
             <StatusBar style="light"></StatusBar>
             <View style={styles.topSearch}>
-                <Button onPress={() => navigation.navigate("Search")} titleStyle={{color: "white", fontSize: 15}} buttonStyle={styles.searchButton} title={
+                <Button 
+                    onPress={() => navigation.navigate("Search")} 
+                    titleStyle={{color: "white", fontSize: 15}} 
+                    buttonStyle={styles.searchButton} title={
                     <Icon name="search" color={textColorDependingOnTheme} />
                 }/>
             </View>
             <TouchableOpacity style={{width: 50, height: 50, position: "absolute"}} onPress={()=> reloadPage()}>
-                <Image source={require("../assets/w1logocrimson.png")}
-                style={{width: 50, height: 50, position: "absolute"}}
+                <Image 
+                    source={require("../assets/w1logocrimson.png")}
+                    style={{width: 50, height: 50, position: "absolute"}}
                 />
             </TouchableOpacity>
             <View style={{height: 50}}></View>
             <View style={styles.topProfile}>
-                <Button onPress={ () => navigation.navigate("Profile") } titleStyle={{color: "white", fontSize: 15}} buttonStyle={styles.profileButton} title={
+                <Button 
+                    onPress={() => navigation.navigate("Profile")} 
+                    titleStyle={{color: "white", fontSize: 15}} 
+                    buttonStyle={styles.profileButton} title={
                     <Icon name="account-circle" color={textColorDependingOnTheme} />
                 }/>
             </View>
