@@ -73,7 +73,6 @@ function ChangeName({ color, setIsChangeNameShown, theme, textColorDependingOnTh
               'rgba(0,0,0,1)'
             ]
           })}
-          
         ]}
         >
         <Animated.View style={[

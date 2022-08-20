@@ -17,13 +17,19 @@ function EditBio({ color, setIsEditBioShown, theme, textColorDependingOnTheme })
     const user = auth.currentUser
 
     const springAnim = useRef(new Animated.Value(1000)).current
+    const backgroundAnim = useRef(new Animated.Value(0)).current
 
     useEffect(() => {           // animation
         Animated.spring(springAnim, {
             toValue: 0,
             duration: 1000,
             useNativeDriver: true,
-          }).start()
+        }).start()
+        Animated.timing(backgroundAnim, {
+            toValue: 0.3,
+            duration: 700,
+            useNativeDriver: false
+        }).start()
     }, [])
 
     useEffect(async()=>{
@@ -53,13 +59,28 @@ function EditBio({ color, setIsEditBioShown, theme, textColorDependingOnTheme })
             toValue: 1000,
             duration: 1000,
             useNativeDriver: true,
-          }).start() 
+        }).start() 
+        Animated.timing(backgroundAnim, {
+            toValue: 0,
+            duration: 700,
+            useNativeDriver: false
+        }).start()
         setTimeout(() => {setIsEditBioShown(false)}, 1000)
     }
 
 
 
     return (
+      <Animated.View style={[
+        {width:'100%',height:'100%',justifyContent:'center',alignItems:'center'},
+          {backgroundColor: backgroundAnim.interpolate({
+            inputRange: [0,1],
+            outputRange: [
+              'rgba(0,0,0,0)',
+              'rgba(0,0,0,1)'
+            ]
+          })}
+        ]}>
         <Animated.View style={[
             styles.component, 
             theme == 'dark' ? {backgroundColor:'rgb(40,40,40)', borderColor:'white'} : {backgroundColor:'rgb(240,240,240)'},
@@ -85,6 +106,7 @@ function EditBio({ color, setIsEditBioShown, theme, textColorDependingOnTheme })
 
             </View>             
         </Animated.View>
+      </Animated.View>
     )
 }
 

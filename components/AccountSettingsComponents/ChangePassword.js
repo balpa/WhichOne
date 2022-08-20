@@ -22,6 +22,7 @@ function ChangePassword({ color, setIsChangePasswordShown, theme, textColorDepen
     const [isPasswordShown, setIsPasswordShown] = useState(false)
 
     const springAnim = useRef(new Animated.Value(1000)).current
+    const backgroundAnim = useRef(new Animated.Value(0)).current
 
     useEffect(() => {       // password show or not
       if (eyeIcon === "eye") { setIsPasswordShown(true) }
@@ -43,7 +44,12 @@ function ChangePassword({ color, setIsChangePasswordShown, theme, textColorDepen
             toValue: 0,
             duration: 1000,
             useNativeDriver: true,
-          }).start()
+        }).start()
+        Animated.timing(backgroundAnim, {
+          toValue: 0.3,
+          duration: 700,
+          useNativeDriver: false
+        }).start()
     }, [])
     
     function closeModal(){      // closing the modal with the animation reversed
@@ -51,7 +57,12 @@ function ChangePassword({ color, setIsChangePasswordShown, theme, textColorDepen
             toValue: 1000,
             duration: 1000,
             useNativeDriver: true,
-          }).start() 
+        }).start() 
+        Animated.timing(backgroundAnim, {
+          toValue: 0,
+          duration: 700,
+          useNativeDriver: false
+        }).start()
         setTimeout(() => {setIsChangePasswordShown(false)}, 700)
     }
 
@@ -71,6 +82,16 @@ function ChangePassword({ color, setIsChangePasswordShown, theme, textColorDepen
 
 
     return (
+      <Animated.View style={[
+        {width:'100%',height:'100%',justifyContent:'center',alignItems:'center'},
+          {backgroundColor: backgroundAnim.interpolate({
+            inputRange: [0,1],
+            outputRange: [
+              'rgba(0,0,0,0)',
+              'rgba(0,0,0,1)'
+            ]
+          })}
+        ]}>
         <Animated.View style={[
           styles.component, 
           theme == 'dark' ? {backgroundColor:'rgb(40,40,40)', borderColor:'white'}: {backgroundColor:'rgb(240,240,240)'}, 
@@ -121,6 +142,7 @@ function ChangePassword({ color, setIsChangePasswordShown, theme, textColorDepen
               buttonStyle={[styles.rightButton, {backgroundColor:color}]} />
           </View>
         </Animated.View>
+      </Animated.View>
     )
 }
 
