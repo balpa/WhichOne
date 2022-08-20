@@ -6,9 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 export default function AvatarModal({ changeModalStatus }) {
 
     const window = useWindowDimensions();
-
     const navigation = useNavigation()
-
     const springAnim = useRef(new Animated.Value(-400)).current
 
     useEffect(() => {
@@ -19,14 +17,18 @@ export default function AvatarModal({ changeModalStatus }) {
           }).start()
     }, [])
 
-  return (
-    <Animated.View style={[styles.avatarModalContainer,{left: (window.width-window.width + 20)}, {transform: [{translateX: springAnim}]}]}>
-        <TouchableOpacity onPress={()=> navigation.navigate('Upload Avatar')}>
-            <Text style={{textAlign:'center'}}>Change Avatar</Text>
-        </TouchableOpacity>
-    </Animated.View>
-  )
-}
+    return (
+        <Animated.View 
+            style={[
+                styles.avatarModalContainer,
+                {left: (window.width-window.width + 20)}, 
+                {transform: [{translateX: springAnim}]}]}>
+            <TouchableOpacity onPress={()=> navigation.navigate('Upload Avatar')}>
+                <Text style={{textAlign:'center'}}>Change Avatar</Text>
+            </TouchableOpacity>
+        </Animated.View>
+    )
+    }
 
 
 const styles = StyleSheet.create({

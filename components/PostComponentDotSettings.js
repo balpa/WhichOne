@@ -18,23 +18,18 @@ function PostComponentDotSettings ({userID, setShowDotSettings, postID, theme, t
     const scaleYanimation = useRef(new Animated.Value(0)).current
     const scaleXanimation = useRef(new Animated.Value(0)).current
 
-
     useEffect(() => {       // animation for height of the modal
         Animated.timing(scaleYanimation, {
             toValue: 150,
             duration: 500,
             useNativeDriver: false
         }).start()
-    }, [])
-
-    useEffect(() => {       // animation for width of the modal
         Animated.timing(scaleXanimation, {
-            toValue:100,
-            duration: 500,
-            useNativeDriver: false
-        }).start()
+          toValue:100,
+          duration: 500,
+          useNativeDriver: false
+      }).start()
     }, [])
-
 
     function closeModal (){     // animation for closing the modal and setting showDotSettings to false
         Animated.timing(scaleYanimation, {
@@ -95,8 +90,10 @@ function PostComponentDotSettings ({userID, setShowDotSettings, postID, theme, t
     <>
     <Animated.View style={[
         styles.container,
-        theme == 'dark' ? {backgroundColor: 'rgb(40,40,40)', borderColor:'rgba(255,255,255,0.3)'} : {backgroundColor: 'rgb(240,240,240)'},
-        {height: scaleYanimation, width: scaleXanimation}]}>
+        theme == 'dark' 
+        ? {backgroundColor: 'rgb(40,40,40)', borderColor:'rgba(255,255,255,0.3)'} 
+        : {backgroundColor: 'rgb(240,240,240)'},
+          {height: scaleYanimation, width: scaleXanimation}]}>
         <TouchableOpacity onPress={()=> showEditPost()}>
           <Text style={{fontSize: 15, color:textColorDependingOnTheme}}>Edit</Text>
         </TouchableOpacity>

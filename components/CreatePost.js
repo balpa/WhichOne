@@ -1,8 +1,6 @@
 import React, { Component, useState } from 'react'
 import { Text, View, StyleSheet, ScrollView, Image } from 'react-native'
-import { BackgroundImage } from 'react-native-elements/dist/config'
 import 'firebase/compat/storage'
-import ImagePicker from 'react-native-image-picker';
 import UploadPhoto from './UploadPhoto';
 
 function CreatePost ({ navigation }) {
