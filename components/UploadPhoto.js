@@ -80,7 +80,7 @@ function UploadPhoto({ }) {
       })}
     },[])
 
-    // for selecting multiple images. current library not so good. need to find a better way
+    // for selecting multiple images. current library not good. need to find a better way
     const ImageBrowserComponent = () => {
       return ( <ImageBrowser onChange={(num, onSubmit)  => {}} callback={(callback) => {}}/> )
     }

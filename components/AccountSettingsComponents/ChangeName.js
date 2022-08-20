@@ -14,6 +14,7 @@ function ChangeName({ color, setIsChangeNameShown, theme, textColorDependingOnTh
     const user = auth.currentUser
 
     const springAnim = useRef(new Animated.Value(1000)).current
+    const backgroundAnim = useRef(new Animated.Value(0)).current
 
    
 
@@ -22,19 +23,19 @@ function ChangeName({ color, setIsChangeNameShown, theme, textColorDependingOnTh
             toValue: 0,
             duration: 1000,
             useNativeDriver: true,
-          }).start()
+        }).start()
+        Animated.timing(backgroundAnim,{
+          toValue: 0.3,
+          duration: 700,
+          useNativeDriver:false
+        }).start()
     }, [])
     
     const submitFunction = () => {
-
         if (changedName.length > 3 && changedName.length < 25){
-            user.updateProfile({
-                displayName: `${changedName}`,
-              }).then(() => {
-                Alert.alert("Name Changed!")
-              }).catch((error) => {
-                Alert.alert(error.message)
-              }); 
+            user.updateProfile({displayName: `${changedName}`,})
+            .then(() => {Alert.alert("Name Changed!")})
+            .catch((error) => {Alert.alert(error.message)}) 
             } 
             else if (changedName.length > 25) {
                 Alert.alert("Name must be between 3 and 25 characters!")
@@ -50,17 +51,37 @@ function ChangeName({ color, setIsChangeNameShown, theme, textColorDependingOnTh
             toValue: 1000,
             duration: 1000,
             useNativeDriver: true,
-          }).start() 
+        }).start() 
+        Animated.timing(backgroundAnim,{
+          toValue: 0,
+          duration: 700,
+          useNativeDriver:false
+        }).start()
         setTimeout(() => {setIsChangeNameShown(false)}, 1000)
     }
 
 
 
     return (
+      <Animated.View
+        style={[
+          {width:'100%',height:'100%',justifyContent:'center',alignItems:'center'},
+          {backgroundColor: backgroundAnim.interpolate({
+            inputRange: [0,1],
+            outputRange: [
+              'rgba(0,0,0,0)',
+              'rgba(0,0,0,1)'
+            ]
+          })}
+          
+        ]}
+        >
         <Animated.View style={[
           styles.component,
-          theme == 'dark' ? {backgroundColor:'rgb(40,40,40)', borderColor:'white'} : {backgroundColor:'rgb(240,240,240)'},
-          {transform: [{translateY: springAnim}]}]}>
+          theme == 'dark' 
+          ? {backgroundColor:'rgb(40,40,40)', borderColor:'white'} 
+          : {backgroundColor:'rgb(240,240,240)'},
+            {transform: [{translateY: springAnim}]}]}>
             <Text style={{
               marginBottom: 20, 
               textAlign:'center', 
@@ -79,9 +100,9 @@ function ChangeName({ color, setIsChangeNameShown, theme, textColorDependingOnTh
             <View style={{flexDirection:'row', justifyContent:'space-between', width:'100%', bottom: -15 }}>
               <Button title='Submit' onPress={submitFunction}  buttonStyle={[styles.leftButton,{backgroundColor: color}]} />
               <Button title='Cancel' onPress={()=> closeModal()} buttonStyle={[styles.rightButton, {backgroundColor: color}]} />
-
             </View>             
         </Animated.View>
+      </Animated.View>
     )
 }
 

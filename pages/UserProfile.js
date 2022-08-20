@@ -40,7 +40,7 @@ const UserProfile = ({ route, navigation }) => {
     })
       .catch((error) => {
         console.log(error)
-    });
+    })
 
     useEffect(async()=>{      // get theme data from local storage (cache) ***HARDCODED***
       try {
@@ -68,7 +68,7 @@ const UserProfile = ({ route, navigation }) => {
               else setFollowSituation(doc.data().followers.includes(loggedinUser.uid))
           })
           }
-  }, [userID])
+    }, [userID])
 
     // get post ids from firebase and store in array NEED POST IDS IN ARRAY LOCATED IN posts/useruid/postID
     useEffect(async() => {
@@ -92,9 +92,9 @@ const UserProfile = ({ route, navigation }) => {
               followers: firebase.firestore.FieldValue.arrayUnion(loggedinUser.uid)
           })
       }
-  }
-  // unfollow button func
-  function unfollow () {
+    }
+    // unfollow button func
+    function unfollow () {
       if (searchedUsersUID !== loggedinUser.uid) {
       const removeFromFollowingForFollowingUser = db.collection('useruid')
           .doc(`${loggedinUser.uid}`)
@@ -107,14 +107,16 @@ const UserProfile = ({ route, navigation }) => {
               followers: firebase.firestore.FieldValue.arrayRemove(loggedinUser.uid)
           })
       }
-  }
+    }
 
     return (
         <>
         <View style={[
           styles.container, 
-          selectedTheme == 'dark' ? {backgroundColor:'rgb(15,15,15)'} : {},
-          {width: window.width-5}]}>
+          selectedTheme == 'dark' 
+          ? {backgroundColor:'rgb(15,15,15)'} 
+          : {},
+            {width: window.width-5}]}>
             <StatusBar style="light"></StatusBar>
             <View style={{justifyContent: "center", alignItems: "center", marginTop: 10}}>
                 <Image 

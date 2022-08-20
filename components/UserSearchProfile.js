@@ -21,8 +21,7 @@ const UserSearchProfile = ({ image, searchUsername, followerCount, followingCoun
     useEffect(async()=>{      // get theme data from local storage (cache) ***HARDCODED***
         try {
           const value = await AsyncStorage.getItem('GLOBAL_THEME')
-          if(value !== null) {
-            setSelectedTheme(value)
+          if(value !== null) {setSelectedTheme(value)
             if (value == 'light') setTextColorDependingOnTheme('black')
             else setTextColorDependingOnTheme('white')}
         } catch(e) {console.log(e)}
@@ -70,8 +69,11 @@ const UserSearchProfile = ({ image, searchUsername, followerCount, followingCoun
     return (
         <Animated.View style={[
             styles.component,
-            selectedTheme == 'dark' ? {backgroundColor:'rgb(150,150,150)'} : {},
-            {width: window.width-5}, {transform: [{translateY: springAnim}]}]}>
+            selectedTheme == 'dark' 
+            ? {backgroundColor:'rgb(150,150,150)'} 
+            : {},
+              {width: window.width-5}, 
+              {transform: [{translateY: springAnim}]}]}>
             <View style={styles.imageNameField}>
                 <TouchableOpacity onPress={()=>{navigation.navigate("UserProfile",{ name: `${searchUsername}`, userID: `${searchedUsersUID}`})}}>
                 <Image source={{uri: image}} style={{width: 70, height: 70, borderRadius: 70/2}}/>

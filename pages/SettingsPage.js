@@ -100,9 +100,8 @@ const SettingsPage = ({ navigation }) => {
              shadowOpacity: 0.4,
              shadowRadius: 5, 
            })
-       }}, [])
+    }}, [])
 
-    console.log(selectedTheme)
     return (
         <>
             <View style={[styles.elevation, selectedTheme == 'light' ? {} : {backgroundColor:'rgb(15,15,15)'}]}>
