@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, View, Text, KeyboardAvoidingView, Image, useWindowDimensions } from 'react-native'
-import { Button, Input, Icon } from 'react-native-elements/'
+import { StyleSheet, View, Text, Image, useWindowDimensions } from 'react-native'
+import { Button } from 'react-native-elements/'
 import { auth } from "../firebase";
 import { db } from "../firebase"
 import firebase from 'firebase/compat/app'
-import { doc, onSnapshot, getDoc } from "firebase/firestore"
+import { doc, onSnapshot } from "firebase/firestore"
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { NavigationContainer } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 
 
@@ -85,39 +84,40 @@ export default function SmallProfile({ userID, theme, textColor }) {
     }
 
     return (
-        <View style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            width: '100%',
-            height: 50,
-            backgroundColor: theme == 'dark' ? 'rgb(15,15,15)' : 'white',
-            paddingLeft: 20,
-            paddingRight: 20,
-            }}>
+        <View style={[
+            styles.container, 
+            {backgroundColor: theme == 'dark' ? 'rgb(15,15,15)' : 'white'}]}>
             <View style={styles.nameAndImage} >
                     <Image 
-                        style={{
-                            width: 30, 
-                            height: 30, 
-                            borderRadius: 30/2, 
-                            marginRight:10}} 
+                        style={styles.avatar} 
                         source={{uri: image}}/>
                     <TouchableOpacity 
-                        onPress={()=>{navigation.navigate("UserProfile",{ name: `${userIDData.name}`, userID: `${userID}`})}}>
+                        onPress={()=>{
+                            navigation.navigate("UserProfile",{ name: `${userIDData.name}`, userID: `${userID}`})}
+                            }>
                         <Text 
-                            style={{
-                                fontSize: 17, 
-                                color:textColor}}
-                        >{userIDData.name}</Text>
+                            style={{fontSize: 17, color:textColor}}>
+                            {userIDData.name}
+                        </Text>
                     </TouchableOpacity>
             </View>
             <View>
                 <View style={{flexDirection: "row"}}>
-                    {!followSituation && <Button onPress={follow} buttonStyle={styles.followButton} titleStyle={{fontSize: 10, color:'crimson'}} title={"Follow"}/>}
-                    {followSituation && <Button onPress={unfollow} buttonStyle={[styles.unfollowButton, {
-                        backgroundColor: `#${COLOR_PALETTE_1[Math.floor(Math.random() * COLOR_PALETTE_1.length)]}`
-                    }]} titleStyle={{fontSize: 10}} title={"Following"}/>}
+                    {!followSituation && 
+                        <Button 
+                            onPress={follow} 
+                            buttonStyle={styles.followButton} 
+                            titleStyle={{fontSize: 10, color:'crimson'}} 
+                            title={"Follow"}/>}
+                    {followSituation && 
+                        <Button 
+                            onPress={unfollow} 
+                            buttonStyle={[
+                                styles.unfollowButton, 
+                                {backgroundColor: `#${COLOR_PALETTE_1[Math.floor(Math.random() * COLOR_PALETTE_1.length)]}`}
+                            ]} 
+                            titleStyle={{fontSize: 10}} 
+                            title={"Following"}/>}
                 </View>
             </View>
         </View>
@@ -136,6 +136,21 @@ export default function SmallProfile({ userID, theme, textColor }) {
     },
     unfollowButton: {
         width: 100,
+    },
+    container: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        width: '100%',
+        height: 50,
+        paddingLeft: 20,
+        paddingRight: 20,
+    },
+    avatar: {
+        width: 30, 
+        height: 30, 
+        borderRadius: 30/2, 
+        marginRight:10
     }
     })
     

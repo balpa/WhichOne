@@ -16,8 +16,6 @@ function ChangeName({ color, setIsChangeNameShown, theme, textColorDependingOnTh
     const springAnim = useRef(new Animated.Value(1000)).current
     const backgroundAnim = useRef(new Animated.Value(0)).current
 
-   
-
     useEffect(() => {           // animation
         Animated.spring(springAnim, {
             toValue: 0,
@@ -59,8 +57,6 @@ function ChangeName({ color, setIsChangeNameShown, theme, textColorDependingOnTh
         }).start()
         setTimeout(() => {setIsChangeNameShown(false)}, 1000)
     }
-
-
 
     return (
       <Animated.View

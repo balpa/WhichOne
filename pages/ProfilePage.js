@@ -8,13 +8,10 @@ import {
   Alert,
   useWindowDimensions,
   Animated,
-  Platform,
 } from "react-native";
 import {
   Button,
   Image,
-  Input,
-  TouchableHighlight,
   Icon,
 } from "react-native-elements";
 import firebase from "firebase/app";
@@ -43,27 +40,27 @@ const ProfilePage = ({ navigation }) => {
     "FFEE63",
   ];
 
-  const singleTapRef = createRef();
+  const singleTapRef = createRef()
 
-  const expandAnim = React.useRef(new Animated.Value(120)).current;
+  const expandAnim = React.useRef(new Animated.Value(120)).current
 
-  const window = useWindowDimensions(); // hook to get the window dimensions
+  const window = useWindowDimensions() // hook to get the window dimensions
 
-  const [followerCount, setFollowerCount] = useState(0);
-  const [followingCount, setFollowingCount] = useState(0);
-  const [image, setImage] = useState(null);
-  const [postIDs, setPostIDs] = useState([]);
-  const [isShown, setIsShown] = useState(false);
-  const [currentBio, setCurrentBio] = useState("");
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [selectedTheme, setSelectedTheme] = useState("");
-  const [textColorDependingOnTheme, setTextColorDependingOnTheme] = useState("");
+  const [followerCount, setFollowerCount] = useState(0)
+  const [followingCount, setFollowingCount] = useState(0)
+  const [image, setImage] = useState(null)
+  const [postIDs, setPostIDs] = useState([])
+  const [isShown, setIsShown] = useState(false)
+  const [currentBio, setCurrentBio] = useState("")
+  const [isExpanded, setIsExpanded] = useState(false)
+  const [selectedTheme, setSelectedTheme] = useState("")
+  const [textColorDependingOnTheme, setTextColorDependingOnTheme] = useState("")
 
-  const user = auth.currentUser;
-  const storage = getStorage();
+  const user = auth.currentUser
+  const storage = getStorage()
 
   useEffect(async () => {
-    // get theme data from local storage (cache) ***HARDCODED***
+    // get theme data from local storage (cache) 
     try {const value = await AsyncStorage.getItem("GLOBAL_THEME")
       if (value !== null) {setSelectedTheme(value)
         if (value == "light") setTextColorDependingOnTheme("black")
@@ -113,7 +110,7 @@ const ProfilePage = ({ navigation }) => {
     )
   }
 
-  const logout = async () => {await auth.signOut()}
+  const logout = async () => { await auth.signOut() }
 
   useEffect(() => {
     // if logout, go back to login page

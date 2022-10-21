@@ -63,8 +63,6 @@ export default function FollowersFollowingPage() {
       tabBarInactiveTintColor: selectedTheme == 'dark' ? 'rgba(240,240,240,0.3)' : 'rgba(15,15,15,0.3)',
     }
 
-    //TODO: 
-
   return (
 
     <Tab.Navigator screenOptions={globalOptions} >

@@ -38,19 +38,12 @@ function EditBio({ color, setIsEditBioShown, theme, textColorDependingOnTheme })
             setCurrentBio(document.data().bio)
         })
     },[])
-
-    console.log(currentBio)
     
     const submitFunction = async() => {     // submit bio to db and close modal
-
-        if (bioText.length < 100) {
-            await updateDoc(doc(db,'useruid',`${user.uid}`), {bio: bioText}).then(()=>{Alert.alert("Bio updated")})
-        }
-        else if (bioText.length > 100) 
-        {
-            Alert.alert("Bio must be less than 100 characters")
-        }
-        
+        if (bioText.length < 100) await updateDoc(doc(db,'useruid',`${user.uid}`), 
+            {bio: bioText})
+            .then(()=>{Alert.alert("Bio updated")})
+        else if (bioText.length > 100) Alert.alert("Bio must be less than 100 characters")
         closeModal()
     }
 
@@ -67,8 +60,6 @@ function EditBio({ color, setIsEditBioShown, theme, textColorDependingOnTheme })
         }).start()
         setTimeout(() => {setIsEditBioShown(false)}, 1000)
     }
-
-
 
     return (
       <Animated.View style={[
