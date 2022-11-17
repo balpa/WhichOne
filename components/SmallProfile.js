@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, View, Text, Image, useWindowDimensions } from 'react-native'
+import { StyleSheet, View, Text, Image } from 'react-native'
 import { Button } from 'react-native-elements/'
 import { auth } from "../firebase";
 import { db } from "../firebase"
@@ -15,13 +15,10 @@ export default function SmallProfile({ userID, theme, textColor }) {
     const randomColorArray = React.useRef([])
     const [randomColor, setRandomColor] = useState('#FAC213')
 
-    const COLOR_PALETTE_1 = ["FAC213", "F77E21", "D61C4E", "990000", "FF5B00"]   // bright yellows cleared 
-
     const navigation = useNavigation()
 
     const loggedinUser = auth.currentUser
 
-    const window = useWindowDimensions()    // hook to get the window dimensions
 
     const [followSituation, setFollowSituation] = useState(false)
     const [userIDData, setUserIDData] = useState({}) // store the user's data 
