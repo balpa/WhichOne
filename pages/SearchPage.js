@@ -3,15 +3,12 @@ import React, { useEffect } from "react";
 import {
   StyleSheet,
   View,
-  Text,
-  KeyboardAvoidingView,
   Image,
   Animated,
-  TextInput,
   useWindowDimensions,
   ActivityIndicator,
 } from "react-native";
-import { Button, Input, Icon } from "react-native-elements/";
+import { Input } from "react-native-elements/";
 import { useState } from "react";
 import { auth } from "../firebase";
 import { db } from "../firebase";
@@ -39,7 +36,7 @@ const SearchPage = ({ navigation }) => {
   const [showActivityIndicator, setShowActivityIndicator] = useState(false)
   const [searchButtonPressed, setSearchButtonPressed] = useState(false)
   const [searchVal, setSearchVal] = useState("")
-  
+
   const windowDim = useWindowDimensions()
 
   const searchBarWidthAnim = React.useRef(new Animated.Value(0)).current
@@ -50,18 +47,19 @@ const SearchPage = ({ navigation }) => {
 
   React.useEffect(async () => {
     // get theme data from local storage (cache) ***HARDCODED***
-    try {const value = await AsyncStorage.getItem("GLOBAL_THEME")
-      if (value !== null) {setSelectedTheme(value)
+    try {
+      const value = await AsyncStorage.getItem("GLOBAL_THEME")
+      if (value !== null) {
+        setSelectedTheme(value)
         if (value == "light") setTextColorDependingOnTheme("black")
         else setTextColorDependingOnTheme("white")
       }
-    } catch (e) {console.log(e)}
+    } catch (e) { console.log(e) }
   }, [])
 
   useEffect(() => {
     Animated.timing(searchBarWidthAnim, {
       toValue: windowDim.width,
-
       duration: 700,
       useNativeDriver: false,
     }).start()
@@ -72,18 +70,14 @@ const SearchPage = ({ navigation }) => {
     getDownloadURL(
       ref(storage, `Users/${searchedUsersUID}/avatars/avatar_image`)
     )
-      .then((url) => {
-        if (url) setImage(url);
-      })
+      .then((url) => { if (url) setImage(url) })
       .catch((error) => {
-        setImage(null);
-        console.log(error);
-      });
+        setImage(null); console.log(error)
+      })
   }, [searchedUsersUID])
 
   // FOLLOW-UNFOLLOW WORKS BUT NEED TO ADD STATE CHECK BY QUERYING THE USER'S UID
 
-  // follow button func
   function follow() {
     if (searchedUsersUID !== loggedinUser.uid) {
       const addToFollowingForFollowingUser = db
@@ -126,12 +120,12 @@ const SearchPage = ({ navigation }) => {
       // get total follower count
       const getTotalFollowerCount = onSnapshot(
         doc(db, "useruid", `${searchedUsersUID}`),
-        (doc) => {setFollowerCount(doc.data().followers.length)}
+        (doc) => { setFollowerCount(doc.data().followers.length) }
       )
       // get total following count
       const getTotalFollowingCount = onSnapshot(
         doc(db, "useruid", `${searchedUsersUID}`),
-        (doc) => {setFollowingCount(doc.data().following.length)}
+        (doc) => { setFollowingCount(doc.data().following.length) }
       )
     }
   }, [searchedUsersUID])
@@ -202,9 +196,9 @@ const SearchPage = ({ navigation }) => {
             setSearchUsername(userData.name) // searched user's name
             setSearchedUsersUID(userData.UID) // searched user's UID
 
-          } else {console.log("No user"); setIsSearchedAndNoUser(true)} // searched and no user found
+          } else { console.log("No user"); setIsSearchedAndNoUser(true) } // searched and no user found
         })
-    } else {Alert.alert("Username must be between 3 and 15 characters.")}
+    } else { Alert.alert("Username must be between 3 and 15 characters.") }
   }
 
   // TODO: activity icon fix

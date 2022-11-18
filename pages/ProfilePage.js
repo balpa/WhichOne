@@ -14,13 +14,12 @@ import {
   Image,
   Icon,
 } from "react-native-elements";
-import firebase from "firebase/app";
 import { auth } from "../firebase";
 import { db } from "../firebase";
 import { ScrollView } from "react-native-gesture-handler";
 import PostComponent from "../components/PostComponent";
 import { TouchableOpacity } from "react-native";
-import { doc, onSnapshot, getDoc, collection } from "firebase/firestore";
+import { doc, onSnapshot, getDoc } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import AvatarModal from "../components/AvatarModal";
 import { TapGestureHandler } from "react-native-gesture-handler";
@@ -61,12 +60,14 @@ const ProfilePage = ({ navigation }) => {
 
   useEffect(async () => {
     // get theme data from local storage (cache) 
-    try {const value = await AsyncStorage.getItem("GLOBAL_THEME")
-      if (value !== null) {setSelectedTheme(value)
+    try {
+      const value = await AsyncStorage.getItem("GLOBAL_THEME")
+      if (value !== null) {
+        setSelectedTheme(value)
         if (value == "light") setTextColorDependingOnTheme("black")
         else setTextColorDependingOnTheme("white")
       }
-    } catch (e) {console.log(e)}
+    } catch (e) { console.log(e) }
   }, [])
 
   useEffect(() => {
@@ -138,7 +139,7 @@ const ProfilePage = ({ navigation }) => {
         duration: 500,
         useNativeDriver: false,
       }).start()
-    } else { 
+    } else {
       setIsExpanded(false)
       setIsShown(false)
       Animated.timing(expandAnim, {

@@ -10,14 +10,11 @@
 //  ----------------------------------------------------------------------------
 
 import "react-native-gesture-handler";
-import { StatusBar } from "expo-status-bar";
-import React, { Children } from "react";
-import { useEffect } from "react";
-import { Button } from "react-native-elements";
+import React from "react";
 import { Platform } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { StyleSheet, Text, View, Alert, LogBox } from "react-native";
+import { StyleSheet, LogBox } from "react-native";
 import LoginScreen from "./pages/LoginScreen";
 import RegisterScreen from "./pages/RegisterScreen";
 import ProfilePage from "./pages/ProfilePage";
@@ -33,15 +30,7 @@ import UploadAvatar from "./pages/UploadAvatar";
 import DMChatPage from "./pages/DMChatPage";
 import ThemePage from "./pages/ThemePage";
 import NotificationsPage from "./pages/NotificationsPage";
-import { Icon } from "react-native-elements";
 import FollowersFollowingPage from "./pages/FollowersFollowingPage";
-import { TransitionSpecs } from "@react-navigation/stack";
-import {
-  SafeAreaView,
-  SafeAreaInsetsContext,
-  useSafeAreaInsets,
-  initialWindowMetrics,
-} from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 LogBox.ignoreLogs(["Setting a timer for a long period of time"]); // to clear the yellow warning on android devices
@@ -83,50 +72,45 @@ const config = {
     restDisplacementThreshold: 0.01,
     restSpeedThreshold: 0.01,
   },
-};
+}
 
 // TODO: SAFE AREA NOT WORKING STILL
 
 export default function App() {
-  //TODO: App needs restart after changing the theme. find a solution
+  //TODO: App needs restart after changing the theme. find a solution for theme (localstorage is not what i want)
 
-  const [selectedTheme, setSelectedTheme] = React.useState("light");
-  const [headerStyleDOT, setHeaderStyleDOT] = React.useState({});
-  const [headerTitleStyleDOT, setHeaderTitleStyleDOT] = React.useState({});
-  const [headerTintColorDOT, setHeaderTintColorDOT] = React.useState("");
-  const [cardColor, setCardColor] = React.useState({});
+  const [selectedTheme, setSelectedTheme] = React.useState("light")
+  const [headerStyleDOT, setHeaderStyleDOT] = React.useState({})
+  const [headerTitleStyleDOT, setHeaderTitleStyleDOT] = React.useState({})
+  const [headerTintColorDOT, setHeaderTintColorDOT] = React.useState("")
+  const [cardColor, setCardColor] = React.useState({})
 
   React.useEffect(async () => {
     // get theme data from local storage (cache) ***HARDCODED***
     try {
-      const value = await AsyncStorage.getItem("GLOBAL_THEME");
+      const value = await AsyncStorage.getItem("GLOBAL_THEME")
       if (value !== null) {
         if (value == "dark") {
-          setSelectedTheme(value);
+          setSelectedTheme(value)
           setHeaderStyleDOT({
             backgroundColor: "rgb(15,15,15)",
-            height: 75,
-          });
-          setHeaderTitleStyleDOT({ color: "white" });
-          setHeaderTintColorDOT("white");
-          setCardColor({ backgroundColor: "rgb(15,15,15)" });
+          })
+          setHeaderTitleStyleDOT({ color: "white" })
+          setHeaderTintColorDOT("white")
+          setCardColor({ backgroundColor: "rgb(15,15,15)" })
         } else {
-          setSelectedTheme(value);
+          setSelectedTheme(value)
           setHeaderStyleDOT({
             backgroundColor: "white",
-            height: 75,
-          });
-          setHeaderTitleStyleDOT({ color: "black" });
-          setHeaderTintColorDOT("black");
-          setCardColor({ backgroundColor: "rgb(255,255,255)" });
+            //height: 80
+          })
+          setHeaderTitleStyleDOT({ color: "black" })
+          setHeaderTintColorDOT("black")
+          setCardColor({ backgroundColor: "rgb(255,255,255)" })
         }
       }
-    } catch (e) {
-      console.log(e);
-    }
-  }, []);
-
-  // holiday commit lol
+    } catch (e) { console.log(e) }
+  }, [])
 
   return (
     <NavigationContainer>

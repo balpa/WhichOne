@@ -19,7 +19,6 @@ export default function SmallProfile({ userID, theme, textColor }) {
 
     const loggedinUser = auth.currentUser
 
-
     const [followSituation, setFollowSituation] = useState(false)
     const [userIDData, setUserIDData] = useState({}) // store the user's data 
     const [image, setImage] = useState(null) // store the user's avatar
@@ -55,12 +54,9 @@ export default function SmallProfile({ userID, theme, textColor }) {
         randomColorArray.current = [
             "FAC213", "F77E21",
             "D61C4E", "990000", "FF5B00"].sort(() => Math.random() - 0.5)
-
         setRandomColor(randomColorArray.current[Math.floor(Math.random() * randomColorArray.current.length)])
     }, [])
 
-
-    // follow button func
     function follow() {
         if (userID !== loggedinUser.uid) {
             const addToFollowingForFollowingUser = db.collection('useruid')
@@ -75,7 +71,7 @@ export default function SmallProfile({ userID, theme, textColor }) {
                 })
         }
     }
-    // unfollow button func
+
     function unfollow() {
         if (userID !== loggedinUser.uid) {
             const removeFromFollowingForFollowingUser = db.collection('useruid')
