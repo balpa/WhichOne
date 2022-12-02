@@ -5,7 +5,7 @@ import { auth } from '../../firebase'
 import { Input } from 'react-native-elements/dist/input/Input'
 import { updatePassword } from 'firebase/auth'
 
-function ChangePassword({ color, setIsChangePasswordShown, theme, textColorDependingOnTheme }) {
+function ChangePassword({ color, setIsChangePasswordShown }) {
 
   const user = auth.currentUser
 
@@ -90,26 +90,26 @@ function ChangePassword({ color, setIsChangePasswordShown, theme, textColorDepen
     ]}>
       <Animated.View style={[
         styles.component,
-        theme == 'dark' ? { backgroundColor: 'rgb(40,40,40)', borderColor: 'white' } : { backgroundColor: 'rgb(240,240,240)' },
+        { backgroundColor: 'rgb(240,240,240)' },
         { transform: [{ translateY: springAnim }] }]}>
         {/* <Input placeholder="Current password" value={currentPassword} onChangeText={(text) => setCurrentPassword(text)} /> */}
         <Input
           {...(isPasswordShown ? { secureTextEntry: false } : { secureTextEntry: true })}
           placeholder="New password"
-          placeholderTextColor={textColorDependingOnTheme}
-          style={{ color: textColorDependingOnTheme }}
-          labelStyle={{ color: textColorDependingOnTheme }}
-          selectionColor={textColorDependingOnTheme}
+          placeholderTextColor={'black'}
+          style={{ color: 'black' }}
+          labelStyle={{ color: 'black' }}
+          selectionColor={'black'}
           label='New password'
           leftIcon={{
             type: 'font-awesome',
             name: lockIcon,
-            color: textColorDependingOnTheme
+            color: 'black'
           }}
           rightIcon={{
             type: 'font-awesome',
             name: eyeIcon,
-            color: textColorDependingOnTheme,
+            color: 'black',
             onPress: () => { setEyeIcon(eyeIcon === "eye-slash" ? "eye" : "eye-slash") }
           }}
           value={newPassword}
@@ -117,19 +117,19 @@ function ChangePassword({ color, setIsChangePasswordShown, theme, textColorDepen
         <Input
           {...(isPasswordShown ? { secureTextEntry: false } : { secureTextEntry: true })}
           placeholder="Confirm new password"
-          placeholderTextColor={textColorDependingOnTheme}
-          style={{ color: textColorDependingOnTheme }}
-          labelStyle={{ color: textColorDependingOnTheme }}
-          selectionColor={textColorDependingOnTheme} label='Confirm new password'
+          placeholderTextColor={'black'}
+          style={{ color: 'black' }}
+          labelStyle={{ color: 'black' }}
+          selectionColor={'black'} label='Confirm new password'
           leftIcon={{
             type: 'font-awesome',
             name: lockIcon,
-            color: textColorDependingOnTheme
+            color: 'black'
           }}
           rightIcon={{
             type: 'font-awesome',
             name: eyeIcon,
-            color: textColorDependingOnTheme,
+            color: 'black',
             onPress: () => { setEyeIcon(eyeIcon === "eye-slash" ? "eye" : "eye-slash") }
           }}
           value={confirmPassword}

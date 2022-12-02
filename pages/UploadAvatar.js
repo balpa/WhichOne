@@ -10,7 +10,6 @@ import { useState, useEffect } from "react";
 import { auth } from "../firebase";
 import * as ImagePicker from "expo-image-picker";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function UploadAvatar() {
   const currentUser = auth.currentUser;
@@ -18,8 +17,6 @@ function UploadAvatar() {
   const avatarRef = ref(storage, `Users/${currentUser.uid}/avatars/avatar_image`) // storage'da avatarın yerini belirleme
 
   const [image, setImage] = useState(null)
-  const [selectedTheme, setSelectedTheme] = useState("")
-  const [textColorDependingOnTheme, setTextColorDependingOnTheme] = useState("")
   const [currentAvatar, setCurrentAvatar] = useState(null)
 
   const uploadButtonAnim = React.useRef(new Animated.Value(300)).current
@@ -77,20 +74,6 @@ function UploadAvatar() {
     .then((url) => setCurrentAvatar(url))
     .catch((error) => console.log(error))
 
-  useEffect(async () => {
-    // get theme data from local storage (cache) ***HARDCODED***
-    try {
-      const value = await AsyncStorage.getItem("GLOBAL_THEME");
-      if (value !== null) {
-        setSelectedTheme(value);
-        if (value == "light") setTextColorDependingOnTheme("black");
-        else setTextColorDependingOnTheme("white");
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  }, []);
-
   useEffect(() => {
     (async () => {
       if (Platform.OS !== "web") {
@@ -134,7 +117,6 @@ function UploadAvatar() {
     <View
       style={[
         styles.component,
-        selectedTheme == "dark" ? { backgroundColor: "rgb(15,15,15)" } : {},
       ]}>
       <View
         style={{
@@ -145,9 +127,7 @@ function UploadAvatar() {
         }}>
         <Animated.Text
           style={[
-            selectedTheme == "dark"
-              ? { color: "white", fontSize: 17, fontWeight: "900" }
-              : { color: "black", fontSize: 17, fontWeight: "900" },
+            { color: "black", fontSize: 17, fontWeight: "900" },
             { transform: [{ translateY: currentAvatarTextAnim }] }
           ]
           }

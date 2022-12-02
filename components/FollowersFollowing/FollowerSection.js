@@ -2,17 +2,12 @@ import { View, Text } from 'react-native'
 import React from 'react'
 import SmallProfile from '../SmallProfile'
 
-const FollowingSection = ({followers, textColor, theme}) => {
+const FollowingSection = ({ followers }) => {
   return (
-    <View style={
-      theme == 'dark' 
-      ? 
-      {height: '100%', backgroundColor:'rgb(15,15,15)'} 
-      : 
-      {height:'100%', backgroundColor:'white'}}>
-      {followers.map((followerID) => {return <SmallProfile textColor={textColor} theme={theme} key={followerID} userID={followerID}/>})} 
-    </View> 
-   )
+    <View style={{ height: '100%', backgroundColor: 'white' }}>
+      {followers.map((followerID) => { return <SmallProfile key={followerID} userID={followerID} /> })}
+    </View>
+  )
 }
 
 export default FollowingSection

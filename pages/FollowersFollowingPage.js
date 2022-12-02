@@ -18,24 +18,24 @@ export default function FollowersFollowingPage() {
   const [followingCount, setFollowingCount] = useState(0)
   const [followers, setFollowers] = useState([])
   const [following, setFollowing] = useState([])
-  const [selectedTheme, setSelectedTheme] = useState('')
-  const [textColorDependingOnTheme, setTextColorDependingOnTheme] = useState('')
+  //const [selectedTheme, setSelectedTheme] = useState('')
+  //const [textColorDependingOnTheme, setTextColorDependingOnTheme] = useState('')
 
   const window = useWindowDimensions()
 
   let height4posts = (window.width * 3) / 4
   let height4postcontainer = ((window.width * 3) / 4) + 50
 
-  useEffect(async () => {      // get theme data from local storage (cache) ***BAD IDEA***
-    try {
-      const value = await AsyncStorage.getItem('GLOBAL_THEME')
-      if (value !== null) {
-        setSelectedTheme(value)
-        if (value == 'light') setTextColorDependingOnTheme('black')
-        else setTextColorDependingOnTheme('white')
-      }
-    } catch (e) { console.log(e) }
-  }, [])
+  // useEffect(async () => {      // get theme data from local storage (cache) ***BAD IDEA***
+  //   try {
+  //     const value = await AsyncStorage.getItem('GLOBAL_THEME')
+  //     if (value !== null) {
+  //       setSelectedTheme(value)
+  //       if (value == 'light') setTextColorDependingOnTheme('black')
+  //       else setTextColorDependingOnTheme('white')
+  //     }
+  //   } catch (e) { console.log(e) }
+  // }, [])
 
   // get followers and following and store in array
   useEffect(() => {
@@ -57,13 +57,13 @@ export default function FollowersFollowingPage() {
 
   const globalOptions = {
     tabBarStyle: {
-      backgroundColor: selectedTheme == 'dark' ? 'rgb(15,15,15)' : 'white',
+      backgroundColor: 'white',
     },
     tabBarIndicatorStyle: {
       backgroundColor: 'crimson'
     },
     tabBarActiveTintColor: 'crimson',
-    tabBarInactiveTintColor: selectedTheme == 'dark' ? 'rgba(240,240,240,0.3)' : 'rgba(15,15,15,0.3)',
+    tabBarInactiveTintColor: 'rgba(15,15,15,0.3)',
   }
 
   return (
@@ -73,18 +73,12 @@ export default function FollowersFollowingPage() {
         name='followers'
         style={{ backgroundColor: 'red' }}
         children={() =>
-          <FollowerSection
-            textColor={textColorDependingOnTheme}
-            theme={selectedTheme}
-            followers={followers} />}
+          <FollowerSection followers={followers} />}
       />
       <Tab.Screen
         name='following'
         children={() =>
-          <FollowingSection
-            textColor={textColorDependingOnTheme}
-            theme={selectedTheme}
-            following={following} />}
+          <FollowingSection following={following} />}
       />
     </Tab.Navigator>
   )

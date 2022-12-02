@@ -21,8 +21,6 @@ function UploadPhoto({ }) {
   const [isLoaded, setIsLoaded] = useState(false)
   const [descriptionText, setDescriptionText] = useState("")
   const [shadowSettings, setShadowSettings] = useState({})
-  const [selectedTheme, setSelectedTheme] = useState('')
-  const [textColorDependingOnTheme, setTextColorDependingOnTheme] = useState('')
 
   const storage = getStorage()
   // const postRef = ref(storage, `Users/${user.uid}/posts/${postUniqueID}/`) // storage'da postun yerini belirleme
@@ -31,18 +29,6 @@ function UploadPhoto({ }) {
 
   let height4posts = (window.width * 3) / 4    // height of the post calculated by the width of the screen
   let height4postcontainer = ((window.width * 3) / 4) + 50   // height of the post container calculated by the width of the screen plus the gap needed for likes comments etc. section
-
-  useEffect(async () => {      // get theme data from local storage (cache) ***HARDCODED***
-    try {
-      const value = await AsyncStorage.getItem('GLOBAL_THEME')
-      if (value !== null) {
-        setSelectedTheme(value)
-        if (value == 'light') setTextColorDependingOnTheme('black')
-        else setTextColorDependingOnTheme('white')
-      }
-    } catch (e) { console.log(e) }
-  }, [])
-
 
   // TODO: Animation removes buttons after picking an image. need to fix animations
 
@@ -200,10 +186,7 @@ function UploadPhoto({ }) {
   }
 
   return (
-    <View style={[
-      styles.component,
-      selectedTheme == 'dark' ? { backgroundColor: 'rgb(15,15,15)' } : { backgroundColor: 'white' }
-    ]}>
+    <View style={styles.component}>
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'space-evenly' }}>
         <Animated.View style={[styles.addButtonIconWrapper, shadowSettings]}>
           <Button title={<Icon name="collections" color="white" />} onPress={pickImage} titleStyle={{ color: "black", fontSize: 25 }} buttonStyle={styles.createPostButtons} />
@@ -256,7 +239,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     height: "100%",
-    zIndex: 10
+    zIndex: 10,
+    backgroundColor: 'white'
   },
   uploadIconWrapper: {
     position: "absolute",

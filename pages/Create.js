@@ -6,9 +6,9 @@ const Create = ({ navigation }) => {
 
     return (
         <>
-        <View style={styles.container}>
-            <CreatePost navigation={navigation}/> 
-        </View>
+            <View style={styles.container}>
+                <CreatePost navigation={navigation} />
+            </View>
         </>
 
     )
@@ -27,10 +27,10 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        alignItems:"center",
+        alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "rgba(15,15,15,1)",
-        borderWidth: 1, 
+        backgroundColor: "white",
+        borderWidth: 1,
     },
     profileBody: {
     }

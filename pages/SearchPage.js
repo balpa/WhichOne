@@ -45,17 +45,6 @@ const SearchPage = ({ navigation }) => {
 
   const storage = getStorage()
 
-  React.useEffect(async () => {
-    // get theme data from local storage (cache) ***HARDCODED***
-    try {
-      const value = await AsyncStorage.getItem("GLOBAL_THEME")
-      if (value !== null) {
-        setSelectedTheme(value)
-        if (value == "light") setTextColorDependingOnTheme("black")
-        else setTextColorDependingOnTheme("white")
-      }
-    } catch (e) { console.log(e) }
-  }, [])
 
   useEffect(() => {
     Animated.timing(searchBarWidthAnim, {
@@ -207,21 +196,18 @@ const SearchPage = ({ navigation }) => {
     <View behavior="padding" style={styles.container}>
       <StatusBar style="light" />
       <View
-        style={[
-          styles.elevation,
-          selectedTheme == "dark" ? { backgroundColor: "rgb(15,15,15)" } : {},
-        ]}
+        style={styles.elevation}
       >
         <Animated.View
           style={[styles.searchBar, { width: searchBarWidthAnim }]}
         >
           <Input
             label="Search by username"
-            labelStyle={{ color: textColorDependingOnTheme, fontSize: 15 }}
+            labelStyle={{ color: 'black', fontSize: 15 }}
             leftIcon={{
               type: "font-awesome",
               name: "search",
-              color: textColorDependingOnTheme,
+              color: 'black',
               onPress: () => search(),
             }}
             returnKeyType="search"
@@ -232,10 +218,10 @@ const SearchPage = ({ navigation }) => {
             // }}
             autoCapitalize="none"
             style={{
-              color: textColorDependingOnTheme,
+              color: 'black',
               width: "100%",
             }}
-            selectionColor={textColorDependingOnTheme}
+            selectionColor={'black'}
             placeholder="Jackqt"
             errorMessage={isSearchedAndNoUser == true ? "No user" : ""}
             onChangeText={(text) => setSearchVal(text)}

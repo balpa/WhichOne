@@ -10,8 +10,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function MessagePerson({ userID, color }) {
 
   const [shadowOptions, setShadowOptions] = React.useState({})
-  const [textColorDependingOnTheme, setTextColorDependingOnTheme] = React.useState('')
-  const [selectedTheme, setSelectedTheme] = React.useState('')
 
   const rightToLeftAnim = React.useRef(new Animated.Value(300)).current
   const leftToRightAnim = React.useRef(new Animated.Value(-300)).current
@@ -27,17 +25,6 @@ export default function MessagePerson({ userID, color }) {
   const [image, setImage] = useState(null) // store the user's avatar
 
   const storage = getStorage()
-
-  React.useEffect(async () => {      // get theme data from local storage (cache) ***HARDCODED***
-    try {
-      const value = await AsyncStorage.getItem('GLOBAL_THEME')
-      if (value !== null) {
-        setSelectedTheme(value)
-        if (value == 'light') setTextColorDependingOnTheme('black')
-        else setTextColorDependingOnTheme('white')
-      }
-    } catch (e) { console.log(e) }
-  }, [])
 
   useEffect(() => {          // platform based shadow options
     if (Platform.OS === "android") {
@@ -86,8 +73,6 @@ export default function MessagePerson({ userID, color }) {
     }).catch((error) => console.log("Error getting document:", error))
   }, [])
 
-
-
   return (
     <View style={{
       flexDirection: "row",
@@ -117,7 +102,7 @@ export default function MessagePerson({ userID, color }) {
           <Text
             style={{
               fontSize: 17,
-              color: textColorDependingOnTheme,
+              color: 'black',
               fontWeight: '500'
             }}
           >{userIDData.name}</Text>

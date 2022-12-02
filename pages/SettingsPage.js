@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, Image, Animated, Platform, TouchableOpacity } from 'react-native'
 import { Icon } from "react-native-elements"
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SettingsPage = ({ navigation }) => {
 
@@ -9,7 +8,6 @@ const SettingsPage = ({ navigation }) => {
 
 	const [platform, setPlatform] = useState("")
 	const [shadowOptions, setShadowOptions] = useState({})
-	const [selectedTheme, setSelectedTheme] = useState('')
 
 	let yAnim0FromTop = React.useRef(new Animated.Value(1000)).current
 	let yAnim1FromTop = React.useRef(new Animated.Value(1000)).current
@@ -17,13 +15,6 @@ const SettingsPage = ({ navigation }) => {
 	let yAnim3FromTop = React.useRef(new Animated.Value(1000)).current
 	let yAnim4FromTop = React.useRef(new Animated.Value(1000)).current
 	let yAnim5FromTop = React.useRef(new Animated.Value(1000)).current
-
-	useEffect(async () => {      // get theme data from local storage (cache) ***HARDCODED***
-		try {
-			const value = await AsyncStorage.getItem('GLOBAL_THEME')
-			if (value !== null) setSelectedTheme(value)
-		} catch (e) { console.log(e) }
-	}, [])
 
 	useEffect(() => {       // spesific animation timings for each menu item
 		setTimeout(() => {
@@ -96,7 +87,7 @@ const SettingsPage = ({ navigation }) => {
 
 	return (
 		<>
-			<View style={[styles.elevation, selectedTheme == 'light' ? {} : { backgroundColor: 'rgb(15,15,15)' }]}>
+			<View style={[styles.elevation]}>
 				<Animated.View style={[
 					styles.buttonView,
 					shadowOptions,
@@ -129,7 +120,7 @@ const SettingsPage = ({ navigation }) => {
 						</Text>
 					</TouchableOpacity>
 				</Animated.View>
-				<Animated.View style={[
+				{/* <Animated.View style={[
 					styles.buttonView,
 					shadowOptions,
 					{ transform: [{ translateY: yAnim2FromTop }] },
@@ -144,7 +135,7 @@ const SettingsPage = ({ navigation }) => {
 							Theme
 						</Text>
 					</TouchableOpacity>
-				</Animated.View>
+				</Animated.View> */}
 				<Animated.View style={[
 					styles.buttonView,
 					shadowOptions,

@@ -1,11 +1,11 @@
-import React, { Component, useRef, useEffect } from 'react'
+import React, { useRef, useEffect } from 'react'
 import { Text, View, StyleSheet, Alert, Animated } from 'react-native'
 import { Button } from 'react-native-elements'
 import { useState } from 'react'
 import { auth } from '../../firebase'
 import { Input } from 'react-native-elements/dist/input/Input'
 
-function ChangeName({ color, setIsChangeNameShown, theme, textColorDependingOnTheme }) {
+function ChangeName({ color, setIsChangeNameShown }) {
 
   const [changedName, setChangedName] = useState("")
 
@@ -73,25 +73,23 @@ function ChangeName({ color, setIsChangeNameShown, theme, textColorDependingOnTh
     >
       <Animated.View style={[
         styles.component,
-        theme == 'dark'
-          ? { backgroundColor: 'rgb(40,40,40)', borderColor: 'white' }
-          : { backgroundColor: 'rgb(240,240,240)' },
+        { backgroundColor: 'rgb(240,240,240)' },
         { transform: [{ translateY: springAnim }] }]}>
         <Text style={{
           marginBottom: 20,
           textAlign: 'center',
-          color: textColorDependingOnTheme,
+          color: 'black',
           fontSize: 20
         }}>Your name:{'\n'} {user.displayName}</Text>
         <Input
           placeholder="Change your name"
-          placeholderTextColor={textColorDependingOnTheme}
+          placeholderTextColor={'black'}
           label='New name'
-          labelStyle={{ color: textColorDependingOnTheme }}
-          selectionColor={textColorDependingOnTheme}
-          leftIcon={{ type: 'font-awesome', name: 'id-card', color: textColorDependingOnTheme }}
+          labelStyle={{ color: 'black' }}
+          selectionColor={'black'}
+          leftIcon={{ type: 'font-awesome', name: 'id-card', color: 'black' }}
           value={changedName}
-          style={{ color: textColorDependingOnTheme }}
+          style={{ color: 'black' }}
           onChangeText={(text) => setChangedName(text)} />
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%', bottom: -15 }}>
           <Button title='Submit' onPress={submitFunction} buttonStyle={[styles.leftButton, { backgroundColor: color }]} />

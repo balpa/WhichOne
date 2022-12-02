@@ -6,27 +6,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const NotificationsPage = ({ navigation }) => {
 
-  const [selectedTheme, setSelectedTheme] = useState('')
-  const [textColorDependingOnTheme, setTextColorDependingOnTheme] = useState('')
   const [isEnabled, setIsEnabled] = useState(false)
-
-  useEffect(async () => {      // get theme data from local storage (cache) ***HARDCODED***
-    try {
-      const value = await AsyncStorage.getItem('GLOBAL_THEME')
-      if (value !== null) {
-        setSelectedTheme(value)
-        if (value == 'light') setTextColorDependingOnTheme('black')
-        else setTextColorDependingOnTheme('white')
-      }
-    } catch (e) { console.log(e) }
-  }, [])
 
   return (
     <>
       <View
         style={[
           styles.container,
-          selectedTheme == 'dark' ? { backgroundColor: 'rgb(15,15,15)' } : { backgroundColor: 'white' }
+          { backgroundColor: 'white' }
         ]}>
 
         <View style={styles.switchLineStyle}>

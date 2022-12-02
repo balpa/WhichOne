@@ -21,22 +21,22 @@ const RegisterScreen = ({ navigation }) => {
 	const [lockIcon, setLockIcon] = useState("eye-slash")
 	const [isPasswordShown, setIsPasswordShown] = useState(false)
 	const [isNameNull, setIsNameNull] = useState(true)
-	const [selectedTheme, setSelectedTheme] = useState('')
-	const [textColorDependingOnTheme, setTextColorDependingOnTheme] = useState('rgba(0,0,0,0)')
+	//const [selectedTheme, setSelectedTheme] = useState('')
+	//const [textColorDependingOnTheme, setTextColorDependingOnTheme] = useState('rgba(0,0,0,0)')
 
 	const scaleAnim = useRef(new Animated.Value(0)).current
 
-	useEffect(async () => {      // get theme data from local storage (cache) ***HARDCODED***
-		try {
-			const value = await AsyncStorage.getItem('GLOBAL_THEME')
-			if (value !== null) {
-				setSelectedTheme(value)
-				if (value == 'light') setTextColorDependingOnTheme('black')
-				else setTextColorDependingOnTheme('white')
-			}
-		}
-		catch (e) { console.log(e) }
-	}, [])
+	// useEffect(async () => {      // get theme data from local storage (cache) ***HARDCODED***
+	// 	try {
+	// 		const value = await AsyncStorage.getItem('GLOBAL_THEME')
+	// 		if (value !== null) {
+	// 			setSelectedTheme(value)
+	// 			if (value == 'light') setTextColorDependingOnTheme('black')
+	// 			else setTextColorDependingOnTheme('white')
+	// 		}
+	// 	}
+	// 	catch (e) { console.log(e) }
+	// }, [])
 
 	useEffect(() => {          // platform based shadow options
 		if (Platform.OS === "android") {
@@ -143,46 +143,42 @@ const RegisterScreen = ({ navigation }) => {
 		else setIsNameNull(false)
 	}, [name])
 
-
-	//TODO: mustnt be empty message 
-
 	return (
-		<View behavior="padding" style={[styles.container, selectedTheme == 'dark' ? { backgroundColor: 'rgb(15,15,15)' } : {}]}>
+		<View behavior="padding" style={styles.container}>
 			<StatusBar style="light" />
 			<Animated.View style={[
 				styles.elevation,
 				shadowOptions,
-				selectedTheme == 'dark' ? { backgroundColor: 'rgb(40,40,40)', borderColor: 'rgba(255,255,255,0.2)' } : { backgroundColor: 'rgb(240,240,240)' },
 				{ transform: [{ scale: scaleAnim }] }]}>
 				<View style={{ height: 20 }}></View>
-				<Text h1 style={{ marginBottom: 20, fontSize: 25, color: textColorDependingOnTheme }}>Create an account</Text>
+				<Text h1 style={{ marginBottom: 20, fontSize: 25, color: 'black' }}>Create an account</Text>
 				<View style={styles.inputContainer}>
 					<Input
 						label="Full Name"
-						labelStyle={{ color: textColorDependingOnTheme, fontSize: 15 }}
-						leftIcon={{ type: 'material', name: 'badge', color: textColorDependingOnTheme }}
-						style={{ color: textColorDependingOnTheme }}
-						selectionColor={textColorDependingOnTheme}
+						labelStyle={{ color: 'black', fontSize: 15 }}
+						leftIcon={{ type: 'material', name: 'badge', color: 'black' }}
+						style={{ color: 'black' }}
+						selectionColor={'black'}
 						autoFocus placeholder="Jack Smith"
 						value={name}
 						errorMessage={isNameNull ? 'Name must not be empty' : ''}
 						onChangeText={(text) => setName(text)} />
 					<Input
 						label="Username"
-						labelStyle={{ color: textColorDependingOnTheme, fontSize: 15 }}
-						leftIcon={{ type: 'material', name: 'edit', color: textColorDependingOnTheme }}
-						style={{ color: textColorDependingOnTheme }}
-						selectionColor={textColorDependingOnTheme}
+						labelStyle={{ color: 'black', fontSize: 15 }}
+						leftIcon={{ type: 'material', name: 'edit', color: 'black' }}
+						style={{ color: 'black' }}
+						selectionColor={'black'}
 						autoCapitalize="none"
 						placeholder="jacksmith"
 						value={username}
 						onChangeText={(text) => setUsername(text)} />
 					<Input
 						label="E-Mail"
-						labelStyle={{ color: textColorDependingOnTheme, fontSize: 15 }}
-						leftIcon={{ type: 'material', name: 'email', color: textColorDependingOnTheme }}
-						style={{ color: textColorDependingOnTheme }}
-						selectionColor={textColorDependingOnTheme}
+						labelStyle={{ color: 'black', fontSize: 15 }}
+						leftIcon={{ type: 'material', name: 'email', color: 'black' }}
+						style={{ color: 'black' }}
+						selectionColor={'black'}
 						autoCapitalize="none"
 						type="email"
 						placeholder="jack@gmail.com"
@@ -190,11 +186,11 @@ const RegisterScreen = ({ navigation }) => {
 						onChangeText={(text) => setEmail(text)} />
 					<Input
 						label="Password"
-						labelStyle={{ color: textColorDependingOnTheme, fontSize: 15 }}
-						leftIcon={{ type: 'font-awesome', color: textColorDependingOnTheme, name: lockIcon, onPress: () => setLockIcon(lockIcon === "eye-slash" ? "eye" : "eye-slash") }}
+						labelStyle={{ color: 'black', fontSize: 15 }}
+						leftIcon={{ type: 'font-awesome', color: 'black', name: lockIcon, onPress: () => setLockIcon(lockIcon === "eye-slash" ? "eye" : "eye-slash") }}
 						{...(isPasswordShown ? { secureTextEntry: false } : { secureTextEntry: true })}
-						style={{ color: textColorDependingOnTheme }}
-						selectionColor={textColorDependingOnTheme}
+						style={{ color: 'black' }}
+						selectionColor={'black'}
 						autoCapitalize="none"
 						type="password"
 						placeholder="Password"
@@ -202,11 +198,11 @@ const RegisterScreen = ({ navigation }) => {
 						onChangeText={(text) => setPassword(text)} />
 					<Input
 						label="Confirm Password"
-						labelStyle={{ color: textColorDependingOnTheme, fontSize: 15 }}
-						leftIcon={{ type: 'font-awesome', color: textColorDependingOnTheme, name: lockIcon, onPress: () => setLockIcon(lockIcon === "eye-slash" ? "eye" : "eye-slash") }}
+						labelStyle={{ color: 'black', fontSize: 15 }}
+						leftIcon={{ type: 'font-awesome', color: 'black', name: lockIcon, onPress: () => setLockIcon(lockIcon === "eye-slash" ? "eye" : "eye-slash") }}
 						{...(isPasswordShown ? { secureTextEntry: false } : { secureTextEntry: true })}
-						style={{ color: textColorDependingOnTheme }}
-						selectionColor={textColorDependingOnTheme}
+						style={{ color: 'black' }}
+						selectionColor={'black'}
 						autoCapitalize="none"
 						type="password"
 						placeholder="Confirm password"

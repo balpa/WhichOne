@@ -10,8 +10,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const DMChatPage = ({ route, navigation }) => {
 
-  // TODO: PREVENT RE-RENDERING FOR ONSNAPSHOT LISTENER ( might be just a multiple rendering for console log not fetching data, check )
-
   const COLOR_PALETTE_1 = ["FAC213", "F77E21", "D61C4E", "990000", "FF5B00"]   // bright yellows cleared 
 
   const [isEmpty, setIsEmpty] = useState(false)
@@ -19,11 +17,8 @@ const DMChatPage = ({ route, navigation }) => {
   const [messageData, setMessageData] = useState(null)
   const [whichUser, setWhichUser] = useState('')
   const [showDMSettings, setShowDMSettings] = useState(false)
-  const [chatBalloonColor, setChatBalloonColor] = useState("#218AFF")
-  const [textColor, setTextColor] = useState('white')
-  const [isNameAboveBubbleEnabled, setIsNameAboveBubbleEnabled] = useState(true)
-  const [selectedTheme, setSelectedTheme] = useState('')
-  const [textColorDependingOnTheme, setTextColorDependingOnTheme] = useState('')
+  //const [chatBalloonColor, setChatBalloonColor] = useState("#218AFF")
+  //const [isNameAboveBubbleEnabled, setIsNameAboveBubbleEnabled] = useState(true)
 
   const { userID, name, userData } = route.params
   const loggedinUser = auth.currentUser
@@ -31,17 +26,6 @@ const DMChatPage = ({ route, navigation }) => {
   const ref = React.useRef(null)    // try to implement this to remove delay on animation
   let keyboardHeight = useKeyboardHeight()
   let inputAnim = React.useRef(new Animated.Value(0)).current
-
-  useEffect(async () => {      // get theme data from local storage (cache) ***HARDCODED***
-    try {
-      const value = await AsyncStorage.getItem('GLOBAL_THEME')
-      if (value !== null) {
-        setSelectedTheme(value)
-        if (value == 'light') setTextColorDependingOnTheme('black')
-        else setTextColorDependingOnTheme('white')
-      }
-    } catch (e) { console.log(e) }
-  }, [])
 
   useEffect(() => {          // input animation for keyboard. TODO: animations starts after keyboard fully opened. Another solution might be using keyboardavoidingview
     Animated.timing(inputAnim, {
@@ -67,24 +51,24 @@ const DMChatPage = ({ route, navigation }) => {
     })
   }, [])
 
-  useEffect(async () => {      // get color data from local storage (cache) ***HARDCODED***
-    try {
-      const value = await AsyncStorage.getItem('chatBalloonColor')
-      if (value !== null) setChatBalloonColor(value)
-    } catch (e) { console.log(e) }
+  // useEffect(async () => {      // get color data from local storage (cache) ***HARDCODED***
+  //   try {
+  //     const value = await AsyncStorage.getItem('chatBalloonColor')
+  //     if (value !== null) setChatBalloonColor(value)
+  //   } catch (e) { console.log(e) }
 
-    try {
-      const value = await AsyncStorage.getItem('chatBalloonTextColor')
-      if (value !== null) setTextColor(value)
-    } catch (e) { console.log(e) }
+  //   try {
+  //     const value = await AsyncStorage.getItem('chatBalloonTextColor')
+  //     if (value !== null) setTextColor(value)
+  //   } catch (e) { console.log(e) }
 
-    try {
-      const value = await AsyncStorage.getItem('isNameAboveBubbleEnabled')
-      if (value !== null && value == 'true') setIsNameAboveBubbleEnabled(true)
-      else if (value !== null && value == 'false') setIsNameAboveBubbleEnabled(false)
-    } catch (e) { console.log(e) }
+  //   try {
+  //     const value = await AsyncStorage.getItem('isNameAboveBubbleEnabled')
+  //     if (value !== null && value == 'true') setIsNameAboveBubbleEnabled(true)
+  //     else if (value !== null && value == 'false') setIsNameAboveBubbleEnabled(false)
+  //   } catch (e) { console.log(e) }
 
-  }, [])
+  // }, [])
 
   function sorter(obj) {       // SORTING SEEMS WORKING! yuppi aq
     let objArr = Object.values(obj.data)
@@ -117,11 +101,11 @@ const DMChatPage = ({ route, navigation }) => {
         borderColor: 'black',
         alignItems: 'flex-end'
       }}>
-        <Button
+        {/* <Button
           onPress={() => { setShowDMSettings(true) }}
-          titleStyle={{ color: textColorDependingOnTheme, fontSize: 15 }}
+          titleStyle={{ color: 'black', fontSize: 15 }}
           buttonStyle={styles.settingsButton}
-          title={<Icon name="settings" color={textColorDependingOnTheme} />} />
+          title={<Icon name="settings" color='black' />} /> */}
       </View>
       {messageData != null ?
         <FlatList
@@ -129,12 +113,9 @@ const DMChatPage = ({ route, navigation }) => {
           renderItem={({ item }) => (
             <ChatBalloon
               item={item}
-              isNameAboveBubbleEnabled={isNameAboveBubbleEnabled}
+              isNameAboveBubbleEnabled={true}
               otherUsersName={name}
-              color={chatBalloonColor}
-              textColor={textColor}
-              textColorDependingOnTheme={textColorDependingOnTheme}
-              theme={selectedTheme} />
+            />
           )}
           keyExtractor={(item, index) => index.toString()}
           ListEmptyComponent={() => <Text style={styles.emptyText}>No messages yet</Text>}
@@ -144,35 +125,28 @@ const DMChatPage = ({ route, navigation }) => {
         <Input
           ref={ref}
           placeholder='Message...'
-          rightIcon={{ type: 'material-community', name: 'send', color: textColorDependingOnTheme, onPress: () => sendMessage() }}
+          rightIcon={{ type: 'material-community', name: 'send', color: 'black', onPress: () => sendMessage() }}
           onChangeText={(text) => setMessageText(text)}
           inputStyle={{
-            backgroundColor: selectedTheme == 'dark' ? 'rgb(40,40,40)' : 'white',
+            backgroundColor: 'white',
             borderRadius: 15,
             padding: 5,
 
           }}
           containerStyle={{
-            backgroundColor: selectedTheme == 'dark' ? 'rgb(15,15,15)' : 'rgb(240,240,240)',
+            backgroundColor: 'rgb(240,240,240)',
             height: 60
           }}
           inputContainerStyle={{
             borderBottomWidth: 0,
-
           }}
         />
       </Animated.View>
-      {showDMSettings &&
+      {/* {showDMSettings &&
         <DMSettings
           setShowDMSettings={setShowDMSettings}
-          setChatBalloonColor={setChatBalloonColor}
-          chatBalloonColor={chatBalloonColor}
-          textColor={textColor}
-          setTextColor={setTextColor}
           setIsNameAboveBubbleEnabled={setIsNameAboveBubbleEnabled}
-          theme={selectedTheme}
-          textColorDependingOnTheme={textColorDependingOnTheme}
-        />}
+        />} */}
     </View>
 
   )
@@ -183,7 +157,6 @@ export default DMChatPage
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-
   },
   chatMessagesContainer: {
     width: '100%',
@@ -194,7 +167,6 @@ const styles = StyleSheet.create({
     width: '100%',
     alignContent: 'center',
     marginLeft: 5,
-
   },
   settingsButton: {
     marginTop: 5,

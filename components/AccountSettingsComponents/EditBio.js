@@ -7,7 +7,7 @@ import { db } from '../../firebase'
 import { Input } from 'react-native-elements/dist/input/Input'
 import { doc, getDoc, updateDoc } from 'firebase/firestore'
 
-function EditBio({ color, setIsEditBioShown, theme, textColorDependingOnTheme }) {
+function EditBio({ color, setIsEditBioShown }) {
 
 	const [bioText, setBioText] = useState("")
 	const [currentBio, setCurrentBio] = useState('')
@@ -30,11 +30,13 @@ function EditBio({ color, setIsEditBioShown, theme, textColorDependingOnTheme })
 		}).start()
 	}, [])
 
-	useEffect(async () => {
-		const bio = await getDoc(doc(db, 'useruid', `${user.uid}`))
-			.then((document) => {
-				setCurrentBio(document.data().bio)
-			})
+	useEffect(() => {
+		async function getCurBio() {
+			const bio = await getDoc(doc(db, 'useruid', `${user.uid}`))
+				.then((document) => {
+					setCurrentBio(document.data().bio)
+				})
+		} getCurBio()
 	}, [])
 
 	const submitFunction = async () => {     // submit bio to db and close modal
@@ -74,22 +76,22 @@ function EditBio({ color, setIsEditBioShown, theme, textColorDependingOnTheme })
 		]}>
 			<Animated.View style={[
 				styles.component,
-				theme == 'dark' ? { backgroundColor: 'rgb(40,40,40)', borderColor: 'white' } : { backgroundColor: 'rgb(240,240,240)' },
+				{ backgroundColor: 'rgb(240,240,240)' },
 				{ transform: [{ translateY: springAnim }] }]}>
 				<Text style={{
 					marginBottom: 20,
 					textAlign: 'center',
-					color: textColorDependingOnTheme,
+					color: 'black',
 					fontSize: 20,
 				}}>Current bio:{'\n'} {currentBio}</Text>
 				<Input
 					placeholder="..."
-					placeholderTextColor={textColorDependingOnTheme}
-					labelStyle={{ color: textColorDependingOnTheme }}
-					style={{ color: textColorDependingOnTheme }}
+					placeholderTextColor={'black'}
+					labelStyle={{ color: 'black' }}
+					style={{ color: 'black' }}
 					label='Add bio'
-					leftIcon={{ type: 'font-awesome', name: 'pencil', color: textColorDependingOnTheme }}
-					selectionColor={textColorDependingOnTheme}
+					leftIcon={{ type: 'font-awesome', name: 'pencil', color: 'black' }}
+					selectionColor={'black'}
 					value={bioText}
 					onChangeText={(text) => setBioText(text)} />
 				<View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%', bottom: -15, }}>

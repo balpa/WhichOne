@@ -13,22 +13,8 @@ const LoginScreen = ({ navigation }) => {
 	const [shadowOptions, setShadowOptions] = useState({})
 	const [lockIcon, setLockIcon] = useState("eye-slash")
 	const [isPasswordShown, setIsPasswordShown] = useState(false)
-	const [selectedTheme, setSelectedTheme] = useState('')
-	const [textColorDependingOnTheme, setTextColorDependingOnTheme] = useState('rgba(0,0,0,0)')
 
 	const scaleAnim = useRef(new Animated.Value(0)).current
-
-	useEffect(async () => {      // get theme data from local storage (cache) ***HARDCODED***
-		try {
-			const value = await AsyncStorage.getItem('GLOBAL_THEME')
-			if (value !== null) {
-				setSelectedTheme(value)
-				if (value == 'light') setTextColorDependingOnTheme('black')
-				else setTextColorDependingOnTheme('white')
-			}
-		}
-		catch (e) { console.log(e) }
-	}, [])
 
 	useEffect(() => {
 		if (lockIcon === "eye") { setIsPasswordShown(true) }
@@ -59,11 +45,10 @@ const LoginScreen = ({ navigation }) => {
 	}
 
 	return (
-		<View style={[styles.container, selectedTheme == 'dark' ? { backgroundColor: 'rgb(15,15,15)' } : {}]}>
+		<View style={[styles.container]}>
 			<Animated.View style={[
 				styles.elevation,
 				shadowOptions,
-				selectedTheme == 'dark' ? { backgroundColor: 'rgb(40,40,40)', borderColor: 'rgba(255,255,255,0.2)' } : { backgroundColor: 'rgb(240,240,240)' },
 				{ transform: [{ scale: scaleAnim }] }]}>
 				<StatusBar style="light" ></StatusBar>
 				<Image
@@ -73,10 +58,10 @@ const LoginScreen = ({ navigation }) => {
 				<View style={styles.inputContainer}>
 					<Input
 						label="Email"
-						labelStyle={{ color: textColorDependingOnTheme, fontSize: 15 }}
-						leftIcon={{ type: 'font-awesome', name: 'envelope', color: textColorDependingOnTheme }}
-						style={{ color: textColorDependingOnTheme }}
-						selectionColor={textColorDependingOnTheme}
+						labelStyle={{ color: 'black', fontSize: 15 }}
+						leftIcon={{ type: 'font-awesome', name: 'envelope', color: 'black' }}
+						style={{ color: 'black' }}
+						selectionColor='black'
 						autoCapitalize="none"
 						placeholder="example@gmail.com"
 						autoFocus
@@ -85,10 +70,10 @@ const LoginScreen = ({ navigation }) => {
 						onChangeText={(text) => setEmail(text)} />
 					<Input
 						label="Password"
-						labelStyle={{ color: textColorDependingOnTheme, fontSize: 15 }}
-						leftIcon={{ type: 'font-awesome', color: textColorDependingOnTheme, name: lockIcon, onPress: () => setLockIcon(lockIcon === "eye-slash" ? "eye" : "eye-slash") }}
-						style={{ color: textColorDependingOnTheme }}
-						selectionColor={textColorDependingOnTheme}
+						labelStyle={{ color: 'black', fontSize: 15 }}
+						leftIcon={{ type: 'font-awesome', color: 'black', name: lockIcon, onPress: () => setLockIcon(lockIcon === "eye-slash" ? "eye" : "eye-slash") }}
+						style={{ color: 'black' }}
+						selectionColor='black'
 						autoCapitalize="none"
 						placeholder="Password"
 						{...(isPasswordShown ? { secureTextEntry: false } : { secureTextEntry: true })}

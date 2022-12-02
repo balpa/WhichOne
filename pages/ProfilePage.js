@@ -52,23 +52,9 @@ const ProfilePage = ({ navigation }) => {
   const [isShown, setIsShown] = useState(false)
   const [currentBio, setCurrentBio] = useState("")
   const [isExpanded, setIsExpanded] = useState(false)
-  const [selectedTheme, setSelectedTheme] = useState("")
-  const [textColorDependingOnTheme, setTextColorDependingOnTheme] = useState("")
 
   const user = auth.currentUser
   const storage = getStorage()
-
-  useEffect(async () => {
-    // get theme data from local storage (cache) 
-    try {
-      const value = await AsyncStorage.getItem("GLOBAL_THEME")
-      if (value !== null) {
-        setSelectedTheme(value)
-        if (value == "light") setTextColorDependingOnTheme("black")
-        else setTextColorDependingOnTheme("white")
-      }
-    } catch (e) { console.log(e) }
-  }, [])
 
   useEffect(() => {
     // get bio from firebase
@@ -126,9 +112,11 @@ const ProfilePage = ({ navigation }) => {
   }, [])
 
   // get post ids from firebase and store in array
-  useEffect(async () => {
-    const toPostIDs = await getDoc(doc(db, "posts", `${user.uid}`))
-    if (toPostIDs != undefined) setPostIDs(toPostIDs.data().postID)
+  useEffect(() => {
+    async function fetch() {
+      const toPostIDs = await getDoc(doc(db, "posts", `${user.uid}`))
+      if (toPostIDs != undefined) setPostIDs(toPostIDs.data().postID)
+    } fetch()
   }, [])
 
   function expand() {
@@ -164,9 +152,6 @@ const ProfilePage = ({ navigation }) => {
         <Animated.View
           style={[
             styles.container,
-            selectedTheme == "dark"
-              ? { backgroundColor: "rgb(15,15,15)", borderColor: "white" }
-              : {},
             { width: window.width - 5 },
             { height: expandAnim },
           ]}
@@ -175,16 +160,16 @@ const ProfilePage = ({ navigation }) => {
           <View style={styles.header}>
             <Button
               onPress={() => navigation.navigate("Settings")}
-              titleStyle={{ color: textColorDependingOnTheme, fontSize: 15 }}
+              titleStyle={{ color: 'black', fontSize: 15 }}
               buttonStyle={styles.settingsButton}
-              title={<Icon name="settings" color={textColorDependingOnTheme} />}
+              title={<Icon name="settings" color='black' />}
             />
             <View>
               <Text
                 style={{
                   fontWeight: "800",
                   letterSpacing: 0.5,
-                  color: textColorDependingOnTheme,
+                  color: 'black',
                 }}
               >
                 {user.displayName}
@@ -192,9 +177,9 @@ const ProfilePage = ({ navigation }) => {
             </View>
             <Button
               onPress={showLogoutConfirm}
-              titleStyle={{ color: textColorDependingOnTheme, fontSize: 15 }}
+              titleStyle={{ color: 'black', fontSize: 15 }}
               buttonStyle={styles.logoutButton}
-              title={<Icon name="logout" color={textColorDependingOnTheme} />}
+              title={<Icon name="logout" color='black' />}
             />
           </View>
           <View style={styles.profileTop}>
@@ -216,7 +201,7 @@ const ProfilePage = ({ navigation }) => {
             </View>
             <Text
               style={{
-                color: textColorDependingOnTheme,
+                color: 'black',
                 fontSize: 15,
                 marginRight: 15,
                 marginLeft: 15,
@@ -232,7 +217,7 @@ const ProfilePage = ({ navigation }) => {
                 <Text
                   style={[
                     styles.followersInfo,
-                    { color: textColorDependingOnTheme },
+                    { color: 'black' },
                   ]}
                 >
                   {followerCount} Followers
@@ -244,7 +229,7 @@ const ProfilePage = ({ navigation }) => {
                 <Text
                   style={[
                     styles.followersInfo,
-                    { color: textColorDependingOnTheme },
+                    { color: 'black' },
                   ]}
                 >
                   {followingCount} Following
@@ -253,7 +238,7 @@ const ProfilePage = ({ navigation }) => {
               <Text
                 style={[
                   styles.followersInfo,
-                  { color: textColorDependingOnTheme },
+                  { color: 'black' },
                 ]}
               >
                 {postIDs.length} Posts
@@ -265,7 +250,6 @@ const ProfilePage = ({ navigation }) => {
       <ScrollView
         contentContainerStyle={[
           { flexGrow: 1, alignItems: "center" },
-          selectedTheme == "dark" ? { backgroundColor: "rgb(15,15,15)" } : {},
         ]}
       >
         {postIDs.length > 0 ? (
