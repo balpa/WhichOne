@@ -32,8 +32,10 @@ import ThemePage from "./pages/ThemePage";
 import NotificationsPage from "./pages/NotificationsPage";
 import FollowersFollowingPage from "./pages/FollowersFollowingPage";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { registerRootComponent } from "expo";
 
-LogBox.ignoreLogs(["Setting a timer for a long period of time"]); // to clear the yellow warning on android devices
+// to clear the yellow warning on android devices
+LogBox.ignoreLogs(["Setting a timer for a long period of time"]);
 LogBox.ignoreLogs(["color"]);
 
 const Stack = createStackNavigator();

@@ -5,7 +5,6 @@ import { useState, useEffect } from 'react'
 import { auth } from '../firebase'
 import { db } from '../firebase'
 import * as ImagePicker from 'expo-image-picker';
-import { ImageBrowser } from 'expo-image-picker-multiple'
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { doc, setDoc, updateDoc, arrayUnion, getDoc } from "firebase/firestore";
 import { useNavigation } from '@react-navigation/native'
@@ -64,9 +63,9 @@ function UploadPhoto({ }) {
   }, [])
 
   // for selecting multiple images. current library not good. need to find a better way
-  const ImageBrowserComponent = () => {
-    return (<ImageBrowser onChange={(num, onSubmit) => { }} callback={(callback) => { }} />)
-  }
+  // const ImageBrowserComponent = () => {
+  //   return (<ImageBrowser onChange={(num, onSubmit) => { }} callback={(callback) => { }} />)
+  // }
 
   useEffect(() => {         // set description character limit max to 50
     if (descriptionText.length > 50) {
