@@ -10,11 +10,11 @@
 //  ----------------------------------------------------------------------------
 
 import "react-native-gesture-handler";
-import React from "react";
+import React, { useState } from "react";
 import { Platform } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { StyleSheet, LogBox } from "react-native";
+import { LogBox } from "react-native";
 import LoginScreen from "./pages/LoginScreen";
 import RegisterScreen from "./pages/RegisterScreen";
 import ProfilePage from "./pages/ProfilePage";
@@ -31,38 +31,36 @@ import DMChatPage from "./pages/DMChatPage";
 import ThemePage from "./pages/ThemePage";
 import NotificationsPage from "./pages/NotificationsPage";
 import FollowersFollowingPage from "./pages/FollowersFollowingPage";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { registerRootComponent } from "expo";
+import PAGE_NAMES from './enums/pageEnums';
 
-// to clear the yellow warning on android devices
+const {
+  LOGIN,
+  REGISTER,
+  PROFILE,
+  FOLLOWERS,
+  HOMEPAGE,
+  STATS,
+  SETTINGS,
+  NOTIFICATIONS,
+  ABOUT,
+  THEME,
+  USER_PROFILE,
+  DM_CHAT_PAGE,
+  SEARCH,
+  ACCOUNT,
+  UPLOAD_AVATAR,
+  CREATE,
+} = PAGE_NAMES;
+
 LogBox.ignoreLogs(["Setting a timer for a long period of time"]);
 LogBox.ignoreLogs(["color"]);
 
 const Stack = createStackNavigator();
 
-let globalScreenOptions;
-
-if (Platform.OS === "ios") {
-  globalScreenOptions = {
-    //headerStyle: { height: 75 },
-    //headerTitleStyle: { color: "black" },
-    //headerTintColor: "black",
-    gestureEnabled: true,
-    headerShown: true,
-    //cardStyle: { backgroundColor: 'rgba(255,255,255,1)' },    // to make the background black (transitions, reload etc)
-  };
-}
-
-if (Platform.OS === "android") {
-  globalScreenOptions = {
-    //headerStyle: { height: 75 },
-    //headerTitleStyle: { color: "black" },
-    //headerTintColor: "black",
-    gestureEnabled: false,
-    headerShown: true,
-    //cardStyle: { backgroundColor: 'rgba(255,255,255,1)' },    // to make the background black (transitions, reload etc)
-  };
-}
+const globalScreenOptions = {
+  gestureEnabled: Platform.OS === "ios",
+  headerShown: true,
+};
 
 const config = {
   animation: "spring",
@@ -76,228 +74,142 @@ const config = {
   },
 }
 
-// TODO: SAFE AREA NOT WORKING STILL
+const genericOptions = {
+  headerTitleStyle: {},
+  headerStyle: {},
+  headerTintColor: '',
+  cardStyle: {
+    backgroundColor: "rgb(255,255,255)"
+  },
+  transitionSpec: {
+    open: config,
+    close: config
+  },
+}
 
 export default function App() {
-  //TODO: App needs restart after changing the theme. find a solution for theme (localstorage is not what i want)
-
-  const [selectedTheme, setSelectedTheme] = React.useState("light")
-  const [headerStyleDOT, setHeaderStyleDOT] = React.useState({})
-  const [headerTitleStyleDOT, setHeaderTitleStyleDOT] = React.useState({})
-  const [headerTintColorDOT, setHeaderTintColorDOT] = React.useState("")
-  const [cardColor, setCardColor] = React.useState({})
-
-  React.useEffect(async () => {
-    // get theme data from local storage (cache) ***HARDCODED***
-    try {
-      const value = await AsyncStorage.getItem("GLOBAL_THEME")
-      if (value !== null) {
-        if (value == "dark") {
-          setSelectedTheme(value)
-          setHeaderStyleDOT({
-            backgroundColor: "rgb(15,15,15)",
-          })
-          setHeaderTitleStyleDOT({ color: "white" })
-          setHeaderTintColorDOT("white")
-          setCardColor({ backgroundColor: "rgb(15,15,15)" })
-        } else {
-          setSelectedTheme(value)
-          setHeaderStyleDOT({
-            backgroundColor: "white",
-            //height: 80
-          })
-          setHeaderTitleStyleDOT({ color: "black" })
-          setHeaderTintColorDOT("black")
-          setCardColor({ backgroundColor: "rgb(255,255,255)" })
-        }
-      }
-    } catch (e) { console.log(e) }
-  }, [])
-
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={globalScreenOptions} headerMode="screen">
         <Stack.Screen
-          name="Login"
+          name={LOGIN}
           options={{
-            headerTitleStyle: headerTitleStyleDOT,
-            headerStyle: headerStyleDOT,
-            headerTintColor: headerTintColorDOT,
-            cardStyle: cardColor,
-            transitionSpec: { open: config, close: config },
+            genericOptions
           }}
           component={LoginScreen}
         />
         <Stack.Screen
-          name="Register"
+          name={REGISTER}
           options={{
-            headerTitleStyle: headerTitleStyleDOT,
-            headerStyle: headerStyleDOT,
-            headerTintColor: headerTintColorDOT,
-            cardStyle: cardColor,
-            transitionSpec: { open: config, close: config },
+            genericOptions
           }}
           component={RegisterScreen}
         />
         <Stack.Screen
-          name="Profile"
+          name={PROFILE}
           options={{
-            headerTitleStyle: headerTitleStyleDOT,
-            headerStyle: headerStyleDOT,
-            headerTintColor: headerTintColorDOT,
             headerBackTitle: "Home",
-            cardStyle: cardColor,
-            transitionSpec: { open: config, close: config },
+            genericOptions
           }}
           component={ProfilePage}
         />
         <Stack.Screen
-          name="Followers & Following"
+          name={FOLLOWERS}
           options={{
-            headerTitleStyle: headerTitleStyleDOT,
-            headerStyle: headerStyleDOT,
-            headerTintColor: headerTintColorDOT,
             headerBackTitle: "Profile",
-            cardStyle: cardColor,
-            transitionSpec: { open: config, close: config },
+            genericOptions
           }}
           component={FollowersFollowingPage}
         />
         <Stack.Screen
-          name="HomePage"
+          name={HOMEPAGE}
           options={{
-            headerTitleStyle: headerTitleStyleDOT,
-            headerStyle: headerStyleDOT,
-            headerTintColor: headerTintColorDOT,
             title: "WhichOne",
-            cardStyle: cardColor,
-            transitionSpec: { open: config, close: config },
+            genericOptions
           }}
           component={HomePage}
         />
         <Stack.Screen
-          name="Stats"
+          name={STATS}
           options={{
-            headerTitleStyle: headerTitleStyleDOT,
-            headerStyle: headerStyleDOT,
-            headerTintColor: headerTintColorDOT,
-            cardStyle: cardColor,
-            transitionSpec: { open: config, close: config },
+            genericOptions
           }}
           component={StatsPage}
         />
         <Stack.Screen
-          name="Settings"
+          name={SETTINGS}
           options={{
-            headerTitleStyle: headerTitleStyleDOT,
-            headerStyle: headerStyleDOT,
-            headerTintColor: headerTintColorDOT,
-            cardStyle: cardColor,
-            transitionSpec: { open: config, close: config },
+            genericOptions
           }}
           component={SettingsPage}
         />
         <Stack.Screen
-          name="Notifications"
+          name={NOTIFICATIONS}
           options={{
-            headerTitleStyle: headerTitleStyleDOT,
-            headerStyle: headerStyleDOT,
-            headerTintColor: headerTintColorDOT,
-            cardStyle: cardColor,
-            transitionSpec: { open: config, close: config },
+            genericOptions
           }}
           component={NotificationsPage}
         />
         <Stack.Screen
-          name="About"
+          name={ABOUT}
           options={{
-            headerTitleStyle: headerTitleStyleDOT,
-            headerStyle: headerStyleDOT,
-            headerTintColor: headerTintColorDOT,
-            cardStyle: cardColor,
-            transitionSpec: { open: config, close: config },
+            genericOptions
           }}
           component={AboutPage}
         />
         <Stack.Screen
-          name="Theme"
+          name={THEME}
           options={{
-            headerTitleStyle: headerTitleStyleDOT,
-            headerStyle: headerStyleDOT,
-            headerTintColor: headerTintColorDOT,
-            cardStyle: cardColor,
-            transitionSpec: { open: config, close: config },
+            genericOptions
           }}
           component={ThemePage}
         />
         <Stack.Screen
-          name="UserProfile"
+          name={USER_PROFILE}
           options={({ route }) => ({
-            headerTitleStyle: headerTitleStyleDOT,
-            headerStyle: headerStyleDOT,
-            headerTintColor: headerTintColorDOT,
-            cardStyle: cardColor,
+            genericOptions,
             title: route.params.name,
           })}
           component={UserProfile}
         />
         <Stack.Screen
-          name="DMChatPage"
+          name={DM_CHAT_PAGE}
           options={({ route }) => ({
-            headerTitleStyle: headerTitleStyleDOT,
-            headerStyle: headerStyleDOT,
-            headerTintColor: headerTintColorDOT,
-            cardStyle: cardColor,
+            genericOptions,
             title: route.params.name,
             headerBackTitle: "Messages",
           })}
           component={DMChatPage}
         />
         <Stack.Screen
-          name="Search"
+          name={SEARCH}
           options={{
-            headerTitleStyle: headerTitleStyleDOT,
-            headerStyle: headerStyleDOT,
-            headerTintColor: headerTintColorDOT,
             headerBackTitle: "Home",
-            cardStyle: cardColor,
-            transitionSpec: { open: config, close: config },
+            genericOptions
           }}
           component={SearchPage}
         />
         <Stack.Screen
-          name="Account"
+          name={ACCOUNT}
           options={{
-            headerTitleStyle: headerTitleStyleDOT,
-            headerStyle: headerStyleDOT,
-            headerTintColor: headerTintColorDOT,
             headerBackTitle: "Settings",
-            cardStyle: cardColor,
-            transitionSpec: { open: config, close: config },
+            genericOptions
           }}
           component={AccountSettings}
         />
         <Stack.Screen
-          name="Upload Avatar"
+          name={UPLOAD_AVATAR}
           options={{
-            headerTitleStyle: headerTitleStyleDOT,
-            headerStyle: headerStyleDOT,
-            headerTintColor: headerTintColorDOT,
             headerBackTitle: "Account",
-            cardStyle: cardColor,
-            transitionSpec: { open: config, close: config },
+            genericOptions
           }}
           component={UploadAvatar}
         />
         <Stack.Screen
-          name="Create"
+          name={CREATE}
           options={{
-            headerTitleStyle: headerTitleStyleDOT,
-            headerStyle: headerStyleDOT,
-            headerTintColor: headerTintColorDOT,
             headerBackTitle: "Home",
-            cardStyle: cardColor,
-            transitionSpec: { open: config, close: config },
+            genericOptions
           }}
           component={Create}
         />
@@ -305,17 +217,3 @@ export default function App() {
     </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  logoutButton: {
-    width: 80,
-    borderWidth: 0,
-    backgroundColor: "transparent",
-  },
-});
