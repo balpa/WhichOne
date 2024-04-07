@@ -10,7 +10,7 @@ const PAGE_NAMES = {
     ABOUT: 'About',
     THEME: 'Theme',
     USER_PROFILE: 'UserProfile',
-    DM_CHAT_PAGE: 'DmChatPage',
+    DM_CHAT_PAGE: 'DMChatPage',
     SEARCH: 'Search',
     ACCOUNT: 'Account',
     UPLOAD_AVATAR: 'UploadAvatar',
