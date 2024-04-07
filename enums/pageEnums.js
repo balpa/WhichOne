@@ -15,6 +15,6 @@ const PAGE_NAMES = {
     ACCOUNT: 'Account',
     UPLOAD_AVATAR: 'UploadAvatar',
     CREATE: 'Create'
-}
+};
 
-export default PAGE_NAMES
+export default PAGE_NAMES;
