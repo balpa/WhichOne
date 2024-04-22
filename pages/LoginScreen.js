@@ -1,12 +1,14 @@
+/* eslint-disable no-unused-vars */
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import { View, StyleSheet, Animated } from 'react-native';
 import { Button, Image, Input } from 'react-native-elements';
 import { auth } from '../firebase';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { isEmailValid, alert } from '../functions/general';
 
 const LoginScreen = ({ navigation }) => {
+    const { elevation, mainLogo, inputContainer, labelStyle, leftIcon, loginButton, registerButton } = styles;
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -24,7 +26,7 @@ const LoginScreen = ({ navigation }) => {
         }
     }, [lockIcon]);
 
-    useEffect(() => { // animations (fade-in)
+    useEffect(() => {
         Animated.spring(scaleAnim, {
             toValue: 1,
             duration: 5000,
@@ -32,7 +34,7 @@ const LoginScreen = ({ navigation }) => {
         }).start();
     }, []);
 
-    useEffect(() => { // go to homepage if sign in successful of already logged in
+    useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((authUser) => {
             if (authUser) {
                 navigation.replace('HomePage');
@@ -42,13 +44,12 @@ const LoginScreen = ({ navigation }) => {
         return unsubscribe;
     }, []);
 
-    const signIn = () => { // sign in function
-        if (email.length > 0 && password.length > 0) {
+    //todo -> password validation (conditions)
+    const signIn = () => {
+        if (isEmailValid(email) && password.length > 0) {
             auth.signInWithEmailAndPassword(email, password)
-                .then(() => {
-                    navigation.replace('HomePage');
-                })
-                .catch((error) => alert(error.message));
+                .then(() => navigation.replace('HomePage'))
+                .catch((error) => alert(error));
         } else {
             alert('Please enter email and password');
         }
@@ -57,44 +58,44 @@ const LoginScreen = ({ navigation }) => {
     return (
         <View style={[styles.container]}>
             <Animated.View style={[
-                styles.elevation,
+                elevation,
                 shadowOptions,
                 { transform: [{ scale: scaleAnim }]}
             ]}>
-                <StatusBar style="light" ></StatusBar>
+                <StatusBar style="light"></StatusBar>
                 <Image
-                    source={require('../assets/w1logocrimson.png')}
-                    style={{ width: 200, height: 150, marginBottom: 25 }}
+                    source={ require('../assets/w1logocrimson.png') }
+                    style={ mainLogo }
                 />
-                <View style={styles.inputContainer}>
+                <View style={ inputContainer }>
                     <Input
                         label="Email"
-                        labelStyle={{ color: 'black', fontSize: 15 }}
-                        leftIcon={{ type: 'font-awesome', name: 'envelope', color: 'black' }}
+                        labelStyle={ labelStyle }
+                        leftIcon={ leftIcon }
                         style={{ color: 'black' }}
                         selectionColor='black'
                         autoCapitalize="none"
                         placeholder="example@gmail.com"
                         autoFocus
                         type="email"
-                        value={email}
-                        onChangeText={(text) => setEmail(text)} />
+                        value={ email }
+                        onChangeText={ (text) => setEmail(text) } />
                     <Input
                         label="Password"
-                        labelStyle={{ color: 'black', fontSize: 15 }}
+                        labelStyle={ labelStyle }
                         leftIcon={{ type: 'font-awesome', color: 'black', name: lockIcon, onPress: () => setLockIcon(lockIcon === 'eye-slash' ? 'eye' : 'eye-slash') }}
                         style={{ color: 'black' }}
                         selectionColor='black'
                         autoCapitalize="none"
                         placeholder="Password"
-                        {...(isPasswordShown ? { secureTextEntry: false } : { secureTextEntry: true })}
+                        secureTextEntry={ !isPasswordShown }
                         type="password"
-                        value={password}
-                        onChangeText={(text) => setPassword(text)} />
+                        value={ password }
+                        onChangeText={ (text) => setPassword(text) } />
                     <View style={{ height: 25 }}></View>
                 </View>
-                <Button onPress={signIn} title="Login" buttonStyle={styles.loginButton} />
-                <Button onPress={() => navigation.navigate('Register')} title="Register" buttonStyle={styles.registerButton} type="outline" />
+                <Button onPress={ signIn } title="Login" buttonStyle={ loginButton } />
+                <Button onPress={ () => navigation.navigate('Register') } title="Register" buttonStyle={ registerButton } type="outline" />
                 <View style={{ height: 100 }}></View>
             </Animated.View>
         </View>
@@ -104,6 +105,20 @@ const LoginScreen = ({ navigation }) => {
 export default LoginScreen;
 
 const styles = StyleSheet.create({
+    leftIcon: {
+        type: 'font-awesome',
+        name: 'envelope',
+        color: 'black'
+    },
+    labelStyle: {
+        color: 'black',
+        fontSize: 15,
+    },
+    mainLogo: {
+        width: 200,
+        height: 150,
+        marginBottom: 25,
+    },
     container: {
         flex: 1,
         alignItems: 'center',
